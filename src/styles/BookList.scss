@@ -1,0 +1,85 @@
+.book-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .book-list__container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); // 4 cột
+    gap: 20px;
+    width: 90%;
+    max-width: 120px;
+    margin-bottom: 20px; // Tạo khoảng cách với pagination
+  }
+
+  .book-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    text-align: center;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .book-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .book-info {
+      font-size: 14px;
+      color: #555;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 850px; // Tạo khoảng cách giữa pagination và danh sách sách
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      background: #ddd;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: 0.3s;
+
+      &:hover {
+        background: #bbb;
+      }
+
+      &.active {
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+      }
+
+      &:disabled {
+        background: #eee;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      padding: 8px;
+      color: #555;
+    }
+  }
+}

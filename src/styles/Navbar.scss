@@ -1,0 +1,136 @@
+.navbar {
+  background-color: #007bff; // ✅ Màu xanh dương nổi bật
+  color: white; // ✅ Chữ màu trắng cho dễ nhìn
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 100;
+
+  .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-brand a {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white; // ✅ Đảm bảo logo có màu trắng
+  }
+
+  .social-btn {
+    margin-left: 20px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #ffcc00; // ✅ Màu vàng nổi bật cho nút "Mạng Xã Hội"
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #ffaa00;
+    }
+  }
+
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 250px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      transition: width 0.3s ease-in-out;
+
+      &:focus {
+        width: 300px;
+        border-color: #ffcc00;
+      }
+    }
+
+    .search-icon {
+      margin-left: -30px;
+      cursor: pointer;
+      color: white; // ✅ Màu icon tìm kiếm
+    }
+
+    .search-dropdown {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      z-index: 100;
+
+      p {
+        padding: 10px;
+        font-weight: bold;
+        background: #f8f9fa;
+        margin: 0;
+        color: black; // ✅ Chữ đen dễ đọc
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          padding: 8px 12px;
+          cursor: pointer;
+
+          &:hover {
+            background: #e9ecef;
+          }
+        }
+      }
+    }
+  }
+
+  .user-actions {
+    display: flex;
+    align-items: center;
+
+    .username {
+      margin-right: 15px;
+      font-weight: bold;
+      color: white; // ✅ Đảm bảo chữ user có màu trắng
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background: #c82333;
+      }
+    }
+
+    .login-btn {
+      padding: 8px 12px;
+      background: #28a745;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+
+      &:hover {
+        background: #218838;
+      }
+    }
+  }
+}

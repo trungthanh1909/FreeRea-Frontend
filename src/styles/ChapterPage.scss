@@ -1,0 +1,48 @@
+.chapter-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+
+  .chapter-container {
+    display: flex;
+    width: 80%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    gap: 20px;
+
+    .book-image {
+      width: 200px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .book-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h2 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .author {
+        font-weight: bold;
+        color: #555;
+      }
+
+      .description {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  }
+}

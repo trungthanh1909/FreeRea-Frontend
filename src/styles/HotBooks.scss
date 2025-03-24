@@ -1,0 +1,43 @@
+.hot-books {
+  h3 {
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .hot-books__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; // Khoảng cách giữa các truyện
+  }
+
+  .hot-books__item {
+    position: relative;
+    width: 220px;  // Chiều rộng lớn hơn chiều cao một chút
+    height: 180px; // Chiều cao ngắn hơn một chút
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  .hot-books__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Đảm bảo ảnh không bị méo
+    border-radius: 10px;
+  }
+
+  .hot-books__overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
+  }
+}
