@@ -1,64 +1,92 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaEnvelope, FaLock } from "react-icons/fa";
 import { motion } from "framer-motion";
-import "../styles/LoginForm.scss";
+import { useNavigate } from "react-router-dom";
+import "../styles/Login&RegisterForm.scss";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 type LoginFormProps = {
-    onSubmit: (email: string, password: string) => void;
+    switchToRegister: () => void;
+    onSubmit?: (email: string, password: string) => Promise<void>;
     error?: string;
 };
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(email, password);
+        if (!email || !password) {
+            return;
+        }
+        if (onSubmit) {
+            try {
+                await onSubmit(email, password);
+                navigate("/");
+            } catch (err) {
+                console.error("Đăng nhập thất bại:", err);
+            }
+        }
     };
 
     return (
         <motion.div
-            className="auth-box"
+            className="container"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <h2>Đăng Nhập</h2>
-            {error && <p className="error-message">{error}</p>}
+            <div className="box">
+                <h2>Log in to NovelNest</h2>
+                {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi từ props */}
 
-            <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                    <FaEnvelope className="input-icon" />
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <input
+                            type="email"
+                            id="Email"
+                            placeholder=" "
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="Email">Email</label>
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="password"
+                            id="Password"
+                            placeholder=" "
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="Password">Password</label>
+                    </div>
+
+                    <button type="submit" className="btn">
+                        Login
+                    </button>
+                </form>
+
+                <div className="social-login">
+                    <p>Hoặc đăng nhập với</p>
+                    <div className="social-buttons">
+                        <button className="social-btn facebook-google">
+                            <i className="fab fa-facebook-f"></i> Facebook
+                        </button>
+                        <button className="social-btn facebook-google">
+                            <i className="fab fa-google"></i> Google
+                        </button>
+                    </div>
                 </div>
 
-                <div className="input-group">
-                    <FaLock className="input-icon" />
-                    <input
-                        type="password"
-                        placeholder="Mật khẩu"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <button type="submit" className="btn-primary">
-                    Đăng Nhập
-                </button>
-            </form>
-
-            <p className="register-link">
-                Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
-            </p>
+                <p className="change-link">
+                    Don't have an account? <span onClick={switchToRegister} className="switch-tab">Sign Up</span>
+                </p>
+            </div>
         </motion.div>
     );
 };

@@ -1,69 +1,138 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import AuthModal from "./AuthModal";
 import "../styles/Navbar.scss";
+import CategoryList from "./CategoryList";
 
 const Navbar: React.FC = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, login } = useAuth();
     const navigate = useNavigate();
+    const [hovering, setHovering] = useState(false);
     const [search, setSearch] = useState("");
-    const [showSearchBar, setShowSearchBar] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [showModal, setShowModal] = useState<"login" | "register" | null>(null);
+    const [error, setError] = useState("");
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
         logout();
-        navigate("/welcome");
+        navigate("/");
     };
 
+    const handleLogin = async (email: string, password: string) => {
+        try {
+            console.log('đăng nhập');
+            await login(email, password);
+            setShowModal(null);
+            navigate("/");
+        } catch (err) {
+            setError("Sai email hoặc mật khẩu!");
+        }
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 0);
+        };
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowDropdown(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <nav className="navbar">
-            <div className="container">
-                {/* Logo */}
-                <div className="navbar-brand">
-                    <Link to="/">📚 BookWorld</Link>
-                </div>
+        <>
+            <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+                <div className="container">
+                    <Link to="/Home">
+                        <img
+                            src="src/assets/logo-black.png"
+                            alt="FREEREA"
+                            className="logo"
+                        />
+                    </Link>
 
-                {/* Nút "Mạng Xã Hội" */}
-                <Link to="/social" className="social-btn">Mạng Xã Hội</Link>
-
-                {/* Thanh tìm kiếm */}
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm sách..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onFocus={() => setShowSearchBar(true)}
-                    />
-                    <span className="search-icon">🔍</span>
-
-                    {/* Hộp gợi ý tìm kiếm */}
-                    {showSearchBar && (
-                        <div className="search-dropdown">
-                            <p>Gợi ý tìm kiếm...</p>
-                            <ul>
-                                <li>Sách mới nhất</li>
-                                <li>Sách được yêu thích</li>
-                                <li>Thể loại phổ biến</li>
-                            </ul>
+                    <ul className="navbar_menu">
+                        <div
+                            className="category-wrapper"
+                            onMouseEnter={() => setShowDropdown(true)}
+                            onMouseLeave={() => setShowDropdown(false)}
+                            ref={dropdownRef}
+                        >
+                            <li className="menu-item">
+                                Thể loại
+                                <div className={`category_menu ${showDropdown ? "show" : ""}`}>
+                                    <CategoryList/>
+                                </div>
+                            </li>
                         </div>
-                    )}
-                </div>
+                        <li>Mới nhất</li>
+                        <li>Bảng xếp hạng</li>
+                        <li>Xem thêm</li>
+                    </ul>
 
-                {/* Thông tin người dùng */}
-                <div className="user-actions">
-                    {user ? (
-                        <>
-                            <span className="username">👤 {user.name}</span>
-                            <button className="logout-btn" onClick={handleLogout}>
-                                🚪 Đăng xuất
-                            </button>
-                        </>
-                    ) : (
-                        <Link to="/Login" className="login-btn">Đăng nhập</Link>
-                    )}
+
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm sách..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon"/>
+                    </div>
+
+                    <div className="user-actions">
+                        {user ? (
+                            <div className="user-menu">
+                                <div
+                                    className="avatar-wrapper"
+                                    onMouseEnter={() => setHovering(true)}
+                                    onMouseLeave={() => setTimeout(() => setHovering(false), 200)}
+                                >
+                                    <img
+                                        src={user.avatarUrl || "https://i.pravatar.cc/40"}
+                                        alt={user.name}
+                                        className="avatar"
+                                    />
+                                    <div className={`dropdown ${hovering ? "show" : ""}`}>
+                                        <span className="dropdown-item">{user.name}</span>
+                                        <Link to="/profile" className="dropdown-item">Tài khoản</Link>
+                                        <button onClick={handleLogout} className="dropdown-item">Đăng xuất</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="buttons">
+                                <button onClick={() => setShowModal("login")} className="login-btn">Login</button>
+                                <button onClick={() => setShowModal("register")} className="signup-btn">Sign up</button>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+
+            <AuthModal
+                showModal={showModal}
+                setShowModal={setShowModal}
+                handleLogin={handleLogin}
+                error={error}
+            />
+        </>
     );
 };
 

@@ -1,24 +1,43 @@
 .category-list {
-  text-align: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: left;
+  }
 
   .categories {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // tối đa 5 cột nếu đủ chỗ
+    gap: 12px;
   }
 
   .category-item {
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 8px;
     border: none;
-    background-color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+    text-align: center;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      background-color: #ddd;
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
     }
   }
 
@@ -33,17 +52,21 @@
   }
 
   .category-dropdown {
+    margin-top: 16px;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    background: white;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    width: 90%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // giống như categories
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .categories,
+    .category-dropdown {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); // mobile: co lại
+    }
   }
 }

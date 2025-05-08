@@ -6,10 +6,11 @@ import "../styles/CategoryList.scss";
 const CategoryList: React.FC = () => {
     const categories = getCategories();
     const [showMore, setShowMore] = useState(false);
-    const navigate = useNavigate(); // ✅ Dùng navigate để điều hướng
+    const navigate = useNavigate();
 
     return (
         <div className="category-list">
+            <h1 className="section-title">Thể loại</h1>
             <div className="categories">
                 {categories.slice(0, 6).map((category) => (
                     <button key={category.id} className="category-item" onClick={() => navigate(`/category/${category.name}`)}>
@@ -17,7 +18,7 @@ const CategoryList: React.FC = () => {
                     </button>
                 ))}
                 <button className="category-item more-btn" onClick={() => setShowMore(!showMore)}>
-                    Xem thêm
+                    {showMore ? "Ẩn bớt" : "Xem thêm"}
                 </button>
             </div>
 

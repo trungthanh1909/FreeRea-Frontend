@@ -10,6 +10,8 @@ import UserQA from "../components/UserQA";
 import Footer from "../components/Footer";
 import { getBookList, getHotBooks, getRankingBooks, getRecentBooks } from "../mocks/bookMocks";
 import { getCategories } from "../mocks/categoryMocks";
+import RecommendationCard from "../components/RecommendationCard";
+import MangaComponent from "../components/MangaComponent";
 
 import "../styles/Home.scss";
 
@@ -22,10 +24,7 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-container">
-            {/* Thanh Navbar */}
             <Navbar />
-
-            {/* Thanh thể loại */}
             <CategoryList categories={categories} />
 
             <div className="main-content container">

@@ -2,67 +2,124 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #2c3e50, #34495e);
+  background: url('../assets/background.jpg') no-repeat center center/cover;
   color: white;
   text-align: center;
   padding: 20px;
 
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+
   .welcome-content {
-    max-width: 500px;
+    max-width: 600px;
+    text-align: center;
+    margin-top: -300px;
+    font-family: cursive;
+    font-style: italic;
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 50px;
       font-weight: bold;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
       span {
-        color: #f39c12;
+        color: #6A0DAD;
       }
     }
 
     p {
       font-size: 1.2rem;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+
     }
 
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      align-items: center;
+      gap: 20px;
 
-      .btn-primary, .btn-secondary {
-        padding: 12px 20px;
+      .login-btn, .signup-btn {
+        padding: 10px 20px;
         font-size: 1rem;
+        font-family: Arial, Helvetica, sans-serif;
+        font-style: normal;
         border-radius: 8px;
         text-decoration: none;
+        width: 120px;
+        text-align: center;
+        cursor: pointer;
         transition: all 0.3s;
       }
 
-      .btn-primary {
-        background: #3498db;
+      .login-btn {
+        background-color: rgba(255, 255, 255, 0.2);
         color: white;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        transition: 0.3s;
         &:hover {
-          background: #2980b9;
+          background-color: rgba(255, 255, 255, 0.4);
         }
       }
 
-      .btn-secondary {
-        background: #2ecc71;
+      .signup-btn {
+        background-color: #E75480;
         color: white;
+        border: 2px solid transparent;
+        transition: background-color 0.3s ease-in-out;
         &:hover {
-          background: #27ae60;
+          background-color: #C7436E;
         }
       }
     }
   }
 
-  .welcome-image {
-    max-width: 300px;
-    margin-left: 50px;
-    img {
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 450px;
+  height: auto;
+  position: relative;
+}
+.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  .close-icon {
+    color: white;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  &:hover .close-icon {
+    color: white;
   }
 }
