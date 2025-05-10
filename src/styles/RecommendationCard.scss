@@ -1,0 +1,147 @@
+.recommendation-card {
+  position: relative;
+  margin: 33px 0 0 50px;
+  width: 1400px;
+  min-height: 340px;
+  height: 400px;
+  background: rgba(27, 32, 34, 0.85);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+
+  h3 {
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .recommendation-tags {
+    margin-top: 16px;
+
+    span {
+      display: inline-block;
+      background: #76797a;
+      padding: 1px 6px;
+      font-size: 13px;
+      border-radius: 8px;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 14px;
+
+    .star {
+      color: gold;
+      font-size: 16px;
+      margin-right: 5px;
+    }
+
+    span {
+      margin-right: 10px;
+    }
+  }
+
+  .recommendation-divider {
+    margin-top: 20px;
+    height: 1px;
+    width: 427px;
+    background: #494d4e;
+  }
+
+  .recommendation-description {
+    margin-top: 12px;
+    height: 40px;
+    width: 427px;
+    font-size: 14px;
+    color: #d1d2d3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .recommendation-button {
+    position: absolute;
+    right: 44px;
+    bottom: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 36px;
+    background: #272b2d;
+    border-radius: 22px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .gap {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    padding: 20px;
+    gap: 5px;
+  }
+
+  .image-container-baby {
+    transition: box-shadow 0.3s ease;
+    width: 50px;
+    height: 80px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 15px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
+    &:active {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      border: 1px solid black;
+      box-shadow: inherit;
+    }
+  }
+
+  .image-container {
+    position: absolute;
+    transform: translate(90%, -85%);
+    width: 700px;
+    height: 390px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+
+    img {
+      animation: slide 15s infinite;
+      display: block;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      transform: translate(-2%, 0%);
+    }
+
+    &:nth-child(2) { animation-delay: 3s; }
+    &:nth-child(3) { animation-delay: 6s; }
+    &:nth-child(4) { animation-delay: 9s; }
+    &:nth-child(5) { animation-delay: 12s; }
+  }
+}
+
+@keyframes slide {
+  0%   { opacity: 1; }
+  25%  { opacity: 0; }
+  50%  { opacity: 1; }
+  75%  { opacity: 0; }
+  100% { opacity: 1; }
+}

@@ -2,6 +2,9 @@ export interface Chapter {
     id: number;
     title: string;
     content: string;
+    order?: number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface Book {
@@ -11,6 +14,10 @@ export interface Book {
     views?: number;
     image: string;
     description: string;
-    category: string[];  // 🔹 Thêm dấu ',' và kiểu dữ liệu là string[]
-    chapters: Chapter[]; // 🔹 Đã có định nghĩa cho Chapter
+    category: string[];
+    chapters: Chapter[];
+    createdAt?: string;
+    updatedAt?: string;
+    rating?: number;
+    isFeatured?: boolean;
 }

@@ -15,7 +15,7 @@
 
   .categories {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // tối đa 5 cột nếu đủ chỗ
+    grid-template-columns: repeat(5, 1fr);
     gap: 12px;
   }
 
@@ -54,7 +54,7 @@
   .category-dropdown {
     margin-top: 16px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // giống như categories
+    grid-template-columns: repeat(5, 1fr);
     gap: 12px;
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
@@ -63,10 +63,10 @@
     width: 100%;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .categories,
     .category-dropdown {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); // mobile: co lại
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

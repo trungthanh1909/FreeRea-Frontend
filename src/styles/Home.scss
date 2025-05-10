@@ -1,58 +1,253 @@
-.home-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.container-big {
+  min-height: 100vh;
+  margin: auto;
 }
 
-/* === Bố cục chính === */
-.main-content {
-  display: grid;
-  grid-template-columns: 2fr 4fr 1fr; // Tăng phần BookList (Cột giữa)
-  gap: 20px;
-  width: 90%;
-  margin-top: 20px;
-}
+@media (max-width: 768px) {
+  .container-all {
+    width: 100%;
+    margin: auto;
+    gap: 10px;
+  }
 
-/* === Cột Trái: Slidebar + Bảng Xếp Hạng + Mới Cập Nhật === */
-.left-section {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+  .container {
+    width: 80%;
+    margin: auto;
+    gap: 10px;
+  }
 
-/* === Slidebar === */
-.slidebar {
-  width: 100%;
-  height: 250px; // Chiều cao Slidebar (~5cm)
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  .header {
+    display: flex;
+    align-items: center;
+    background: #272B2D;
+    padding: 10px;
+    color: white;
+  }
 
-/* === Cột Giữa: Hot Books + Danh sách truyện === */
-.center-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  .menu button {
+    background: #272B2D;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 
-/* === Danh sách truyện lớn hơn === */
-.book-list {
-  max-width: 100%;
-  .book-list__container {
-    grid-template-columns: repeat(4, 1fr); // Hiển thị 4 cột sách
+  .menu button:hover {
+    background: #272B2D;
+  }
+
+  .main-content {
+    width: 100%;
+    background: #F5F5F5;
+    padding: 20px;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .story-list {
+    width: 40%;
+  }
+
+  .recommendation-header {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .recommendation-background {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    background: linear-gradient(to right, #1B2022, transparent);
+  }
+
+  .recommendation-background img {
+    animation: slide 15s infinite;
+    display: block;
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+  }
+
+  .recommendation-card {
+    width: 100%;
+    min-height: 340px;
+    margin-top: 33px;
+    background: rgba(27, 32, 34, 0.85);
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    position: relative;
+  }
+
+  .recommendation-card h3 {
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .recommendation-tags {
+    margin-top: 16px;
+  }
+
+  .recommendation-tags span {
+    display: inline-block;
+    background: #76797a;
+    padding: 1px 6px;
+    font-size: 12px;
+    border-radius: 8px;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  .recommendation-divider {
+    margin-top: 20px;
+    height: 1px;
+    width: 100%;
+    background: #494d4e;
+  }
+
+  .recommendation-description {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #d1d2d3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .recommendation-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 36px;
+    background: #272B2D;
+    border-radius: 22px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
   }
 }
 
-/* === Cột Phải: Hỏi đáp của người dùng === */
-.right-section {
-  width: 100%;
+.content-container {
+  padding-top: 60px;
+  display: flex;
 }
 
-/* === Mới cập nhật (bên dưới Ranking List) === */
-.recent-books {
-  background: #fff;
-  padding: 10px;
+.recommendation-header {
+  position: relative;
+  width: 1160px;
+  margin: 0 auto;
+}
+
+.recommendation-title {
+  display: flex;
+  align-items: center;
+}
+
+.recommendation-title h2 {
+  margin-right: 6px;
+  font-size: 32px;
+  color: #1c1c1f;
+  font-weight: bold;
+}
+
+.recommendation-title p {
+  height: 45px;
+  font-size: 16px;
+  color: #90929b;
+  line-height: 60px;
+  font-weight: normal;
+}
+
+.recommendation-background {
+  position: absolute;
+  left: 0;
+  margin-top: 40px;
+  height: 380px;
+  width: 800px;
+  object-fit: cover;
+  background: linear-gradient(to right, #1B2022, transparent);
+}
+
+.recommendation-background img {
+  animation: slide 15s infinite;
+  display: block;
+  height: 380px;
+  width: 800px;
+  object-fit: cover;
+}
+
+.recommendation-card {
+  position: relative;
+  margin-top: 33px;
+  height: 400px;
+  margin-left: 50px;
+  width: 1400px;
+  min-height: 340px;
+  background: rgba(27, 32, 34, 0.85);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+}
+
+.recommendation-card h3 {
+  font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommendation-tags {
+  margin-top: 16px;
+}
+
+.recommendation-tags span {
+  display: inline-block;
+  background: #76797a;
+  padding: 1px 6px;
+  font-size: 13px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.recommendation-divider {
+  margin-top: 20px;
+  height: 1px;
+  width: 427px;
+  background: #494d4e;
+}
+
+.recommendation-description {
+  margin-top: 12px;
+  height: 40px;
+  width: 427px;
+  font-size: 14px;
+  color: #d1d2d3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommendation-button {
+  position: absolute;
+  right: 44px;
+  bottom: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 82px;
+  height: 36px;
+  background: #272B2D;
+  border-radius: 22px;
+  color: white;
+  font-size: 14px;
+  text-decoration: none;
 }

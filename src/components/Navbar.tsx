@@ -1,15 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import AuthModal from "./AuthModal";
 import "../styles/Navbar.scss";
 import CategoryList from "./CategoryList";
 
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { loginSuccess, logout } from "../store/slices/authSlice";
+import { login as loginService } from "../services/authService";
+import { AuthResponse } from "../types";
+
 const Navbar: React.FC = () => {
-    const { user, logout, login } = useAuth();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const user = useAppSelector((state) => state.auth.user);
     const [hovering, setHovering] = useState(false);
     const [search, setSearch] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
@@ -19,14 +25,36 @@ const Navbar: React.FC = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
-        logout();
+        dispatch(logout());
         navigate("/");
     };
 
     const handleLogin = async (email: string, password: string) => {
+
+
+        //test
+
+        if (email === "test@example.com" && password === "123456") {
+            const fakeUser = {
+                id: 1,
+                name: "Test User",
+                email: "test@example.com",
+                avatarUrl: "https://i.pravatar.cc/40",
+            };
+
+            dispatch(loginSuccess({ user: fakeUser, token: "fake-token-123" }));
+            setShowModal(null);
+            navigate("/");
+            return;
+        }
+
+
+
+
         try {
-            console.log('đăng nhập');
-            await login(email, password);
+            const response = await loginService({ email, password });
+            const { token, user } = response.data as AuthResponse;
+            dispatch(loginSuccess({ token, user }));
             setShowModal(null);
             navigate("/");
         } catch (err) {
@@ -58,7 +86,7 @@ const Navbar: React.FC = () => {
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container">
-                    <Link to="/Home">
+                    <Link to="/">
                         <img
                             src="src/assets/logo-black.png"
                             alt="FREEREA"
@@ -76,15 +104,13 @@ const Navbar: React.FC = () => {
                             <li className="menu-item">
                                 Thể loại
                                 <div className={`category_menu ${showDropdown ? "show" : ""}`}>
-                                    <CategoryList/>
+                                    <CategoryList />
                                 </div>
                             </li>
                         </div>
                         <li>Mới nhất</li>
                         <li>Bảng xếp hạng</li>
-                        <li>Xem thêm</li>
                     </ul>
-
 
                     <div className="search-container">
                         <input
@@ -93,7 +119,7 @@ const Navbar: React.FC = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon"/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
                     </div>
 
                     <div className="user-actions">
@@ -111,7 +137,7 @@ const Navbar: React.FC = () => {
                                     />
                                     <div className={`dropdown ${hovering ? "show" : ""}`}>
                                         <span className="dropdown-item">{user.name}</span>
-                                        <Link to="/profile" className="dropdown-item">Tài khoản</Link>
+                                        <Link to={`/user/${user.name}`} className="dropdown-item" state={{ user }}>Tài khoản</Link>
                                         <button onClick={handleLogout} className="dropdown-item">Đăng xuất</button>
                                     </div>
                                 </div>

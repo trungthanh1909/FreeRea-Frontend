@@ -1,31 +1,49 @@
 import React from 'react';
-import "../type/Homepage.css";
+import { Book } from "../types/books";
+import "../styles/MangaComponent.scss";
 
-const MangaComponent = () => (
-    <div className="main-content">
-        <div className="story-list">
-            <Section title="Truyện Đề Cử" />
-            <Section title="Truyện Cập Nhật" />
-            <Section title="Bảng Xếp Hạng" />
-        </div>
-    </div>
-);
+type MangaComponentProps = {
+    hotBooks: Book[];
+    rankingBooks: Book[];
+    recentBooks: Book[];
+};
 
-const Section = ({ title }) => (
-    <>
-        <p className="text-gray">{title}</p>
-        <div className="line"></div>
-        <div className="container2">
-            {[...Array(5)].map((_, index) => (
-                <div className="comic2" key={index}>
-                    <img src="img/0c2dfce5a4c1cea42a6021e66a03f3146ed297e9.jpg@484w.avif" alt=""/>
-                    <p className="name2">Tên Chuyện</p>
-                    <p className="sales2">Tác giả <span>{1000 + index * 300}</span></p>
-                </div>
-            ))}
-            <div className="arrow1">»</div>
+type SectionProps = {
+    title: string;
+    books: Book[];
+};
+
+const MangaComponent: React.FC<MangaComponentProps> = ({ hotBooks, rankingBooks, recentBooks }) => {
+    return (
+        <div className="main-content">
+            <div className="story-list">
+                <Section title="Truyện Đề Cử" books={hotBooks} />
+                <Section title="Truyện Cập Nhật" books={recentBooks} />
+                <Section title="Bảng Xếp Hạng" books={rankingBooks} />
+            </div>
         </div>
-    </>
-);
+    );
+};
+
+const Section: React.FC<SectionProps> = ({ title, books }) => {
+    return (
+        <>
+            <p className="text-gray">{title}</p>
+            <div className="line"></div>
+            <div className="container2">
+                {books.map((book) => (
+                    <div className="comic2" key={book.id}>
+                        <img src={book.image} alt={book.title} />
+                        <p className="name2">{book.title}</p>
+                        <p className="sales2">
+                            Tác giả <span>{book.author || "Không rõ"}</span>
+                        </p>
+                    </div>
+                ))}
+                <div className="arrow1">»</div>
+            </div>
+        </>
+    );
+};
 
 export default MangaComponent;

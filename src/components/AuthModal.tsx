@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoCloseCircle } from "react-icons/io5";
 import "../styles/Welcome.scss";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import { login, register } from "../services/authService"; // Import các API từ authService
 
 type Props = {
     showModal: "login" | "register" | null;
@@ -13,8 +14,24 @@ type Props = {
 };
 
 const AuthModal: React.FC<Props> = ({ showModal, setShowModal, handleLogin, error }) => {
+    const [loading, setLoading] = useState(false);
+    const [authError, setAuthError] = useState("");
+
     const switchToLogin = () => setShowModal("login");
     const switchToRegister = () => setShowModal("register");
+
+    const handleRegister = async (name: string, email: string, password: string) => {
+        setLoading(true);
+        try {
+            const response = await register({ name, email, password });
+            console.log("Register success:", response);
+            setLoading(false);
+            setShowModal(null);
+        } catch (err) {
+            setAuthError("Đăng ký không thành công. Vui lòng thử lại.");
+            setLoading(false);
+        }
+    };
 
     return (
         <AnimatePresence>
@@ -41,9 +58,19 @@ const AuthModal: React.FC<Props> = ({ showModal, setShowModal, handleLogin, erro
                         </button>
 
                         {showModal === "login" ? (
-                            <LoginForm switchToRegister={switchToRegister} onSubmit={handleLogin} error={error} />
+                            <LoginForm
+                                switchToRegister={switchToRegister}
+                                onSubmit={handleLogin}
+                                error={authError}
+                                loading={loading}
+                            />
                         ) : (
-                            <RegisterForm switchToLogin={switchToLogin} />
+                            <RegisterForm
+                                switchToLogin={switchToLogin}
+                                onSubmit={handleRegister}
+                                error={authError}
+                                loading={loading}
+                            />
                         )}
                     </motion.div>
                 </motion.div>

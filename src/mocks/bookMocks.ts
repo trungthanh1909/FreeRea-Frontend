@@ -1,6 +1,5 @@
 import { Book } from "../types/books";
 
-// 🔹 Danh sách sách giả lập với đầy đủ thông tin
 const books: Book[] = [
     {
         id: 1,
@@ -198,10 +197,6 @@ const books: Book[] = [
         ]
     }
 ];
-
-
-
-
 
 // 🔹 Hàm lấy tất cả sách
 export const getBookList = (): Book[] => books;

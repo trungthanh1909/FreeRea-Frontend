@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Book } from "../types/books";
+import { Book } from "../types";
 import "../styles/BookList.scss";
 
 interface BookListProps {

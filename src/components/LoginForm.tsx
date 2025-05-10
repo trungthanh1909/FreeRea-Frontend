@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Login&RegisterForm.scss";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-
 type LoginFormProps = {
     switchToRegister: () => void;
-    onSubmit?: (email: string, password: string) => Promise<void>;
+    onSubmit: (email: string, password: string) => Promise<void>;
     error?: string;
+    loading: boolean;
 };
 
-const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error, loading }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error
         if (onSubmit) {
             try {
                 await onSubmit(email, password);
-                navigate("/");
+                navigate("/"); // Chuyển hướng sau khi đăng nhập thành công
             } catch (err) {
                 console.error("Đăng nhập thất bại:", err);
             }
@@ -66,8 +66,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error
                         <label htmlFor="Password">Password</label>
                     </div>
 
-                    <button type="submit" className="btn">
-                        Login
+                    <button type="submit" className="btn" disabled={loading}>
+                        {loading ? "Đang xử lý..." : "Login"} {/* Hiển thị trạng thái loading */}
                     </button>
                 </form>
 

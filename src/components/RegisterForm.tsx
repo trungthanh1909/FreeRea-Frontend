@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import "../styles/Login&RegisterForm.scss";
-import { useNavigate } from "react-router-dom";
 
 type RegisterFormProps = {
     switchToLogin: () => void;
+    onSubmit: (name: string, email: string, password: string) => Promise<void>;
+    error?: string;
+    loading: boolean;
 };
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, error, loading }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
 
-    const navigate = useNavigate();
-
-    const handleRegister = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name || !email || !password) {
-            setError("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
-        console.log("Đăng ký với:", name, email, password);
-        navigate("/");
+        try {
+            await onSubmit(name, email, password);
+        } catch (err) {
+            console.error("Đăng ký thất bại:", err);
+        }
     };
 
     return (
@@ -36,7 +37,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin }) => {
                 <h2>Sign up to NovelNest</h2>
                 {error && <p className="error-message">{error}</p>}
 
-                <form onSubmit={handleRegister}>
+                <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <input
                             type="text"
@@ -70,8 +71,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin }) => {
                         />
                         <label htmlFor="Password">Password</label>
                     </div>
-                    <button type="submit" className="btn">
-                        Sign-Up
+
+                    <button type="submit" className="btn" disabled={loading}>
+                        {loading ? "Đang xử lý..." : "Sign-Up"}
                     </button>
                 </form>
 
@@ -88,7 +90,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin }) => {
                 </div>
 
                 <p className="change-link">
-                    Already have an account? <span onClick={switchToLogin} className="switch-tab">Sign In</span>
+                    Already have an account?{" "}
+                    <span onClick={switchToLogin} className="switch-tab">
+                        Sign In
+                    </span>
                 </p>
             </div>
         </motion.div>
