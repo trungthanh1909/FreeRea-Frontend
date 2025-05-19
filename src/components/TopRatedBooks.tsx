@@ -1,6 +1,6 @@
 import React from "react";
 import {getTopRatedBooks } from "../mocks/bookMocks";
-import { Book } from "../types/books";
+import { Book } from "../types/book";
 import "../styles/TopRatedBooks.scss"; // ✅ Import SCSS
 
 const TopRatedBooks: React.FC = () => {

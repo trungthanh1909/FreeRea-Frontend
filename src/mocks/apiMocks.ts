@@ -1,6 +1,6 @@
 import { getBookList } from "./bookMocks";
 import { loginUser as mockLoginUser } from "./userMocks";
-import { Book } from "../types/books";
+import { Book } from "../types/book";
 import { User } from "../types/user";
 
 // ✅ Cấu hình để chuyển đổi giữa Mock API và API thật

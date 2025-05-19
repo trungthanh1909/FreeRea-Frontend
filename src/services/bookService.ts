@@ -1,37 +1,30 @@
 import apiClient from "../config/apiClient";
-import {Book} from "../types";
+import { BookRequest, BookResponse } from "../types";
 
-export const getAllBooks = () =>
-    apiClient.get("/books");
-
-export const getBookById = (id: string) =>
-    apiClient.get(`/books/${id}`);
-
-export const searchBooks = (query: string): Promise<Book[]> => {
-    return apiClient.get(`/books/search?q=${query}`);
+// Lấy tất cả sách
+export const fetchAllBooks = (): Promise<BookResponse[]> => {
+    return apiClient.get("/books");
 };
 
-export const createBook = (bookData: Partial<Book>) =>
-    apiClient.post("/books", bookData);
-
-export const deleteBook = (bookId: string) =>
-    apiClient.delete(`/books/${bookId}`);
-
-export const updateBook = (bookId: string, bookData: Partial<Book>) =>
-    apiClient.put(`/books/${bookId}`, bookData);
-
-export const getPaginatedBooks = (page: number, limit: number): Promise<{ items: Book[]; totalPages: number }> => {
-    return apiClient.get(`/books?page=${page}&limit=${limit}`);
+// Lấy sách theo ID
+export const fetchBookById = (id: string): Promise<BookResponse> => {
+    return apiClient.get(`/books/${id}`);
 };
 
+// Tạo sách mới
+export const createBook = (payload: BookRequest): Promise<BookResponse> => {
+    return apiClient.post("/internal", payload);
+};
 
-export const uploadBookImage = (bookId: string, file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
+// Cập nhật sách
+export const updateBook = (
+    id: string,
+    payload: BookRequest
+): Promise<BookResponse> => {
+    return apiClient.put(`/internal/update/${id}`, payload);
+};
 
-    return apiClient.post(`/books/${bookId}/upload-image`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
+// Xoá sách
+export const deleteBook = (id: string): Promise<void> => {
+    return apiClient.delete(`/internal/delete/${id}`);
 };

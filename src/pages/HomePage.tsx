@@ -8,7 +8,7 @@ import MangaComponent from "../components/MangaComponent";
 import { Book } from "../types";
 import "../styles/Home.scss";
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
     const [hotBooks, setHotBooks] = useState<Book[]>([]);
     const [rankingBooks, setRankingBooks] = useState<Book[]>([]);
     const [recentBooks, setRecentBooks] = useState<Book[]>([]);
@@ -81,4 +81,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default HomePage;

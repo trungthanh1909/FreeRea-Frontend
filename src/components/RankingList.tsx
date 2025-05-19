@@ -1,5 +1,5 @@
 import React from "react";
-import { Book } from "../types/books";
+import { Book } from "../types/book";
 import "../styles/RankingList.scss";  // Import SCSS
 
 interface RankingListProps {

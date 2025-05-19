@@ -1,6 +1,6 @@
-import { User } from "../types";
+import { UserResponse } from "../types";
 
-export let users: (User & { password: string })[] = [
+export let users: (UserResponse & { password: string })[] = [
     {
         id: 1,
         name: "Người Dùng 1",
@@ -10,7 +10,7 @@ export let users: (User & { password: string })[] = [
     }
 ];
 
-export const mockUsers: User[] = [
+export const mockUsers: UserResponse[] = [
     { id: 1, name: "Người Dùng 1", email: "user@example.com" },
 ];
 export const loginUser = async (email: string, password: string): Promise<User> => {

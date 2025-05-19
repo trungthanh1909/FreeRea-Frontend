@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import "./../styles/UserProfile.scss";
 import { useAppSelector } from "../store/hooks";
 
-const UserProfile: React.FC = () => {
+const UserProfilePage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<"info" | "history" | "favourites">("info");
     const user = useAppSelector((state) => state.auth.user);
     const avatar = user?.avatarUrl || "https://i.pravatar.cc/150";
@@ -133,4 +133,4 @@ const UserProfile: React.FC = () => {
     );
 };
 
-export default UserProfile;
+export default UserProfilePage;

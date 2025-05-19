@@ -5,69 +5,82 @@
   margin-top: 20px;
 
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: center;
+}
 
-  .story-list {
-    width: 40%;
-  }
+.story-list {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.section-block {
+  margin-bottom: 40px;
 }
 
 .text-gray {
-  color: #555;
+  color: #333;
   font-weight: bold;
-  margin: 20px auto;
-  margin-left: 50px;
+  font-size: 20px;
+  margin: 10px 0 10px 10px;
 }
 
-.container2 {
+.line {
+  width: 100%;
+  height: 2px;
+  background: #ccc;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.carousel-scroll {
   display: flex;
-  width: 250%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-wrap: nowrap;
-  gap: 5px;
-  margin-top: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  gap: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE 10+
+}
 
-  .comic2 {
-    width: 200px;
-    height: 400px;
-    padding: 10px;
-    background-color: #f7f7f7;
-    text-align: center;
-    transition: transform 0.3s;
+.carousel-scroll::-webkit-scrollbar {
+  display: none; // Chrome, Safari
+}
 
-    &:hover {
-      transform: scale(1.05);
-    }
+.comic2 {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 180px;
+  background-color: #f7f7f7;
+  padding: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s;
 
-    img {
-      width: 100%;
-      height: 300px;
-      border-radius: 10px;
-    }
-
-    .name2 {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .sales2 {
-      font-size: 14px;
-      color: gray;
-
-      span {
-        font-weight: bold;
-        color: red;
-      }
-    }
+  &:hover {
+    transform: scale(1.05);
   }
 
-  .arrow1 {
-    font-size: 25px;
-    color: black;
-    margin-left: 10px;
+  img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .name2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0 4px;
+    text-align: center;
+  }
+
+  .sales2 {
+    font-size: 14px;
+    color: gray;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+      color: red;
+    }
   }
 }

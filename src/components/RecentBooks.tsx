@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Book } from "../types/books";
+import { Book } from "../types/book";
 import { getRecentBooks } from "../mocks/bookMocks"; // ✅ Import từ bookMocks.ts
 import "../styles/RecentBooks.scss";
 

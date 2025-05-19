@@ -1,4 +1,4 @@
-import { Book } from "../types/books";
+import { Book } from "../types";
 
 const books: Book[] = [
     {
