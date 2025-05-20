@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import "../styles/Login&RegisterForm.scss";
+import "../../styles/HomePage/Login_RegisterForm.scss";
 
 type RegisterFormProps = {
     switchToLogin: () => void;
-    onSubmit: (name: string, email: string, password: string) => Promise<void>;
+    onSubmit: (username: string, name: string, email: string, password: string, createdAt: string) => Promise<void>;
     error?: string;
     loading: boolean;
 };
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, error, loading }) => {
+    const [username, setUsername] = useState("");
+    const createdAt = new Date().toISOString();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,7 +22,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, er
             return;
         }
         try {
-            await onSubmit(name, email, password);
+            await onSubmit(username, name, email, password, createdAt);
         } catch (err) {
             console.error("Đăng ký thất bại:", err);
         }

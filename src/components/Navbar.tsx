@@ -3,21 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-import AuthModal from "./AuthModal";
+import AuthModal from "./HomePage/AuthModal";
 import CategoryList from "./CategoryList";
 
 import "../styles/Navbar.scss";
 
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { loginSuccess, logout } from "../store/slices/authSlice";
-import { login as loginService } from "../services/authService";
-import { AuthResponse } from "../types";
 import logo from "../assets/logo-black.png";
+import { useAuth } from "../hooks/useAuth";
 
 const Navbar: React.FC = () => {
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const user = useAppSelector((state) => state.auth.user);
+    const { user, isAuthenticated, login, logout } = useAuth();
 
     const [search, setSearch] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
@@ -46,18 +42,17 @@ const Navbar: React.FC = () => {
 
     const handleLogin = async (email: string, password: string) => {
         try {
-            const response = await loginService({ email, password });
-            const { token, user } = response.data as AuthResponse;
-            dispatch(loginSuccess({ token, user }));
+            await login({ username: email, password });
             setShowModal(null);
+            setError("");
             navigate("/");
         } catch {
             setError("Sai email hoặc mật khẩu!");
         }
     };
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await logout();
         navigate("/");
     };
 
@@ -65,7 +60,7 @@ const Navbar: React.FC = () => {
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container">
-                    <Link to="/">
+                    <Link to="/public">
                         <img src={logo} alt="FREEREA" className="logo" />
                     </Link>
 
@@ -98,7 +93,7 @@ const Navbar: React.FC = () => {
                     </div>
 
                     <div className="user-actions">
-                        {user ? (
+                        {isAuthenticated && user ? (
                             <div
                                 className="avatar-wrapper"
                                 onMouseEnter={() => setHovering(true)}
@@ -106,12 +101,12 @@ const Navbar: React.FC = () => {
                             >
                                 <img
                                     src={user.avatarUrl || "https://i.pravatar.cc/40"}
-                                    alt={user.name}
+                                    alt={user.name || user.username}
                                     className="avatar"
                                 />
                                 <div className={`dropdown ${hovering ? "show" : ""}`}>
-                                    <span className="dropdown-item">{user.name}</span>
-                                    <Link to={`/user/${user.name}`} className="dropdown-item" state={{ user }}>
+                                    <span className="dropdown-item">{user.name || user.username}</span>
+                                    <Link to={`/user/${user.username}`} className="dropdown-item" state={{ user }}>
                                         Tài khoản
                                     </Link>
                                     <button onClick={handleLogout} className="dropdown-item">

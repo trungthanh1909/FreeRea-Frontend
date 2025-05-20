@@ -1,47 +1,71 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import ChapterList from "../components/ChapterList";
-import { getBookById } from "../mocks/bookMocks";
-import "../styles/ReadPage.scss";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import CommentSection from"../components/ReadPage/CommentSection";
+import "../styles/ReadPage/ReadingPage.scss";
 
-const ReadPage: React.FC = () => {
-    const { bookId } = useParams<{ bookId: string }>(); // 📌 Lấy ID truyện từ URL
-    const book = getBookById(Number(bookId)); // 📌 Tìm sách theo ID
-    const navigate = useNavigate(); // 📌 Để điều hướng khi nhấn "Đọc ngay"
+interface Chapter {
+    title: string;
+    images: string[];
+    content?: string;
+}
 
-    if (!book) {
-        return <div>Không tìm thấy truyện</div>;
+const ReadingForm = () => {
+    const location = useLocation();
+    const chapters: Chapter[] = location.state?.chapters || [];
+
+    const [chapterIndex, setChapterIndex] = useState<number>(0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [chapterIndex]);
+    const updateChapter = (num: number) => {
+        if (num >= 0 && num < chapters.length) {
+            setChapterIndex(num);
+        }
+    };
+    if (chapters.length === 0) {
+        return <div style={{ padding: '20px' }}>Không có dữ liệu chương.</div>;
     }
 
-    return (
-        <div className="read-page">
-            <Navbar />
-            <div className="container">
-                {/* 🔹 Thông tin truyện */}
-                <div className="book-info">
-                    <img src={book.image} alt={book.title} className="book-cover" />
-                    <div className="book-details">
-                        <h2>{book.title}</h2>
-                        <p><strong>Tác giả:</strong> {book.author}</p>
-                        <p><strong>Lượt xem:</strong> {book.views}</p>
-                        <p><strong>Thể loại:</strong> {book.category}</p>
-                        <p><strong>Mô tả:</strong> {book.description}</p>
+    const currentChapter = chapters[chapterIndex];
 
-                        <div className="buttons">
-                            <button className="read-now-btn" onClick={() => navigate(`/book/${book.id}/chapter/${book.chapters[0]?.id}`)}>
-                                📖 Đọc ngay
-                            </button>
-                            <button className="follow-btn">📌 Theo dõi</button>
-                        </div>
-                    </div>
+
+    return (
+        <div className="reading-container">
+            <div className="chapter-navigation-big">
+                <div className="chapter-navigation">
+                    <button onClick={() => updateChapter(chapterIndex - 1)} disabled={chapterIndex === 0}>Trước</button>
+                    <select value={chapterIndex} onChange={(e) => updateChapter(parseInt(e.target.value))}>
+                        {chapters.map((chapter, i) => (
+                            <option key={i} value={i}>
+                                Chapter {i + 1} - {chapter.title}
+                            </option>
+                        ))}
+                    </select>
+                    <button onClick={() => updateChapter(chapterIndex + 1)} disabled={chapterIndex === chapters.length - 1}>Tiếp</button>
                 </div>
 
-                {/* 🔹 Danh sách chương */}
-                <ChapterList chapters={book.chapters} bookId={book.id} />
+                <h2 className="chapter-title">{currentChapter.title}</h2>
+
+                {currentChapter.images?.length > 0 && (
+                    <div className="chapter-image-gallery">
+                        {currentChapter.images.map((imgUrl, idx) => (
+                            <img key={idx} src={imgUrl} alt={`Chapter image ${idx + 1}`} className="chapter-image" />
+                        ))}
+                    </div>
+                )}
+
+                {currentChapter.content && (
+                    <div className="chapter-content">{currentChapter.content}</div>
+                )}
+
+                <CommentSection />
+
+                <footer className="footer">
+                    &copy; 2025 Web Đọc Truyện. All rights reserved.
+                </footer>
             </div>
         </div>
     );
 };
 
-export default ReadPage;
+export default ReadingForm;

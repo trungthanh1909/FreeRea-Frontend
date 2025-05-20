@@ -11,7 +11,7 @@ const apiClient = axios.create({
     timeout: 10000,
 });
 
-// ✅ Request Interceptor — Gắn accessToken từ Redux
+// Request Interceptor — Gắn accessToken từ Redux
 apiClient.interceptors.request.use((config) => {
     const token = store.getState().auth.token;
     if (token && config.headers) {
@@ -20,7 +20,7 @@ apiClient.interceptors.request.use((config) => {
     return config;
 });
 
-// ✅ Response Interceptor — Chuẩn hóa và tự refresh token
+// Response Interceptor — Chuẩn hóa và tự refresh token
 apiClient.interceptors.response.use(
     (response) => {
         const data = response.data;
@@ -31,13 +31,13 @@ apiClient.interceptors.response.use(
             return Promise.reject(new Error(data.message || "Unexpected API Error"));
         }
 
-        return result; // ✅ Chỉ trả về phần result
+        return result; // Chỉ trả về phần result
     },
 
     async (error) => {
         const originalRequest = error.config;
 
-        // ✅ Tự động refresh token nếu accessToken hết hạn
+        // Tự động refresh token nếu accessToken hết hạn
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
@@ -69,7 +69,7 @@ apiClient.interceptors.response.use(
             }
         }
 
-        // ✅ Xử lý lỗi còn lại
+        // Xử lý lỗi còn lại
         if (error.response) {
             const status = error.response.status;
             if (status === 403) {

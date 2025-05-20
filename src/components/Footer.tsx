@@ -7,7 +7,7 @@ function Footer () {
         <section className="footer">
             <hr className="footer-seperator" />
             <section className="footer-social-media">
-                <a href="/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="/public" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </section>
             <section className="footer-info">
                 <section className="footer-info-left">

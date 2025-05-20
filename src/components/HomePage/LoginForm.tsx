@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import "../styles/Login&RegisterForm.scss";
+import "../../styles/HomePage/Login_RegisterForm.scss";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 type LoginFormProps = {
