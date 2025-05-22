@@ -1,0 +1,129 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.13.0"
+  },
+  "projects": {
+    "auth-service": {
+      "inputSpec": "http://localhost:8080/identity/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/auth-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "bookmark-service": {
+      "inputSpec": "http://localhost:8084/bookmark/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/bookmark-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "chapter-service": {
+      "inputSpec": "http://localhost:8087/chapter/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/chapter-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "comment-service": {
+      "inputSpec": "http://localhost:8083/comment/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/comment-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "userProfile-service": {
+      "inputSpec": "http://localhost:8099/profile/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/userProfile-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "upload-service": {
+      "inputSpec": "http://localhost:8085/upload/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/upload-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "crawl-service": {
+      "inputSpec": "http://localhost:8082/crawl/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/crawl-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "reading-service": {
+      "inputSpec": "http://localhost:8086/book/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/reading-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "readingHistory-service": {
+      "inputSpec": "http://localhost:8093/history/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/readingHistory-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "search-service": {
+      "inputSpec": "http://localhost:8090/search/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/search-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    }
+  }
+}
