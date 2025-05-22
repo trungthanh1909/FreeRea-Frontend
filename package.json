@@ -7,7 +7,29 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+
+    "gen:auth": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8080/identity/v3/api-docs -g typescript-axios -o src/api/auth-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:bookmark": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8084/bookmark/v3/api-docs -g typescript-axios -o src/api/bookmark-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:chapter": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8087/chapter/v3/api-docs -g typescript-axios -o src/api/chapter-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:comment": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8083/comment/v3/api-docs -g typescript-axios -o src/api/comment-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:userProfile": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8099/profile/v3/api-docs -g typescript-axios -o src/api/userProfile-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:upload": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8085/upload/v3/api-docs -g typescript-axios -o src/api/upload-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:crawl": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8082/crawl/v3/api-docs -g typescript-axios -o src/api/crawl-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:reading": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8086/book/v3/api-docs -g typescript-axios -o src/api/reading-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:readingHistory": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8093/history/v3/api-docs -g typescript-axios -o src/api/readingHistory-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:search": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8090/search/v3/api-docs -g typescript-axios -o src/api/search-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:all": "npm run gen:auth && npm run gen:userProfile && npm run gen:bookmark && npm run gen:chapter && npm run gen:comment && npm run gen:upload && npm run gen:crawl && npm run gen:reading && npm run gen:readingHistory && npm run gen:search"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -32,6 +54,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@openapitools/openapi-generator-cli": "^2.20.2",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
@@ -45,6 +68,7 @@
     "globals": "^15.14.0",
     "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.5.3",
+    "sass": "^1.89.0",
     "sass-embedded": "^1.85.1",
     "tailwindcss": "^4.0.8",
     "typescript": "^5.7.3",

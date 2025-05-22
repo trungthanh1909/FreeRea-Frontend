@@ -18,32 +18,47 @@ interface UserData {
 }
 
 const UserProfile: React.FC = () => {
-    const [user, setUser] = useState<UserData | null>(null);
+    const [user] = useState<UserData>({
+        username: 'DemoUser',
+        email: 'demo@example.com',
+        description: 'Đây là tài khoản demo.',
+        favorites: [
+            { title: 'Truyện A', thumbnail: 'https://via.placeholder.com/150' },
+            { title: 'Truyện B', thumbnail: 'https://via.placeholder.com/150' },
+        ],
+        history: [
+            { title: 'Truyện X', thumbnail: 'https://via.placeholder.com/150' },
+            { title: 'Truyện Y', thumbnail: 'https://via.placeholder.com/150' },
+        ],
+    });
+
     const [favIndex, setFavIndex] = useState(0);
     const [hisIndex, setHisIndex] = useState(0);
     const visibleCount = 6;
 
     useEffect(() => {
-       // getUserData().then((data) => setUser(data));
+        // getUserData().then((data) => setUser(data));
     }, []);
 
     const handleScroll = (
         type: 'fav' | 'his',
         direction: 'left' | 'right'
     ) => {
-        if (!user) return;
         const list = type === 'fav' ? user.favorites : user.history;
         const index = type === 'fav' ? favIndex : hisIndex;
-        const max = list.length - visibleCount;
+        const max = Math.max(0, list.length - visibleCount);
+
         const newIndex =
             direction === 'right'
                 ? Math.min(index + 1, max)
                 : Math.max(index - 1, 0);
 
-        type === 'fav' ? setFavIndex(newIndex) : setHisIndex(newIndex);
+        if (type === 'fav') {
+            setFavIndex(newIndex);
+        } else {
+            setHisIndex(newIndex);
+        }
     };
-
-    if (!user) return <div>Loading...</div>;
 
     return (
         <div className="user-profile">

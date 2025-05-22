@@ -1,6 +1,7 @@
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import React, { useState } from 'react';
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import "../../styles/HomePage/MangaSection.scss";
+
 interface Comic {
     img: string;
     title: string;

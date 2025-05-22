@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "../../styles/CreateChaptersBookPage/ChapterList.scss";
 import { DragDropContext, Droppable, Draggable,DropResult } from "@hello-pangea/dnd";
+
 interface Chapter {
     title: string;
     images: File[];

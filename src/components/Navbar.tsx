@@ -10,11 +10,11 @@ import CategoryList from "./CategoryList";
 import "../styles/Navbar.scss";
 
 import logo from "../assets/logo-black.png";
-import { useAuth } from "../hooks/useAuth";
+import { useAuthHooks } from "../hooks/authService/useAuth";
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated, login, logout } = useAuth();
+    const { user, isAuthenticated, login, logout } = useAuthHooks();
 
     const [search, setSearch] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);

@@ -8,6 +8,9 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { queryClient } from "./config/reactQueryClient";
 
+import { attachOpenApiInterceptors } from "./config/axiosOpenApiInterceptor";
+attachOpenApiInterceptors();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <Provider store={store}>
