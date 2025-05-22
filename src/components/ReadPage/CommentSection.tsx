@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../type/CommentSection.scss';
+import '../../styles/ReadPage/CommentSection.scss';
 
 interface Reply {
     id: number;
@@ -11,12 +11,16 @@ interface Comment {
     text: string;
     replies: Reply[];
 }
+interface CommentSectionProps {
+    chapterId: number;
+}
 
-const CommentSection: React.FC = () => {
-    const [comments, setComments] = useState<Comment[]>([]);
+const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) =>{
+
     const [newComment, setNewComment] = useState('');
     const [expanded, setExpanded] = useState(false);
-
+    const [commentsMap, setCommentsMap] = useState<{ [key: number]: Comment[] }>({});
+    const comments = commentsMap[chapterId] || [];
     const handleAddComment = () => {
         if (!newComment.trim()) return;
         const newId = Date.now();
@@ -25,35 +29,39 @@ const CommentSection: React.FC = () => {
             text: newComment,
             replies: [],
         };
-        setComments([comment, ...comments]);
+        setCommentsMap((prev) => ({
+            ...prev,
+            [chapterId]: [comment, ...(prev[chapterId] || [])],
+        }));
         setNewComment('');
     };
 
     const handleAddReply = (commentId: number, replyText: string) => {
-        setComments((prevComments) =>
-            prevComments.map((comment) =>
+        setCommentsMap((prev) => ({
+            ...prev,
+            [chapterId]: prev[chapterId].map((comment) =>
                 comment.id === commentId
                     ? {
                         ...comment,
                         replies: [...comment.replies, { id: Date.now(), text: replyText }],
                     }
                     : comment
-            )
-        );
+            ),
+        }));
     };
 
     const visibleComments = expanded ? comments : comments.slice(0, 3);
 
     return (
         <div className="comments">
-            <h3>Bình luận</h3>
+            <h3>Comments</h3>
             <div className="comment-box">
         <textarea
-            placeholder="Viết bình luận..."
+            placeholder="Write a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
         />
-                <button onClick={handleAddComment}>Đăng</button>
+                <button onClick={handleAddComment}>Post</button>
             </div>
 
             <div className="comment-list">
@@ -127,7 +135,7 @@ const CommentItem: React.FC<{
                         }
                     }}
                 >
-                    Trả lời
+                    Reply
                 </button>
             </div>
         </div>

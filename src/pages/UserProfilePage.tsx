@@ -1,6 +1,6 @@
-import '../type/UserProfile.scss';
+import '../styles/UserProfilePage/UserProfile.scss';
 import React, { useEffect, useState } from 'react';
-import { getUserData } from '../services/userService';
+
 import UserInfo from '../components/UserProfilePage/UserInfoProfile';
 import UserScrollList from '../components/UserProfilePage/UserScrollListProfile';
 
@@ -24,7 +24,7 @@ const UserProfile: React.FC = () => {
     const visibleCount = 6;
 
     useEffect(() => {
-        getUserData().then((data) => setUser(data));
+       // getUserData().then((data) => setUser(data));
     }, []);
 
     const handleScroll = (

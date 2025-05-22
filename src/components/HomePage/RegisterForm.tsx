@@ -79,17 +79,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, er
                     </button>
                 </form>
 
-                <div className="social-login">
-                    <p>Hoặc đăng ký với</p>
-                    <div className="social-buttons">
-                        <button className="social-btn facebook-google">
-                            <i className="fab fa-facebook-f"></i> Facebook
-                        </button>
-                        <button className="social-btn facebook-google">
-                            <i className="fab fa-google"></i> Google
-                        </button>
-                    </div>
-                </div>
 
                 <p className="change-link">
                     Already have an account?{" "}

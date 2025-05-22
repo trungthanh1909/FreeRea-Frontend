@@ -1,4 +1,4 @@
-import "../type/UserScrollListProfile.scss";
+import "../../styles/UserProfilePage/UserScrollListProfile.scss";
 import React from 'react';
 
 interface MangaItem {

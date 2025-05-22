@@ -19,11 +19,12 @@ body {
 
 
 .container-big {
-  height: 700px;
+  height: 110vh;
+  width: 98vw;
   margin: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .container-all,
   .container {
     width: 100%;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../type/ChangePassword.scss';
+import '../../styles/AdminProfile/ChangePassword.scss';
 
 const ChangePassword: React.FC = () => {
     const [currentPassword, setCurrentPassword] = useState('');

@@ -6,25 +6,25 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 type LoginFormProps = {
     switchToRegister: () => void;
-    onSubmit: (email: string, password: string) => Promise<void>;
+    onSubmit: (username: string, password: string) => Promise<void>;
     error?: string;
     loading: boolean;
 };
 
 const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error, loading }) => {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email || !password) {
+        if (!username || !password) {
             return;
         }
         if (onSubmit) {
             try {
-                await onSubmit(email, password);
-                navigate("/"); // Chuyển hướng sau khi đăng nhập thành công
+                await onSubmit(username, password);
+                navigate("/");
             } catch (err) {
                 console.error("Đăng nhập thất bại:", err);
             }
@@ -40,19 +40,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error
         >
             <div className="box">
                 <h2>Log in to NovelNest</h2>
-                {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi từ props */}
+                {error && <p className="error-message">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <input
-                            type="email"
-                            id="Email"
+                            type="usernamme"
+                            id="username"
                             placeholder=" "
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
-                        <label htmlFor="Email">Email</label>
+                        <label htmlFor="username">User Name</label>
                     </div>
                     <div className="input-group">
                         <input
@@ -67,21 +67,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error
                     </div>
 
                     <button type="submit" className="btn" disabled={loading}>
-                        {loading ? "Đang xử lý..." : "Login"} {/* Hiển thị trạng thái loading */}
+                        {loading ? "Đang xử lý..." : "Login"}
                     </button>
                 </form>
 
-                <div className="social-login">
-                    <p>Hoặc đăng nhập với</p>
-                    <div className="social-buttons">
-                        <button className="social-btn facebook-google">
-                            <i className="fab fa-facebook-f"></i> Facebook
-                        </button>
-                        <button className="social-btn facebook-google">
-                            <i className="fab fa-google"></i> Google
-                        </button>
-                    </div>
-                </div>
 
                 <p className="change-link">
                     Don't have an account? <span onClick={switchToRegister} className="switch-tab">Sign Up</span>

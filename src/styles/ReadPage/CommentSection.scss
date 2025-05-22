@@ -116,23 +116,23 @@
         }
       }
 
-      .expand-toggle,
-      .reply-toggle {
-        margin-left: 40px;
-        margin-top: 5px;
+    }
+  }
+  .expand-toggle,
+  .reply-toggle {
+    margin-left: 40px;
+    margin-top: 5px;
 
-        button {
-          font-size: 14px;
-          padding: 4px 8px;
-          background-color: transparent;
-          border: none;
-          color: #1976D2;
-          cursor: pointer;
+    button {
+      font-size: 14px;
+      padding: 4px 8px;
+      background-color: transparent;
+      border: none;
+      color: #1976D2;
+      cursor: pointer;
 
-          &:hover {
-            text-decoration: underline;
-          }
-        }
+      &:hover {
+        text-decoration: underline;
       }
     }
   }

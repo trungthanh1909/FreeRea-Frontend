@@ -1,6 +1,6 @@
-import "/src/styles/MangaSection.scss"
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import React, { useState } from 'react';
-
+import "../../styles/HomePage/MangaSection.scss";
 interface Comic {
     img: string;
     title: string;
@@ -14,30 +14,29 @@ interface ComicListProps {
 }
 
 const ComicList: React.FC<ComicListProps> = ({ comics, title }) => {
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const itemsPerPage = 6;
 
-    const totalPages = Math.ceil(comics.length / itemsPerPage);
-
-    const currentComics = comics.slice(
-        currentPage * itemsPerPage,
-        (currentPage + 1) * itemsPerPage
-    );
-
     const handleNext = () => {
-        if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
+        if (currentIndex + itemsPerPage < comics.length) {
+            setCurrentIndex(prev => prev + 1);
+        }
     };
 
     const handlePrev = () => {
-        if (currentPage > 0) setCurrentPage(prev => prev - 1);
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+        }
     };
+
+    const currentComics = comics.slice(currentIndex, currentIndex + itemsPerPage);
 
     return (
         <>
             <p className="text-gray">{title}</p>
             <div className="container2">
-                {currentPage > 0 && (
-                    <div className="arrow1" onClick={handlePrev}>«</div>
+                {currentIndex > 0 && (
+                    <div className="arrow1" onClick={handlePrev}><AiOutlineLeft/></div>
                 )}
                 {currentComics.map((comic, i) => (
                     <div className="comic2" key={i}>
@@ -46,8 +45,8 @@ const ComicList: React.FC<ComicListProps> = ({ comics, title }) => {
                         <p className="sales2">{comic.author} <span>{comic.views}</span></p>
                     </div>
                 ))}
-                {currentPage < totalPages - 1 && (
-                    <div className="arrow1" onClick={handleNext}>»</div>
+                {currentIndex + itemsPerPage < comics.length && (
+                    <div className="arrow1" onClick={handleNext}><AiOutlineRight/></div>
                 )}
             </div>
         </>
@@ -61,7 +60,7 @@ const comics = [
         title: "Ten Chuyen",
         author: "tac gia",
         views: 1413,
-        img: "img/0c2dfce5a4c1cea42a6021e66a03f3146ed297e9.jpg@484w.avif"
+        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg"
     },
     {
         title: "Ten chuyen",
@@ -138,7 +137,6 @@ const MangaComponent = () => {
         <div className="manga-section">
             <ComicList comics={comics} title="Truyện Đề Cử" />
             <ComicList comics={comics} title="Truyện Cập Nhật" />
-            <ComicList comics={comics} title="Bảng Xếp Hạng" />
 
 
         </div>

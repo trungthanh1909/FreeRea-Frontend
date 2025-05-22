@@ -22,6 +22,8 @@ body {
 }
 
 .reading-container {
+  width: 98vw;
+  height: 110vh;
   .chapter-navigation-big {
     width: 150vh;
     height: 100vh;
@@ -47,12 +49,12 @@ body {
       cursor: pointer;
       border: none;
       border-radius: 25px;
-      background-color: #2196F3;
+      background: rgba(0, 0, 0, 0.8);
       color: white;
       transition: background-color 0.3s, transform 0.3s;
 
       &:hover {
-        background-color: #1976D2;
+        background: rgba(0, 0, 0, 0.9);
         transform: scale(1.05);
       }
     }
@@ -60,17 +62,17 @@ body {
     select {
       padding: 10px 20px;
       border-radius: 25px;
-      border: 1px solid #2196F3;
+      border: 1px solid black;
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      background-color: #ffffff;
-      color: #2196F3;
+      background: white;
+      color: Black ;
       transition: border-color 0.3s, color 0.3s;
 
       &:hover {
         border-color: #1976D2;
-        color: #1976D2;
+        color: black ;
       }
     }
   }
@@ -83,10 +85,10 @@ body {
   }
 
   .chapter-image-gallery {
-    border: 1.5px solid #333;
     border-radius: 25px;
     max-height: 800px;
-    overflow-y: auto;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+
     margin: 20px auto;
     display: flex;
     flex-direction: column;
@@ -94,6 +96,13 @@ body {
     width: 90%;
     max-width: 1000px;
     padding-right: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     img {
       max-width: 100%;
@@ -117,8 +126,9 @@ body {
     color: white;
     text-align: center;
     padding: 15px;
-    margin-top: 20px;
+   
   }
+
 }
 
 @media (max-width: 768px) {

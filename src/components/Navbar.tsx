@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import SearchDropdown from "../components/TitleSearchWithImage";
 
 import AuthModal from "./HomePage/AuthModal";
 import CategoryList from "./CategoryList";
@@ -21,6 +22,14 @@ const Navbar: React.FC = () => {
     const [showModal, setShowModal] = useState<"login" | "register" | null>(null);
     const [error, setError] = useState("");
     const [hovering, setHovering] = useState(false);
+    const books = [
+        { id: 1, title: "Truyện Kiếm Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
+        { id: 2, title: "Truyện Tiên Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
+        { id: 3, title: "Truyện Ngôn Tình", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
+        { id: 4, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
+        { id: 5, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
+        { id: 6, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
+    ];
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -60,36 +69,44 @@ const Navbar: React.FC = () => {
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container">
-                    <Link to="/public">
-                        <img src={logo} alt="FREEREA" className="logo" />
+                    <Link to="/">
+                        <img src={logo} alt="FREEREA" className="logo"/>
                     </Link>
 
                     <ul className="navbar_menu">
                         <div
-                            className="category-wrapper"
+                            className="category-wrapper-navbar"
                             onMouseEnter={() => setShowDropdown(true)}
                             onMouseLeave={() => setShowDropdown(false)}
                             ref={dropdownRef}
                         >
-                            <li className="menu-item">
-                                Thể loại
+                            <li>
+                                <Link to="/genres" className="menu-item">Genres</Link>
                                 <div className={`category_menu ${showDropdown ? "show" : ""}`}>
-                                    <CategoryList />
+                                    <CategoryList scrolled={scrolled}/>
                                 </div>
                             </li>
                         </div>
-                        <li>Mới nhất</li>
-                        <li>Bảng xếp hạng</li>
+                        <li><Link to="/admin/create">Genreus</Link></li>
+                        <li><Link to="/user/profile">Genreus</Link></li>
+                        <li><Link to="/book/review">Genreus</Link></li>
                     </ul>
 
-                    <div className="search-container">
+                    <div className="search-container" style={{position: "relative"}}>
                         <input
                             type="text"
-                            placeholder="Tìm kiếm sách..."
+                            placeholder="Search....."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon"/>
+                        <SearchDropdown
+                            books={books.filter((b) =>
+                                b.title.toLowerCase().includes(search.toLowerCase())
+                            )}
+                            search={search}
+                            onSelect={() => setSearch("")}
+                        />
                     </div>
 
                     <div className="user-actions">
@@ -124,6 +141,7 @@ const Navbar: React.FC = () => {
                                 </button>
                             </div>
                         )}
+
                     </div>
                 </div>
             </nav>

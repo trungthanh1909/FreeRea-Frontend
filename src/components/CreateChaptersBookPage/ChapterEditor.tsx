@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "../styles/CreateChaptersBookPage/ChapterEditor.scss";
+import "../../styles/CreateChaptersBookPage/ChapterEditor.scss";
 
 interface Chapter {
     title: string;

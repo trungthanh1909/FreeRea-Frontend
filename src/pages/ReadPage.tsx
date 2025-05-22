@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import CommentSection from"../components/ReadPage/CommentSection";
 import "../styles/ReadPage/ReadingPage.scss";
+import Navbar from "../components/Navbar";
 
 interface Chapter {
     title: string;
@@ -23,7 +24,7 @@ const ReadingForm = () => {
         }
     };
     if (chapters.length === 0) {
-        return <div style={{ padding: '20px' }}>Không có dữ liệu chương.</div>;
+        return <div style={{ padding: '20px' }}>No Data</div>;
     }
 
     const currentChapter = chapters[chapterIndex];
@@ -31,9 +32,10 @@ const ReadingForm = () => {
 
     return (
         <div className="reading-container">
+            <Navbar/>
             <div className="chapter-navigation-big">
                 <div className="chapter-navigation">
-                    <button onClick={() => updateChapter(chapterIndex - 1)} disabled={chapterIndex === 0}>Trước</button>
+                    <button onClick={() => updateChapter(chapterIndex - 1)} disabled={chapterIndex === 0}>Previous</button>
                     <select value={chapterIndex} onChange={(e) => updateChapter(parseInt(e.target.value))}>
                         {chapters.map((chapter, i) => (
                             <option key={i} value={i}>
@@ -41,7 +43,7 @@ const ReadingForm = () => {
                             </option>
                         ))}
                     </select>
-                    <button onClick={() => updateChapter(chapterIndex + 1)} disabled={chapterIndex === chapters.length - 1}>Tiếp</button>
+                    <button onClick={() => updateChapter(chapterIndex + 1)} disabled={chapterIndex === chapters.length - 1}>Next</button>
                 </div>
 
                 <h2 className="chapter-title">{currentChapter.title}</h2>
@@ -58,7 +60,7 @@ const ReadingForm = () => {
                     <div className="chapter-content">{currentChapter.content}</div>
                 )}
 
-                <CommentSection />
+                <CommentSection chapterId={chapterIndex} />
 
                 <footer className="footer">
                     &copy; 2025 Web Đọc Truyện. All rights reserved.

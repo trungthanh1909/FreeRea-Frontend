@@ -1,5 +1,5 @@
 import React from 'react';
-import "../type/UserInfoProfile.scss";
+import "../../styles/UserProfilePage/UserInfoProfile.scss";
 interface UserData {
     username: string;
     email: string;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "/src/styles/Movingimages.scss";
+import "../../styles/HomePage/Movingimages.scss";
 import { Link } from "react-router-dom";
 
 const recommendationData = [
@@ -155,7 +155,7 @@ const Movingimages = () => {
                     <div className="gap">
                         {currentData.Images.map((img, i) => (
                             <div className="image-container-baby" key={i}>
-                                <Link to="/book">
+                                <Link to="/detailbook">
                                     <img src={img} alt={`Thumb ${i + 1}`} />
                                 </Link>
                             </div>

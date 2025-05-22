@@ -1,6 +1,6 @@
 import '../styles/AdminProfile/AdminProfile.scss';
 import React, { useEffect, useState } from 'react';
-import { getUserData } from '../services/userService';
+//import { getUserData } from '../services/userService';
 import ChangePassword from"../components/AdminProfile/ChangePassword";
 
 
@@ -14,7 +14,7 @@ const AdminProfile: React.FC = () => {
     const [user, setUser] = useState<UserData | null>(null);
     const [showChangePassword, setShowChangePassword] = useState(false);
     useEffect(() => {
-        getUserData().then((data) => setUser(data));
+        //getUserData().then((data) => setUser(data));
     }, []);
 
     if (!user) return <div>Loading...</div>;

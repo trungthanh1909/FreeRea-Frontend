@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/GenresPage/Sidebar";
 import "../styles/GenresPage/GenresPage.scss";
+import Navbar from "../components/Navbar";
+import { FaSearch } from "react-icons/fa";
 
 const categories = [
     'All', 'Action', 'Adventure', 'Anime', 'Comedy', 'Comic', 'Cooking', 'Historical', 'Doujinshi', 'Drama', 'Fantasy', 'Isekai', 'Josei', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'One Shot', 'Psychological', 'Romance', 'Samurai', 'School Life', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Vampire', 'Webtoon', 'Reincarnation', 'Manhua', 'Manhwa',
@@ -189,7 +191,7 @@ const GenresPage = () => {
 
     const handleSearch = () => {
         const query = selectedCategories.join(",");
-        navigate(`/results?categories=${encodeURIComponent(query)}`);
+        navigate(`/results/category?categories=${encodeURIComponent(query)}`);
     };
 
     const filteredComics = selectedCategories.length === 0
@@ -205,35 +207,51 @@ const GenresPage = () => {
 
     return (
         <div className="container-main">
+            <Navbar/>
             <div className="container-genres">
-                <Sidebar
-                    categories={visibleCategories}
-                    selectedCategories={selectedCategories}
-                    onToggleCategory={toggleCategory}
-                />
-                <button
-                    onClick={() => setShowAllCategories(prev => !prev)}
-                    className="toggle-categories-btn"
-                >
-                    {showAllCategories ? 'Ẩn bớt' : 'Hiển thị thêm'}
-                </button>
+                <div className="top-bar">
+                    <div className="selected-tags">
+                        {selectedCategories.map((cat, index) => (
+                            <span key={index} className="tag">
+          {cat}
+                                <button className="remove-btn" onClick={() => toggleCategory(cat)}>×</button>
+        </span>
+                        ))}
+                    </div>
 
-                <button
-                    onClick={handleSearch}
-                    className="search-button"
-                    disabled={selectedCategories.length === 0}
-                >
-                    Tìm kiếm
-                </button>
+                    <button
+                        onClick={handleSearch}
+                        className="search-button"
+                        disabled={selectedCategories.length === 0}
+                    >
+                        <FaSearch/>
+                    </button>
+                </div>
+
+                <div className="left-panel">
+                    <Sidebar
+                        categories={visibleCategories}
+                        selectedCategories={selectedCategories}
+                        onToggleCategory={toggleCategory}
+                    />
+
+                    <button
+                        onClick={() => setShowAllCategories(prev => !prev)}
+                        className="toggle-categories-btn"
+                    >
+                        {showAllCategories ? 'Hide...' : 'Show more...'}
+                    </button>
+                </div>
+
 
                 <div className="Genres">
                     <h2>
-                        Bùm chíu!! <span>Mỗi trang truyện là một cánh cửa dẫn đến thế giới mà chỉ người dám mơ mới dám bước vào</span>
+                        Boom!! <span>Each page is a door to a world that only those who dare to dream can enter.</span>
                     </h2>
-                    <div className="manga-list">
+                    <div className="manga-list-genres">
                         {filteredComics.map((comic, index) => (
                             <div className="comic2" key={index}>
-                                <img src={comic.img} alt={comic.name} />
+                                <img src={comic.img} alt={comic.name}/>
                                 <p className="name2">{comic.name}</p>
                                 <p className="sales2">
                                     {comic.author}<span>{comic.views}</span>

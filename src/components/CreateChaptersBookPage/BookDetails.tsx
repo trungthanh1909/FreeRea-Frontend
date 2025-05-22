@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import "../styles/CreateChaptersBookPage/BookDetails.scss";
+import "../../styles/CreateChaptersBookPage/BookDetails.scss";
 import { useLocation, useNavigate } from 'react-router-dom';
 import BookInfoSection from './BookInfoSection';
 import ChapterEditor from './ChapterEditor';
 import ChapterList from './ChapterList';
-
+import Navbar from "../Navbar";
 
 interface BookForm {
     title: string;
@@ -19,48 +19,77 @@ interface Chapter {
     images: File[];
 }
 
-const BookDetails: React.FC<{ book: BookForm }> = ({ book }) => {
+const BookDetails: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const locationState = location.state as { book: BookForm; chapters: Chapter[] } | null;
 
-    const [currentBook, setCurrentBook] = useState<BookForm>(
-        locationState?.book || { title: '', author: '', description: '', categories: [], imageUrl: '' }
-    );
-    const [editedBook, setEditedBook] = useState({ ...book });
+    if (!locationState || !locationState.book) {
+        return <div className="no-data">No book data provided.</div>;
+    }
+
+    const [currentBook, setCurrentBook] = useState<BookForm>({
+        title: locationState.book.title ?? '',
+        author: locationState.book.author ?? '',
+        description: locationState.book.description ?? '',
+        categories: locationState.book.categories ?? [],
+        imageUrl: locationState.book.imageUrl ?? ''
+    });
+
+    const [editedBook, setEditedBook] = useState<BookForm>({ ...currentBook });
     const [isEditing, setIsEditing] = useState(false);
     const [newImage, setNewImage] = useState<string | null>(null);
 
-    const [chapters, setChapters] = useState<Chapter[]>(locationState?.chapters || []);
+    const [chapters, setChapters] = useState<Chapter[]>(locationState.chapters || []);
     const [showConfirm, setShowConfirm] = useState(false);
 
     const handleSubmit = () => setShowConfirm(true);
+
     const confirmSubmit = () => {
         setShowConfirm(false);
+
         const processedChapters = chapters.map((chapter) => ({
             ...chapter,
             images: chapter.images.map((img) => URL.createObjectURL(img)),
         }));
-        const finalBook = { ...currentBook, imageUrl: newImage || currentBook.imageUrl };
-        navigate('/review', { state: { book: finalBook, chapters: processedChapters } });
+
+        const finalBook = {
+            ...editedBook,
+            imageUrl: newImage || editedBook.imageUrl || currentBook.imageUrl
+        };
+
+        navigate('/admin/review', {
+            state: {
+                book: finalBook,
+                chapters: processedChapters
+            }
+        });
     };
 
     return (
-        <div className="book-details">
-            <BookInfoSection
-                currentBook={currentBook}
-                editedBook={editedBook}
-                isEditing={isEditing}
-                newImage={newImage}
-                setEditedBook={setEditedBook}
-                setCurrentBook={setCurrentBook}
-                setIsEditing={setIsEditing}
-                setNewImage={setNewImage}
-            />
+        <div className="create-chapter">
+            <Navbar />
 
-            <div className="main-panel">
-                <ChapterEditor setChapters={setChapters} />
-                <ChapterList chapters={chapters} setChapters={setChapters} />
+            <div className="book-details">
+                <BookInfoSection
+                    currentBook={currentBook}
+                    editedBook={editedBook}
+                    isEditing={isEditing}
+                    newImage={newImage}
+                    setEditedBook={setEditedBook}
+                    setCurrentBook={setCurrentBook}
+                    setIsEditing={setIsEditing}
+                    setNewImage={setNewImage}
+                />
+
+                <div className="main-panel">
+                    <ChapterEditor setChapters={setChapters} />
+                    <ChapterList chapters={chapters} setChapters={setChapters} />
+                </div>
+
+                <div className="submit-container">
+                    <button className="submit-btn" onClick={handleSubmit}>Submit</button>
+                </div>
             </div>
 
             {showConfirm && (
@@ -74,10 +103,6 @@ const BookDetails: React.FC<{ book: BookForm }> = ({ book }) => {
                     </div>
                 </div>
             )}
-
-            <div className="submit-container">
-                <button className="submit-btn" onClick={handleSubmit}>Submit</button>
-            </div>
         </div>
     );
 };

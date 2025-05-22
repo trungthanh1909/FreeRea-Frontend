@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import "../styles/AdminCreateBook/AdminCreateBook.scss";
 import React, { useState } from 'react';
+import Navbar from "../components/Navbar";
 
 export interface BookForm {
     title: string;
@@ -46,7 +47,7 @@ const CreateBookForm: React.FC = () => {
                 ...form,
                 imageUrl: URL.createObjectURL(form.image as File),
             };
-            navigate('/book-details', { state: { book: newBook } });
+            navigate('/admin/create/createchapter', { state: { book: newBook } });
         }
     };
 
@@ -64,102 +65,118 @@ const CreateBookForm: React.FC = () => {
     };
 
     return (
-        <div className="create-book-form">
-            <div className="form-group image-upload">
-                <label className="avata-book">
-                    <strong>Avatar book</strong>
-                    <div className="custom-upload">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) =>
-                                setForm({...form, image: e.target.files?.[0] || null})
-                            }
-                        />
-                        +
-                    </div>
-                </label>
-                {form.image && (
-                    <div className="image-preview-wrapper">
-                        <img src={URL.createObjectURL(form.image)} alt="Preview" className="preview-image"/>
-                        <button type="button" className="remove-image" onClick={() => setForm({...form, image: null })}>
-                            ×
-                        </button>
-                    </div>
-                )}
+        <div className={"container-create-book"}>
+            <Navbar/>
+            <h1 className="create-book-title">Create Book</h1>
+            <div className="create-book-form">
+
+                <div className=" image-upload">
+                    <label className="avatar-book">
+                        <strong>Avatar book</strong>
+
+                        <div className="custom-upload-admin">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) =>
+                                    setForm({...form, image: e.target.files?.[0] || null})
+                                }
+                            />
+                            {!form.image && '+'}
+                        </div>
+
+                        {form.image && (
+                            <div className="image-preview-wrapper">
+                                <img
+                                    src={URL.createObjectURL(form.image)}
+                                    alt="Preview"
+                                    className="preview-image"
+                                />
+                                <button
+                                    type="button"
+                                    className="remove-image"
+                                    onClick={() => setForm({...form, image: null})}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
+                    </label>
+
+                    {errors.image && <span className="error">! {errors.image}</span>}
+                </div>
 
 
-                {errors.image && <span className="error">! {errors.image}</span>}
-            </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        value={form.title}
+                        onChange={(e) => setForm({...form, title: e.target.value})}
+                    />
+                    {errors.title && <span className="error">! {errors.title}</span>}
+                </div>
 
-            <div className="form-group">
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                />
-                {errors.title && <span className="error">! {errors.title}</span>}
-            </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        placeholder="Author"
+                        value={form.author}
+                        onChange={(e) => setForm({...form, author: e.target.value})}
+                    />
+                    {errors.author && <span className="error">! {errors.author}</span>}
+                </div>
 
-            <div className="form-group">
-                <input
-                    type="text"
-                    placeholder="Author"
-                    value={form.author}
-                    onChange={(e) => setForm({ ...form, author: e.target.value })}
-                />
-                {errors.author && <span className="error">! {errors.author}</span>}
-            </div>
-
-            <div className="form-group">
+                <div className="form-group">
         <textarea
             placeholder="Description"
             value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            onChange={(e) => setForm({...form, description: e.target.value})}
         ></textarea>
-            </div>
+                </div>
 
-            <div className="form-group category-field">
-                <label>Categories:</label>
-                <div className="category-list">
-                    {form.categories.map((cat, index) => (
-                        <span key={index} className="tag">
-              {cat} <button type="button" onClick={() => handleCategoryRemove(cat)}>&times;</button>
+                <div className="form-group category-field">
+                    <label>Categories:</label>
+                    <div className="category-list">
+                        {form.categories.map((cat, index) => (
+                            <span key={index} className="tag">
+              {cat}
+                                <button type="button" onClick={() => handleCategoryRemove(cat)}>&times;</button>
             </span>
-                    ))}
-                </div>
-                <div className="category-input-wrapper">
-                    <input
-                        type="text"
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                        onFocus={() => setShowSuggestions(true)}
-                        placeholder="Add category"
-                    />
-                    <button type="button" onClick={handleCategoryAdd}>+</button>
-                    <span className="dropdown-icon" onClick={() => setShowSuggestions(!showSuggestions)}>▼</span>
-                </div>
-                {showSuggestions && (
-                    <div className="category-suggestions">
-                        {suggestedCategories.map((cat, index) => (
-                            <div
-                                key={index}
-                                className="suggestion"
-                                onClick={() => {
-                                    setForm({ ...form, categories: [...form.categories, cat] });
-                                    setShowSuggestions(false);
-                                }}
-                            >
-                                {cat}
-                            </div>
                         ))}
                     </div>
-                )}
-                {errors.categories && <span className="error">! {errors.categories}</span>}
-            </div>
+                    <div className="category-input-wrapper">
+                        <input
+                            type="text"
+                            value={newCategory}
+                            onChange={(e) => setNewCategory(e.target.value)}
+                            onFocus={() => setShowSuggestions(true)}
+                            placeholder="Add category"
+                        />
+                        <button type="button" onClick={handleCategoryAdd}>+</button>
+                        <span className="dropdown-icon" onClick={() => setShowSuggestions(!showSuggestions)}>▼</span>
+                    </div>
+                    {showSuggestions && (
+                        <div className="category-suggestions">
+                            {suggestedCategories.map((cat, index) => (
+                                <div
+                                    key={index}
+                                    className="suggestion"
+                                    onClick={() => {
+                                        setForm({...form, categories: [...form.categories, cat]});
+                                        setShowSuggestions(false);
+                                    }}
+                                >
+                                    {cat}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {errors.categories && <span className="error">! {errors.categories}</span>}
+                </div>
 
-            <button className="submit-btn" onClick={handleSubmit}>Create book</button>
+                <button className="submit-btn" onClick={handleSubmit}>Create book</button>
+            </div>
         </div>
     );
 };

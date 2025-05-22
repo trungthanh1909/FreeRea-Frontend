@@ -1,5 +1,6 @@
 import React from 'react';
-import "../styles/CreateChaptersBookPage/BookInfoSection.scss";
+import "../../styles/CreateChaptersBookPage/BookInfoSection.scss";
+
 interface BookForm {
     title: string;
     author: string;
@@ -30,8 +31,9 @@ const BookInfoSection: React.FC<Props> = ({
                                               setNewImage,
                                           }) => {
     const handleSaveUpdate = () => {
-        if (newImage) editedBook.imageUrl = newImage;
-        setCurrentBook({ ...editedBook });
+        const updatedBook = { ...editedBook };
+        if (newImage) updatedBook.imageUrl = newImage;
+        setCurrentBook(updatedBook);
         setIsEditing(false);
         setNewImage(null);
         alert('Book information updated!');
@@ -51,10 +53,14 @@ const BookInfoSection: React.FC<Props> = ({
     return (
         <div className="top-section">
             <div className="image-edit-wrapper">
-                <img src={newImage || currentBook.imageUrl} alt="Book cover" className="preview-image" />
+                <img
+                    src={newImage || currentBook.imageUrl}
+                    alt="Book cover"
+                    className="preview-image"
+                />
                 {isEditing && (
-                    <label className="edit-image-label">
-                        <span className="upload-icon">+</span>
+                    <label className="edit-image-label-image">
+                        <span className="upload-icon-image">+</span>
                         <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
                     </label>
                 )}
@@ -73,13 +79,23 @@ const BookInfoSection: React.FC<Props> = ({
                 </div>
 
                 {isEditing ? (
-                    <input value={editedBook.title} onChange={(e) => setEditedBook({ ...editedBook, title: e.target.value })} className="edit-input" />
+                    <input
+                        value={editedBook.title}
+                        onChange={(e) => setEditedBook({ ...editedBook, title: e.target.value })}
+                        className="edit-input"
+                        placeholder="Title"
+                    />
                 ) : (
                     <h2>{currentBook.title}</h2>
                 )}
 
                 {isEditing ? (
-                    <input value={editedBook.author} onChange={(e) => setEditedBook({ ...editedBook, author: e.target.value })} className="edit-input" />
+                    <input
+                        value={editedBook.author}
+                        onChange={(e) => setEditedBook({ ...editedBook, author: e.target.value })}
+                        className="edit-input"
+                        placeholder="Author"
+                    />
                 ) : (
                     <p><strong>Author:</strong> {currentBook.author}</p>
                 )}
@@ -91,7 +107,12 @@ const BookInfoSection: React.FC<Props> = ({
                 </div>
 
                 {isEditing ? (
-                    <textarea value={editedBook.description} onChange={(e) => setEditedBook({ ...editedBook, description: e.target.value })} className="edit-textarea" />
+                    <textarea
+                        value={editedBook.description}
+                        onChange={(e) => setEditedBook({ ...editedBook, description: e.target.value })}
+                        className="edit-textarea"
+                        placeholder="Description"
+                    />
                 ) : (
                     <p>{currentBook.description}</p>
                 )}

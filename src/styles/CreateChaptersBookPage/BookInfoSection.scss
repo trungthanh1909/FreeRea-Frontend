@@ -11,9 +11,10 @@
       object-fit: cover;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
 
 
-      .edit-image-label {
+      .edit-image-label-image {
         position: absolute;
         bottom: 10px;
         right: 10px;
@@ -25,9 +26,9 @@
         text-align: center;
         line-height: 28px;
         font-size: 20px;
-        cursor: pointer;
+        cursor: pointer
       }
-    }
+
   }
   .book-info-upload {
     flex: 1;

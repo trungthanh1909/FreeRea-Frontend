@@ -8,7 +8,7 @@ import AuthorizedRoute from "./routes/AuthorizedRoute";
 
 const App: React.FC = () => {
     return (
-        <>
+        <>r
             <Routes>
                 {/* Public Routes */}
                 {publicRoutes.map(({ path, component: Component }, index) => (

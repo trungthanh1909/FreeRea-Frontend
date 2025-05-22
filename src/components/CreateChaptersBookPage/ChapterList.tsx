@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import "../styles/CreateChaptersBookPage/BookDetails.scss";
+import "../../styles/CreateChaptersBookPage/ChapterList.scss";
+import { DragDropContext, Droppable, Draggable,DropResult } from "@hello-pangea/dnd";
 interface Chapter {
     title: string;
     images: File[];
@@ -21,11 +22,6 @@ const ChapterList: React.FC<Props> = ({ chapters, setChapters }) => {
         const updated = [...chapters];
         updated.splice(index, 1);
         setChapters(updated);
-        setOpenChapters((prev) => {
-            const copy = { ...prev };
-            delete copy[index];
-            return copy;
-        });
     };
 
     const handleDeleteChapterImage = (chapterIndex: number, imgIndex: number) => {
@@ -45,6 +41,16 @@ const ChapterList: React.FC<Props> = ({ chapters, setChapters }) => {
             };
             return copy;
         });
+    };
+
+    const handleDragEnd = (result: DropResult, chapterIndex: number) => {
+        if (!result.destination) return;
+        const updated = [...chapters];
+        const imgs = Array.from(updated[chapterIndex].images);
+        const [moved] = imgs.splice(result.source.index, 1);
+        imgs.splice(result.destination.index, 0, moved);
+        updated[chapterIndex].images = imgs;
+        setChapters(updated);
     };
 
     return (
@@ -74,25 +80,56 @@ const ChapterList: React.FC<Props> = ({ chapters, setChapters }) => {
                         </div>
 
                         {openChapters[index] && (
-                            <div className="image-list-vertical">
-                                {chapter.images.length === 0 && <p>No images</p>}
-                                {chapter.images.map((img, i) => (
-                                    <div key={i} className="image-row">
-                                        <img src={URL.createObjectURL(img)} alt={`img-${i}`} className="thumb-small" />
-                                        <span className="filename">{img.name}</span>
-                                        <button className="delete-image-btn" onClick={() => handleDeleteChapterImage(index, i)}>
-                                            ✖
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
+                            <DragDropContext
+                                onDragEnd={(result) => handleDragEnd(result, index)}
+                            >
+                                <Droppable droppableId={`chapter-${index}`}>
+                                    {(provided) => (
+                                        <div
+                                            className="image-list-vertical"
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                        >
+                                            {chapter.images.length === 0 && <p>No images</p>}
+                                            {chapter.images.map((img, i) => (
+                                                <Draggable key={i} draggableId={`${index}-${i}`} index={i}>
+                                                    {(provided) => (
+                                                        <div
+                                                            className="image-row"
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                        >
+                                                            <img
+                                                                src={URL.createObjectURL(img)}
+                                                                alt={`img-${i}`}
+                                                                className="thumb-small"
+                                                            />
+                                                            <span className="filename">{img.name}</span>
+                                                            <button
+                                                                className="delete-image-btn"
+                                                                onClick={() =>
+                                                                    handleDeleteChapterImage(index, i)
+                                                                }
+                                                            >
+                                                                ✖
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         )}
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };
+
 
 export default ChapterList;

@@ -1,0 +1,71 @@
+@use '../mixins' as *;
+.container-category{
+  width: 99vw;
+  height: 110vh;
+
+  .Genres-results {
+    width: 98vw;
+    flex: 1;
+    padding: 20px 20px 20px 20px;
+    background-color: #fafafa;
+    border-radius: 8px;
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+
+      span {
+        font-size: 25px;
+        color: #888;
+        margin-left: 10px;
+      }
+    }
+
+    .manga-list-category {
+      Width:100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+      min-height: 1000px;
+    }
+
+    .comic3 {
+      width: 20%;
+      background-color: #ffff;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.3s;
+      border-radius: 10px;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .name3 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+
+      .sales3 {
+        font-size: 14px;
+        color: gray;
+
+        span {
+          font-weight: bold;
+          color: red;
+          margin-left: 5px;
+        }
+      }
+
+    }
+  }
+}
