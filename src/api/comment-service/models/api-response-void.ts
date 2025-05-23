@@ -25,7 +25,7 @@ export interface ApiResponseVoid {
      * @type {any}
      * @memberof ApiResponseVoid
      */
-    'data'?: any;
+    'result'?: any;
     /**
      * 
      * @type {string}
@@ -37,6 +37,6 @@ export interface ApiResponseVoid {
      * @type {number}
      * @memberof ApiResponseVoid
      */
-    'status'?: number;
+    'code'?: number;
 }
 

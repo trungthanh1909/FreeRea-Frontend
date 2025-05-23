@@ -29,7 +29,7 @@
 
     "gen:search": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8090/search/v3/api-docs -g typescript-axios -o src/api/search-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
-    "gen:favourite": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8099/favourite/v3/api-docs -g typescript-axios -o src/api/favourite-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+    "gen:favourite": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8091/favourite/v3/api-docs -g typescript-axios -o src/api/favourite-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
     "gen:all": "npm run gen:favourite && npm run gen:book && run gen:auth && npm run gen:userProfile && npm run gen:bookmark && npm run gen:chapter && npm run gen:comment && npm run gen:upload && npm run gen:crawl && npm run gen:readingHistory && npm run gen:search"
   },

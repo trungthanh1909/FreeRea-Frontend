@@ -22,11 +22,19 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { ApiResponseChangePasswordResponse } from '../models';
+// @ts-ignore
 import type { ApiResponseListUserResponse } from '../models';
+// @ts-ignore
+import type { ApiResponseString } from '../models';
+// @ts-ignore
+import type { ApiResponseUserProfile } from '../models';
 // @ts-ignore
 import type { ApiResponseUserResponse } from '../models';
 // @ts-ignore
 import type { ApiResponseVoid } from '../models';
+// @ts-ignore
+import type { ChangePasswordRequest } from '../models';
 // @ts-ignore
 import type { UserCreateRequest } from '../models';
 // @ts-ignore
@@ -37,6 +45,46 @@ import type { UserUpdateRequest } from '../models';
  */
 export const UserAPIApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary change password
+         * @param {string} userId 
+         * @param {ChangePasswordRequest} changePasswordRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changePassword: async (userId: string, changePasswordRequest: ChangePasswordRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('changePassword', 'userId', userId)
+            // verify required parameter 'changePasswordRequest' is not null or undefined
+            assertParamExists('changePassword', 'changePasswordRequest', changePasswordRequest)
+            const localVarPath = `/users/change-password/{userId}`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(changePasswordRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * create user account then pushing it to user-profile-service to create user profile
          * @summary registration
@@ -201,8 +249,37 @@ export const UserAPIApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * get the user\'s profile
-         * @summary change password
+         * 
+         * @summary get current user id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserId: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/get-user-id`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} userId 
          * @param {UserUpdateRequest} userUpdateRequest 
          * @param {*} [options] Override http request option.
@@ -250,6 +327,20 @@ export const UserAPIApiAxiosParamCreator = function (configuration?: Configurati
 export const UserAPIApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserAPIApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @summary change password
+         * @param {string} userId 
+         * @param {ChangePasswordRequest} changePasswordRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changePassword(userId: string, changePasswordRequest: ChangePasswordRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseChangePasswordResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.changePassword(userId, changePasswordRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserAPIApi.changePassword']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * create user account then pushing it to user-profile-service to create user profile
          * @summary registration
@@ -306,15 +397,26 @@ export const UserAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInfo(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseUserResponse>> {
+        async getInfo(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseUserProfile>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getInfo(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserAPIApi.getInfo']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * get the user\'s profile
-         * @summary change password
+         * 
+         * @summary get current user id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserId(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseString>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserId(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserAPIApi.getUserId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} userId 
          * @param {UserUpdateRequest} userUpdateRequest 
          * @param {*} [options] Override http request option.
@@ -336,6 +438,16 @@ export const UserAPIApiFp = function(configuration?: Configuration) {
 export const UserAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UserAPIApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary change password
+         * @param {UserAPIApiChangePasswordRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changePassword(requestParameters: UserAPIApiChangePasswordRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseChangePasswordResponse> {
+            return localVarFp.changePassword(requestParameters.userId, requestParameters.changePasswordRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * create user account then pushing it to user-profile-service to create user profile
          * @summary registration
@@ -380,12 +492,20 @@ export const UserAPIApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInfo(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseUserResponse> {
+        getInfo(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseUserProfile> {
             return localVarFp.getInfo(options).then((request) => request(axios, basePath));
         },
         /**
-         * get the user\'s profile
-         * @summary change password
+         * 
+         * @summary get current user id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserId(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseString> {
+            return localVarFp.getUserId(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {UserAPIApiUpdateUserRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -395,6 +515,27 @@ export const UserAPIApiFactory = function (configuration?: Configuration, basePa
         },
     };
 };
+
+/**
+ * Request parameters for changePassword operation in UserAPIApi.
+ * @export
+ * @interface UserAPIApiChangePasswordRequest
+ */
+export interface UserAPIApiChangePasswordRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserAPIApiChangePassword
+     */
+    readonly userId: string
+
+    /**
+     * 
+     * @type {ChangePasswordRequest}
+     * @memberof UserAPIApiChangePassword
+     */
+    readonly changePasswordRequest: ChangePasswordRequest
+}
 
 /**
  * Request parameters for createUser operation in UserAPIApi.
@@ -467,6 +608,18 @@ export interface UserAPIApiUpdateUserRequest {
  */
 export class UserAPIApi extends BaseAPI {
     /**
+     * 
+     * @summary change password
+     * @param {UserAPIApiChangePasswordRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserAPIApi
+     */
+    public changePassword(requestParameters: UserAPIApiChangePasswordRequest, options?: RawAxiosRequestConfig) {
+        return UserAPIApiFp(this.configuration).changePassword(requestParameters.userId, requestParameters.changePasswordRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * create user account then pushing it to user-profile-service to create user profile
      * @summary registration
      * @param {UserAPIApiCreateUserRequest} requestParameters Request parameters.
@@ -524,8 +677,18 @@ export class UserAPIApi extends BaseAPI {
     }
 
     /**
-     * get the user\'s profile
-     * @summary change password
+     * 
+     * @summary get current user id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserAPIApi
+     */
+    public getUserId(options?: RawAxiosRequestConfig) {
+        return UserAPIApiFp(this.configuration).getUserId(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {UserAPIApiUpdateUserRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

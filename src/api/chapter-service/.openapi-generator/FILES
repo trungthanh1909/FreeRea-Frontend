@@ -1,7 +1,7 @@
 .gitignore
 .npmignore
 api.ts
-apis/chapter-controller-api.ts
+apis/external-chapter-apis-api.ts
 apis/internal-chapter-controller-api.ts
 base.ts
 common.ts
@@ -10,9 +10,9 @@ docs/ApiResponseChapterResponse.md
 docs/ApiResponseListChapterResponse.md
 docs/ApiResponseLong.md
 docs/ApiResponseVoid.md
-docs/ChapterControllerApi.md
 docs/ChapterRequest.md
 docs/ChapterResponse.md
+docs/ExternalChapterAPIsApi.md
 docs/InternalChapterControllerApi.md
 git_push.sh
 index.ts

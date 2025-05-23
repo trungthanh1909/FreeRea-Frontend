@@ -14,5 +14,6 @@
 
 
 
-export * from './apis/comment-controller-api';
+export * from './apis/external-comment-controller-api';
+export * from './apis/internal-comment-controller-api';
 

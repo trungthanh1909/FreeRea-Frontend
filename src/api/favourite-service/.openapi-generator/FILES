@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/external-apifor-favourite-service-api.ts
 apis/internal-apifor-favourite-service-api.ts

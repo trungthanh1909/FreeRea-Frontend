@@ -44,5 +44,11 @@ export interface UserProfileCreationRequest {
      * @memberof UserProfileCreationRequest
      */
     'avatarUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserProfileCreationRequest
+     */
+    'createdAt'?: string;
 }
 

@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | **any** |  | [optional] [default to undefined]
+**result** | **any** |  | [optional] [default to undefined]
 **message** | **string** |  | [optional] [default to undefined]
-**status** | **number** |  | [optional] [default to undefined]
+**code** | **number** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -15,9 +15,9 @@ Name | Type | Description | Notes
 import { ApiResponseVoid } from './api';
 
 const instance: ApiResponseVoid = {
-    data,
+    result,
     message,
-    status,
+    code,
 };
 ```
 

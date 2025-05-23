@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**url** | **string** |  | [optional] [default to undefined]
+**url** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
 **bookId** | **string** |  | [optional] [default to undefined]
 **chapterId** | **string** |  | [optional] [default to undefined]
 **name** | **string** |  | [optional] [default to undefined]

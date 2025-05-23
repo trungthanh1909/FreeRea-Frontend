@@ -6,12 +6,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [optional] [default to undefined]
-**bookId** | **number** |  | [optional] [default to undefined]
-**chapterId** | **number** |  | [optional] [default to undefined]
-**userId** | **string** |  | [optional] [default to undefined]
+**bookId** | **string** |  | [optional] [default to undefined]
+**chapterId** | **string** |  | [optional] [default to undefined]
+**username** | **string** |  | [optional] [default to undefined]
 **content** | **string** |  | [optional] [default to undefined]
 **createdAt** | **string** |  | [optional] [default to undefined]
 **updatedAt** | **string** |  | [optional] [default to undefined]
+**replies** | **Array&lt;any&gt;** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -22,10 +23,11 @@ const instance: CommentResponse = {
     id,
     bookId,
     chapterId,
-    userId,
+    username,
     content,
     createdAt,
     updatedAt,
+    replies,
 };
 ```
 

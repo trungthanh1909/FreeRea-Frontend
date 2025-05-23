@@ -1,5 +1,6 @@
 export * from './api-response-book-creation-response';
 export * from './api-response-book-response';
+export * from './api-response-boolean';
 export * from './api-response-list-book-response';
 export * from './api-response-void';
 export * from './book-creation-request';

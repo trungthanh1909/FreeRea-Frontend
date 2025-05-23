@@ -4,12 +4,70 @@ All URIs are relative to *http://localhost:8080/identity*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**changePassword**](#changepassword) | **PUT** /users/change-password/{userId} | change password|
 |[**createUser**](#createuser) | **POST** /users/registration | registration|
 |[**deleteUser**](#deleteuser) | **DELETE** /users/{userId} | |
 |[**findAllUsers**](#findallusers) | **GET** /users | find all users|
 |[**findUserById**](#finduserbyid) | **GET** /users/{userId} | find all users|
 |[**getInfo**](#getinfo) | **GET** /users/info | find all users|
-|[**updateUser**](#updateuser) | **PUT** /users/{userId} | change password|
+|[**getUserId**](#getuserid) | **GET** /users/get-user-id | get current user id|
+|[**updateUser**](#updateuser) | **PUT** /users/{userId} | |
+
+# **changePassword**
+> ApiResponseChangePasswordResponse changePassword(changePasswordRequest)
+
+
+### Example
+
+```typescript
+import {
+    UserAPIApi,
+    Configuration,
+    ChangePasswordRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new UserAPIApi(configuration);
+
+let userId: string; // (default to undefined)
+let changePasswordRequest: ChangePasswordRequest; //
+
+const { status, data } = await apiInstance.changePassword(
+    userId,
+    changePasswordRequest
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **changePasswordRequest** | **ChangePasswordRequest**|  | |
+| **userId** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**ApiResponseChangePasswordResponse**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | success |  -  |
+|**1005** | user not existed |  -  |
+|**1010** | Invalid current password |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createUser**
 > ApiResponseUserResponse createUser(userCreateRequest)
@@ -216,7 +274,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getInfo**
-> ApiResponseUserResponse getInfo()
+> ApiResponseUserProfile getInfo()
 
 get the user\'s profile
 
@@ -240,7 +298,7 @@ This endpoint does not have any parameters.
 
 ### Return type
 
-**ApiResponseUserResponse**
+**ApiResponseUserProfile**
 
 ### Authorization
 
@@ -260,10 +318,54 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getUserId**
+> ApiResponseString getUserId()
+
+
+### Example
+
+```typescript
+import {
+    UserAPIApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new UserAPIApi(configuration);
+
+const { status, data } = await apiInstance.getUserId();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+**ApiResponseString**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | success |  -  |
+|**1005** | user not existed |  -  |
+|**1006** | unauthenticated |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **updateUser**
 > ApiResponseUserResponse updateUser(userUpdateRequest)
 
-get the user\'s profile
 
 ### Example
 

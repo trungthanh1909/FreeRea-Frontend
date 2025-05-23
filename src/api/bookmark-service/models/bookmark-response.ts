@@ -28,16 +28,16 @@ export interface BookmarkResponse {
     'id'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof BookmarkResponse
      */
-    'userId'?: number;
+    'userId'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof BookmarkResponse
      */
-    'bookId'?: number;
+    'bookId'?: string;
     /**
      * 
      * @type {number}

@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AuthenticationAPIApi } from "../../api/auth-service";
 import {
+    AuthenticationAPIApi,
     AuthenticateRequest,
     RefreshRequest,
     LogoutRequest,

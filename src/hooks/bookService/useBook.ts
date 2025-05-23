@@ -3,7 +3,6 @@ import {
     ExternalBookAPIsApi,
     InternalBookControllerApi,
     ApiResponseBookResponse,
-    ApiResponseBookCreationResponse,
     ApiResponseVoid,
     ApiResponseListBookResponse,
     BookCreationRequest,
@@ -52,8 +51,9 @@ export const useGetBookById = (id: string) => {
 // Tạo sách mới
 export const useCreateBook = () => {
     const queryClient = useQueryClient();
-    return useMutation<ApiResponseBookCreationResponse, Error, BookCreationRequest>({
-        mutationFn: (data) => internalApi.createBook({ bookCreationRequest: data }).then((res) => res.data),
+    return useMutation<void, Error, BookCreationRequest>({
+        mutationFn: (data) =>
+            internalApi.createBook({ bookCreationRequest: data }).then((res) => res.data),
         onSuccess: () => {
             showToast("Tạo sách thành công!", "success");
             queryClient.invalidateQueries({ queryKey: ["books"] });
@@ -62,6 +62,7 @@ export const useCreateBook = () => {
         onError: (err) => showToast(err.message, "error"),
     });
 };
+
 
 // Cập nhật sách
 export const useUpdateBook = (id: string) => {
@@ -96,13 +97,8 @@ export const useCheckBookExists = (bookId: string) => {
     return useQuery<boolean, Error>({
         queryKey: ["book-exists", bookId],
         queryFn: async () => {
-            try {
-                const res = await internalApi.checkBookExists({ bookId });
-                return res.data;
-            } catch (err: any) {
-                showToast(err.message || "Lỗi kiểm tra sách tồn tại", "error");
-                throw err;
-            }
+            const res = await internalApi.checkBookExists({ bookId });
+            return res.data.data ?? false;
         },
         enabled: !!bookId,
     });

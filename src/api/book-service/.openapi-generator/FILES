@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/external-book-apis-api.ts
 apis/internal-book-controller-api.ts
@@ -9,6 +8,7 @@ common.ts
 configuration.ts
 docs/ApiResponseBookCreationResponse.md
 docs/ApiResponseBookResponse.md
+docs/ApiResponseBoolean.md
 docs/ApiResponseListBookResponse.md
 docs/ApiResponseVoid.md
 docs/BookCreationRequest.md
@@ -21,6 +21,7 @@ git_push.sh
 index.ts
 models/api-response-book-creation-response.ts
 models/api-response-book-response.ts
+models/api-response-boolean.ts
 models/api-response-list-book-response.ts
 models/api-response-void.ts
 models/book-creation-request.ts

@@ -411,3 +411,4 @@ export class AuthenticationAPIApi extends BaseAPI {
         return AuthenticationAPIApiFp(this.configuration).logout(requestParameters.logoutRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

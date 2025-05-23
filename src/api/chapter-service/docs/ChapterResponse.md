@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [optional] [default to undefined]
 **bookId** | **string** |  | [optional] [default to undefined]
-**chapter** | **string** |  | [optional] [default to undefined]
 **title** | **string** |  | [optional] [default to undefined]
 **images** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
 **updatedBy** | **string** |  | [optional] [default to undefined]
@@ -25,7 +24,6 @@ import { ChapterResponse } from './api';
 const instance: ChapterResponse = {
     id,
     bookId,
-    chapter,
     title,
     images,
     updatedBy,

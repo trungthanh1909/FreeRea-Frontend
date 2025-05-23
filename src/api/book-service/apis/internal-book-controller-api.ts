@@ -26,6 +26,8 @@ import type { ApiResponseBookCreationResponse } from '../models';
 // @ts-ignore
 import type { ApiResponseBookResponse } from '../models';
 // @ts-ignore
+import type { ApiResponseBoolean } from '../models';
+// @ts-ignore
 import type { ApiResponseVoid } from '../models';
 // @ts-ignore
 import type { BookCreationRequest } from '../models';
@@ -38,7 +40,8 @@ import type { BookRequest } from '../models';
 export const InternalBookControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Check if a book exists by ID
+         * @summary Check if a book exists
          * @param {string} bookId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -71,7 +74,8 @@ export const InternalBookControllerApiAxiosParamCreator = function (configuratio
             };
         },
         /**
-         * 
+         * Create a new book record with the provided details
+         * @summary Create a new book
          * @param {BookCreationRequest} bookCreationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -106,7 +110,8 @@ export const InternalBookControllerApiAxiosParamCreator = function (configuratio
             };
         },
         /**
-         * 
+         * Delete book by book ID
+         * @summary Delete a book
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -139,7 +144,8 @@ export const InternalBookControllerApiAxiosParamCreator = function (configuratio
             };
         },
         /**
-         * 
+         * Update book details by book ID
+         * @summary Update an existing book
          * @param {string} id 
          * @param {BookRequest} bookRequest 
          * @param {*} [options] Override http request option.
@@ -188,31 +194,34 @@ export const InternalBookControllerApiFp = function(configuration?: Configuratio
     const localVarAxiosParamCreator = InternalBookControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Check if a book exists by ID
+         * @summary Check if a book exists
          * @param {string} bookId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkBookExists(bookId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+        async checkBookExists(bookId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseBoolean>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkBookExists(bookId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['InternalBookControllerApi.checkBookExists']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Create a new book record with the provided details
+         * @summary Create a new book
          * @param {BookCreationRequest} bookCreationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createBook(bookCreationRequest: BookCreationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseBookCreationResponse>> {
+        async createBook(bookCreationRequest: BookCreationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createBook(bookCreationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['InternalBookControllerApi.createBook']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Delete book by book ID
+         * @summary Delete a book
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -224,7 +233,8 @@ export const InternalBookControllerApiFp = function(configuration?: Configuratio
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Update book details by book ID
+         * @summary Update an existing book
          * @param {string} id 
          * @param {BookRequest} bookRequest 
          * @param {*} [options] Override http request option.
@@ -247,25 +257,28 @@ export const InternalBookControllerApiFactory = function (configuration?: Config
     const localVarFp = InternalBookControllerApiFp(configuration)
     return {
         /**
-         * 
+         * Check if a book exists by ID
+         * @summary Check if a book exists
          * @param {InternalBookControllerApiCheckBookExistsRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkBookExists(requestParameters: InternalBookControllerApiCheckBookExistsRequest, options?: RawAxiosRequestConfig): AxiosPromise<boolean> {
+        checkBookExists(requestParameters: InternalBookControllerApiCheckBookExistsRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseBoolean> {
             return localVarFp.checkBookExists(requestParameters.bookId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Create a new book record with the provided details
+         * @summary Create a new book
          * @param {InternalBookControllerApiCreateBookRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createBook(requestParameters: InternalBookControllerApiCreateBookRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseBookCreationResponse> {
+        createBook(requestParameters: InternalBookControllerApiCreateBookRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.createBook(requestParameters.bookCreationRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Delete book by book ID
+         * @summary Delete a book
          * @param {InternalBookControllerApiDeleteBookRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -274,7 +287,8 @@ export const InternalBookControllerApiFactory = function (configuration?: Config
             return localVarFp.deleteBook(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Update book details by book ID
+         * @summary Update an existing book
          * @param {InternalBookControllerApiUpdateBookRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -356,7 +370,8 @@ export interface InternalBookControllerApiUpdateBookRequest {
  */
 export class InternalBookControllerApi extends BaseAPI {
     /**
-     * 
+     * Check if a book exists by ID
+     * @summary Check if a book exists
      * @param {InternalBookControllerApiCheckBookExistsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -367,7 +382,8 @@ export class InternalBookControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Create a new book record with the provided details
+     * @summary Create a new book
      * @param {InternalBookControllerApiCreateBookRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -378,7 +394,8 @@ export class InternalBookControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Delete book by book ID
+     * @summary Delete a book
      * @param {InternalBookControllerApiDeleteBookRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -389,7 +406,8 @@ export class InternalBookControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Update book details by book ID
+     * @summary Update an existing book
      * @param {InternalBookControllerApiUpdateBookRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

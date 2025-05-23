@@ -28,7 +28,7 @@ export interface ApiResponseCommentResponse {
      * @type {CommentResponse}
      * @memberof ApiResponseCommentResponse
      */
-    'data'?: CommentResponse;
+    'result'?: CommentResponse;
     /**
      * 
      * @type {string}
@@ -40,6 +40,6 @@ export interface ApiResponseCommentResponse {
      * @type {number}
      * @memberof ApiResponseCommentResponse
      */
-    'status'?: number;
+    'code'?: number;
 }
 

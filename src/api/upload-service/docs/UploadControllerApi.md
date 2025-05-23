@@ -4,10 +4,61 @@ All URIs are relative to *http://localhost:8085/upload*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**deleteFilesByBookId**](#deletefilesbybookid) | **DELETE** /upload/book/{bookId} | |
 |[**uploadAvatar**](#uploadavatar) | **POST** /upload/avatar | |
 |[**uploadCover**](#uploadcover) | **POST** /upload/cover | |
 |[**uploadFromUrl**](#uploadfromurl) | **POST** /upload/from-url | |
 |[**uploadImage**](#uploadimage) | **POST** /upload/image | |
+
+# **deleteFilesByBookId**
+> ApiResponseVoid deleteFilesByBookId()
+
+
+### Example
+
+```typescript
+import {
+    UploadControllerApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new UploadControllerApi(configuration);
+
+let bookId: string; // (default to undefined)
+
+const { status, data } = await apiInstance.deleteFilesByBookId(
+    bookId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **bookId** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**ApiResponseVoid**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **uploadAvatar**
 > ApiResponseAvatarUploadResponse uploadAvatar()
@@ -167,7 +218,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **uploadImage**
-> ApiResponseUploadResponse uploadImage()
+> ApiResponseUploadImageResponse uploadImage()
 
 
 ### Example
@@ -197,7 +248,7 @@ const { status, data } = await apiInstance.uploadImage(
 
 ### Return type
 
-**ApiResponseUploadResponse**
+**ApiResponseUploadImageResponse**
 
 ### Authorization
 

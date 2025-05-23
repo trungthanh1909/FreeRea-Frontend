@@ -14,6 +14,6 @@
 
 
 
-export * from './apis/chapter-controller-api';
+export * from './apis/external-chapter-apis-api';
 export * from './apis/internal-chapter-controller-api';
 

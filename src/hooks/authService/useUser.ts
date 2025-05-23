@@ -1,16 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserAPIApi } from "../../api/auth-service";
 import {
     UserCreateRequest,
     UserUpdateRequest,
+    ChangePasswordRequest,
     ApiResponseUserResponse,
     ApiResponseListUserResponse,
-    UserResponse,
+    ApiResponseChangePasswordResponse,
 } from "../../api/auth-service";
 import { createServiceConfig } from "../../config/configuration";
-import { setProfile, clearProfile } from "../../store/slices/userSlice";
 import { showToast } from "../../utils/toast";
 
 const userApi = new UserAPIApi(createServiceConfig());
@@ -93,6 +92,22 @@ export const useUpdateUser = () => {
         },
         onError: () => {
             showToast("Cập nhật thất bại", "error");
+        },
+    });
+};
+
+export const useChangePassword = (userId: string) => {
+    return useMutation<ApiResponseChangePasswordResponse, Error, ChangePasswordRequest>({
+        mutationFn: (data) =>
+            userApi.changePassword({
+                userId,
+                changePasswordRequest: data,
+            }).then((res) => res.data),
+        onSuccess: () => {
+            showToast("Đổi mật khẩu thành công", "success");
+        },
+        onError: () => {
+            showToast("Đổi mật khẩu thất bại", "error");
         },
     });
 };

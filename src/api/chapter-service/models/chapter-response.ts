@@ -37,12 +37,6 @@ export interface ChapterResponse {
      * @type {string}
      * @memberof ChapterResponse
      */
-    'chapter'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChapterResponse
-     */
     'title'?: string;
     /**
      * 

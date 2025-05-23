@@ -1,51 +1,61 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CommentControllerApiFactory } from "../../api/comment-service";
-import { CommentRequest, ApiResponseCommentResponse, ApiResponseListCommentResponse } from "../../api/comment-service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ExternalCommentControllerApiFactory } from "../../api/comment-service";
+import {
+    CommentReplyRequest,
+    CommentRootRequest,
+    ApiResponseCommentResponse,
+    ApiResponseListCommentResponse
+} from "../../api/comment-service";
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const commentApi = CommentControllerApiFactory(createServiceConfig());
+const externalApi = ExternalCommentControllerApiFactory(createServiceConfig());
 
-// Lấy comment theo Book ID
-export const useCommentsByBookId = (bookId: number) => {
-    return useQuery<ApiResponseListCommentResponse, Error>({
-        queryKey: ["comments", "book", bookId],
-        queryFn: () => commentApi.getByBookId({ bookId }).then(res => res.data),
-        enabled: !!bookId,
-    });
-};
-
-// Lấy comment theo Chapter ID
-export const useCommentsByChapterId = (chapterId: number) => {
-    return useQuery<ApiResponseListCommentResponse, Error>({
-        queryKey: ["comments", "chapter", chapterId],
-        queryFn: () => commentApi.getByChapterId({ chapterId }).then(res => res.data),
-        enabled: !!chapterId,
-    });
-};
-
-// Tạo comment
-export const useCreateComment = () => {
+// Tạo bình luận gốc (root comment)
+export const useCreateRootComment = (queryKeyToInvalidate: unknown[]) => {
     const queryClient = useQueryClient();
 
-    return useMutation<ApiResponseCommentResponse, Error, CommentRequest>({
-        mutationFn: (data) => commentApi.create({ commentRequest: data }).then(res => res.data),
+    return useMutation<ApiResponseCommentResponse, Error, CommentRootRequest>({
+        mutationFn: (data) => externalApi.createRoot({ commentRootRequest: data }).then(res => res.data),
         onSuccess: () => {
-            showToast("Bình luận đã được gửi");
-            queryClient.invalidateQueries({ queryKey: ["comments"] }); // Có thể cụ thể hơn nếu biết đang comment theo book/chapter
+            showToast("Bình luận đã được tạo");
+            queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
         },
     });
 };
 
-// Xóa comment
-export const useDeleteComment = () => {
+// Tạo phản hồi (reply comment)
+export const useCreateReplyComment = (queryKeyToInvalidate: unknown[]) => {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, string>({
-        mutationFn: (id) => commentApi._delete({ id }).then(() => undefined),
+    return useMutation<ApiResponseCommentResponse, Error, CommentReplyRequest>({
+        mutationFn: (data) => externalApi.createReply({ commentReplyRequest: data }).then(res => res.data),
         onSuccess: () => {
-            showToast("Đã xóa bình luận");
-            queryClient.invalidateQueries({ queryKey: ["comments"] });
+            showToast("Phản hồi đã được gửi");
+            queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
+        },
+    });
+};
+
+// Lấy replies theo comment ID
+export const useRepliesByCommentId = (commentId: string) => {
+    return useQuery<ApiResponseListCommentResponse, Error>({
+        queryKey: ["comments", "replies", commentId],
+        queryFn: () => externalApi.getReplies({ id: commentId }).then(res => res.data),
+        enabled: !!commentId,
+    });
+};
+
+// Cập nhật nội dung phản hồi
+export const useUpdateReply = (queryKeyToInvalidate: unknown[]) => {
+    const queryClient = useQueryClient();
+
+    return useMutation<ApiResponseCommentResponse, Error, { id: string; data: CommentReplyRequest }>({
+        mutationFn: ({ id, data }) =>
+            externalApi.update({ id, commentReplyRequest: data }).then(res => res.data),
+        onSuccess: () => {
+            showToast("Đã cập nhật bình luận");
+            queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
         },
     });
 };

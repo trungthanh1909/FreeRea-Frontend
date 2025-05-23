@@ -35,14 +35,18 @@ export const InternalChapterControllerApiAxiosParamCreator = function (configura
     return {
         /**
          * 
+         * @param {string} bookId 
          * @param {ChapterRequest} chapterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createChapter: async (chapterRequest: ChapterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createChapter: async (bookId: string, chapterRequest: ChapterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'bookId' is not null or undefined
+            assertParamExists('createChapter', 'bookId', bookId)
             // verify required parameter 'chapterRequest' is not null or undefined
             assertParamExists('createChapter', 'chapterRequest', chapterRequest)
-            const localVarPath = `/internal/add`;
+            const localVarPath = `/internal/{bookId}/add`
+                .replace(`{${"bookId"}}`, encodeURIComponent(String(bookId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -77,7 +81,7 @@ export const InternalChapterControllerApiAxiosParamCreator = function (configura
         deleteChapter: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('deleteChapter', 'id', id)
-            const localVarPath = `/internal/{id}`
+            const localVarPath = `/internal/delete/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -110,7 +114,7 @@ export const InternalChapterControllerApiAxiosParamCreator = function (configura
         deleteChaptersByBookId: async (bookId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'bookId' is not null or undefined
             assertParamExists('deleteChaptersByBookId', 'bookId', bookId)
-            const localVarPath = `/internal/book/{bookId}`
+            const localVarPath = `/internal/delete/book/{bookId}`
                 .replace(`{${"bookId"}}`, encodeURIComponent(String(bookId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -185,12 +189,13 @@ export const InternalChapterControllerApiFp = function(configuration?: Configura
     return {
         /**
          * 
+         * @param {string} bookId 
          * @param {ChapterRequest} chapterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createChapter(chapterRequest: ChapterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseChapterResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createChapter(chapterRequest, options);
+        async createChapter(bookId: string, chapterRequest: ChapterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseChapterResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createChapter(bookId, chapterRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['InternalChapterControllerApi.createChapter']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -249,7 +254,7 @@ export const InternalChapterControllerApiFactory = function (configuration?: Con
          * @throws {RequiredError}
          */
         createChapter(requestParameters: InternalChapterControllerApiCreateChapterRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseChapterResponse> {
-            return localVarFp.createChapter(requestParameters.chapterRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.createChapter(requestParameters.bookId, requestParameters.chapterRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -287,6 +292,13 @@ export const InternalChapterControllerApiFactory = function (configuration?: Con
  * @interface InternalChapterControllerApiCreateChapterRequest
  */
 export interface InternalChapterControllerApiCreateChapterRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof InternalChapterControllerApiCreateChapter
+     */
+    readonly bookId: string
+
     /**
      * 
      * @type {ChapterRequest}
@@ -359,7 +371,7 @@ export class InternalChapterControllerApi extends BaseAPI {
      * @memberof InternalChapterControllerApi
      */
     public createChapter(requestParameters: InternalChapterControllerApiCreateChapterRequest, options?: RawAxiosRequestConfig) {
-        return InternalChapterControllerApiFp(this.configuration).createChapter(requestParameters.chapterRequest, options).then((request) => request(this.axios, this.basePath));
+        return InternalChapterControllerApiFp(this.configuration).createChapter(requestParameters.bookId, requestParameters.chapterRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

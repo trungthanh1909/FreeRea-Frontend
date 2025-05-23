@@ -22,10 +22,10 @@
 export interface FromUrlUploadResponse {
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof FromUrlUploadResponse
      */
-    'url'?: string;
+    'url'?: Array<string>;
     /**
      * 
      * @type {string}

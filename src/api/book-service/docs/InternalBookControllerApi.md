@@ -4,14 +4,15 @@ All URIs are relative to *http://localhost:8086/book*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**checkBookExists**](#checkbookexists) | **GET** /internal/{bookId}/exists | |
-|[**createBook**](#createbook) | **POST** /internal/create | |
-|[**deleteBook**](#deletebook) | **DELETE** /internal/delete/{id} | |
-|[**updateBook**](#updatebook) | **PUT** /internal/update/{id} | |
+|[**checkBookExists**](#checkbookexists) | **GET** /internal/{bookId}/exists | Check if a book exists|
+|[**createBook**](#createbook) | **POST** /internal/create | Create a new book|
+|[**deleteBook**](#deletebook) | **DELETE** /internal/delete/{id} | Delete a book|
+|[**updateBook**](#updatebook) | **PUT** /internal/update/{id} | Update an existing book|
 
 # **checkBookExists**
-> boolean checkBookExists()
+> ApiResponseBoolean checkBookExists()
 
+Check if a book exists by ID
 
 ### Example
 
@@ -40,7 +41,7 @@ const { status, data } = await apiInstance.checkBookExists(
 
 ### Return type
 
-**boolean**
+**ApiResponseBoolean**
 
 ### Authorization
 
@@ -55,13 +56,15 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**200** | Check completed |  -  |
+|**2001** | Book not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createBook**
-> ApiResponseBookCreationResponse createBook(bookCreationRequest)
+> createBook(bookCreationRequest)
 
+Create a new book record with the provided details
 
 ### Example
 
@@ -91,7 +94,7 @@ const { status, data } = await apiInstance.createBook(
 
 ### Return type
 
-**ApiResponseBookCreationResponse**
+void (empty response body)
 
 ### Authorization
 
@@ -106,13 +109,15 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**1000** | Book created successfully |  -  |
+|**400** | Invalid request data |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteBook**
 > ApiResponseVoid deleteBook()
 
+Delete book by book ID
 
 ### Example
 
@@ -156,13 +161,15 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**1000** | Book deleted successfully |  -  |
+|**2001** | Book not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateBook**
 > ApiResponseBookResponse updateBook(bookRequest)
 
+Update book details by book ID
 
 ### Example
 
@@ -210,7 +217,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**1000** | Book updated successfully |  -  |
+|**2001** | Book not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

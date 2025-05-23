@@ -1,1 +1,2 @@
-export * from "./useComment"
+export * from "./useCommentReply";
+export * from "./useComment";

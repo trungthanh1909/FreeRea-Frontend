@@ -28,22 +28,22 @@ export interface CommentResponse {
     'id'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof CommentResponse
      */
-    'bookId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CommentResponse
-     */
-    'chapterId'?: number;
+    'bookId'?: string;
     /**
      * 
      * @type {string}
      * @memberof CommentResponse
      */
-    'userId'?: string;
+    'chapterId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommentResponse
+     */
+    'username'?: string;
     /**
      * 
      * @type {string}
@@ -62,5 +62,11 @@ export interface CommentResponse {
      * @memberof CommentResponse
      */
     'updatedAt'?: string;
+    /**
+     * 
+     * @type {Array<any>}
+     * @memberof CommentResponse
+     */
+    'replies'?: Array<any>;
 }
 

@@ -1,6 +1,6 @@
 # ExternalAPIForFavouriteServiceApi
 
-All URIs are relative to *http://localhost:8099/favourite*
+All URIs are relative to *http://localhost:8091/favourite*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
@@ -52,7 +52,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Success |  -  |
+|**200** | success |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

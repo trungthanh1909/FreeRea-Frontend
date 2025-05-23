@@ -31,19 +31,7 @@ export interface ChapterRequest {
      * @type {string}
      * @memberof ChapterRequest
      */
-    'chapter'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChapterRequest
-     */
     'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChapterRequest
-     */
-    'updatedBy'?: string;
     /**
      * 
      * @type {Array<string>}

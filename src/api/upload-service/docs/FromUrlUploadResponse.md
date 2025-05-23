@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**url** | **string** |  | [optional] [default to undefined]
+**url** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
 **publicId** | **string** |  | [optional] [default to undefined]
 **fileName** | **string** |  | [optional] [default to undefined]
 **createdAt** | **string** |  | [optional] [default to undefined]

@@ -28,7 +28,9 @@ import type { ApiResponseCoverUploadResponse } from '../models';
 // @ts-ignore
 import type { ApiResponseFromUrlUploadResponse } from '../models';
 // @ts-ignore
-import type { ApiResponseUploadResponse } from '../models';
+import type { ApiResponseUploadImageResponse } from '../models';
+// @ts-ignore
+import type { ApiResponseVoid } from '../models';
 // @ts-ignore
 import type { FromUrlUploadRequest } from '../models';
 /**
@@ -37,6 +39,39 @@ import type { FromUrlUploadRequest } from '../models';
  */
 export const UploadControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {string} bookId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFilesByBookId: async (bookId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'bookId' is not null or undefined
+            assertParamExists('deleteFilesByBookId', 'bookId', bookId)
+            const localVarPath = `/upload/book/{bookId}`
+                .replace(`{${"bookId"}}`, encodeURIComponent(String(bookId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {string} userId 
@@ -218,6 +253,18 @@ export const UploadControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} bookId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteFilesByBookId(bookId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseVoid>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFilesByBookId(bookId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UploadControllerApi.deleteFilesByBookId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} userId 
          * @param {File} file 
          * @param {*} [options] Override http request option.
@@ -260,7 +307,7 @@ export const UploadControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadImage(file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseUploadResponse>> {
+        async uploadImage(file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseUploadImageResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadImage(file, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UploadControllerApi.uploadImage']?.[localVarOperationServerIndex]?.url;
@@ -276,6 +323,15 @@ export const UploadControllerApiFp = function(configuration?: Configuration) {
 export const UploadControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UploadControllerApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {UploadControllerApiDeleteFilesByBookIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFilesByBookId(requestParameters: UploadControllerApiDeleteFilesByBookIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseVoid> {
+            return localVarFp.deleteFilesByBookId(requestParameters.bookId, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {UploadControllerApiUploadAvatarRequest} requestParameters Request parameters.
@@ -309,11 +365,25 @@ export const UploadControllerApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadImage(requestParameters: UploadControllerApiUploadImageRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseUploadResponse> {
+        uploadImage(requestParameters: UploadControllerApiUploadImageRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseUploadImageResponse> {
             return localVarFp.uploadImage(requestParameters.file, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for deleteFilesByBookId operation in UploadControllerApi.
+ * @export
+ * @interface UploadControllerApiDeleteFilesByBookIdRequest
+ */
+export interface UploadControllerApiDeleteFilesByBookIdRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadControllerApiDeleteFilesByBookId
+     */
+    readonly bookId: string
+}
 
 /**
  * Request parameters for uploadAvatar operation in UploadControllerApi.
@@ -392,6 +462,17 @@ export interface UploadControllerApiUploadImageRequest {
  * @extends {BaseAPI}
  */
 export class UploadControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {UploadControllerApiDeleteFilesByBookIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UploadControllerApi
+     */
+    public deleteFilesByBookId(requestParameters: UploadControllerApiDeleteFilesByBookIdRequest, options?: RawAxiosRequestConfig) {
+        return UploadControllerApiFp(this.configuration).deleteFilesByBookId(requestParameters.bookId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {UploadControllerApiUploadAvatarRequest} requestParameters Request parameters.

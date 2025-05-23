@@ -28,7 +28,7 @@ export interface ApiResponseListCommentResponse {
      * @type {Array<CommentResponse>}
      * @memberof ApiResponseListCommentResponse
      */
-    'data'?: Array<CommentResponse>;
+    'result'?: Array<CommentResponse>;
     /**
      * 
      * @type {string}
@@ -40,6 +40,6 @@ export interface ApiResponseListCommentResponse {
      * @type {number}
      * @memberof ApiResponseListCommentResponse
      */
-    'status'?: number;
+    'code'?: number;
 }
 

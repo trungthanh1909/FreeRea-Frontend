@@ -1,6 +1,6 @@
 # InternalAPIForFavouriteServiceApi
 
-All URIs are relative to *http://localhost:8099/favourite*
+All URIs are relative to *http://localhost:8091/favourite*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|

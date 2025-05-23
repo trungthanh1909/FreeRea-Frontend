@@ -62,7 +62,8 @@ export const ExternalBookAPIsApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
+         * Retrieve a book by its unique ID
+         * @summary Get book by ID
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -72,6 +73,66 @@ export const ExternalBookAPIsApiAxiosParamCreator = function (configuration?: Co
             assertParamExists('getBookById', 'id', id)
             const localVarPath = `/books/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve books ordered by their creation date descending
+         * @summary Get books sorted by created date
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBooksOrderByCreatedDateDesc: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/books/by-created-date`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve books ordered by their view count descending
+         * @summary Get books sorted by view count
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBooksOrderByViewCountDesc: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/books/by-view-count`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -110,14 +171,15 @@ export const ExternalBookAPIsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllBooks(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getAllBooks(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseListBookResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllBooks(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExternalBookAPIsApi.getAllBooks']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Retrieve a book by its unique ID
+         * @summary Get book by ID
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -126,6 +188,30 @@ export const ExternalBookAPIsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBookById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExternalBookAPIsApi.getBookById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve books ordered by their creation date descending
+         * @summary Get books sorted by created date
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getBooksOrderByCreatedDateDesc(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseListBookResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getBooksOrderByCreatedDateDesc(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExternalBookAPIsApi.getBooksOrderByCreatedDateDesc']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve books ordered by their view count descending
+         * @summary Get books sorted by view count
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getBooksOrderByViewCountDesc(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseListBookResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getBooksOrderByViewCountDesc(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExternalBookAPIsApi.getBooksOrderByViewCountDesc']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -144,17 +230,36 @@ export const ExternalBookAPIsApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllBooks(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        getAllBooks(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseListBookResponse> {
             return localVarFp.getAllBooks(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Retrieve a book by its unique ID
+         * @summary Get book by ID
          * @param {ExternalBookAPIsApiGetBookByIdRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getBookById(requestParameters: ExternalBookAPIsApiGetBookByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseBookResponse> {
             return localVarFp.getBookById(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve books ordered by their creation date descending
+         * @summary Get books sorted by created date
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBooksOrderByCreatedDateDesc(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseListBookResponse> {
+            return localVarFp.getBooksOrderByCreatedDateDesc(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve books ordered by their view count descending
+         * @summary Get books sorted by view count
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBooksOrderByViewCountDesc(options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseListBookResponse> {
+            return localVarFp.getBooksOrderByViewCountDesc(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -192,7 +297,8 @@ export class ExternalBookAPIsApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Retrieve a book by its unique ID
+     * @summary Get book by ID
      * @param {ExternalBookAPIsApiGetBookByIdRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -200,6 +306,28 @@ export class ExternalBookAPIsApi extends BaseAPI {
      */
     public getBookById(requestParameters: ExternalBookAPIsApiGetBookByIdRequest, options?: RawAxiosRequestConfig) {
         return ExternalBookAPIsApiFp(this.configuration).getBookById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve books ordered by their creation date descending
+     * @summary Get books sorted by created date
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExternalBookAPIsApi
+     */
+    public getBooksOrderByCreatedDateDesc(options?: RawAxiosRequestConfig) {
+        return ExternalBookAPIsApiFp(this.configuration).getBooksOrderByCreatedDateDesc(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve books ordered by their view count descending
+     * @summary Get books sorted by view count
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExternalBookAPIsApi
+     */
+    public getBooksOrderByViewCountDesc(options?: RawAxiosRequestConfig) {
+        return ExternalBookAPIsApiFp(this.configuration).getBooksOrderByViewCountDesc(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

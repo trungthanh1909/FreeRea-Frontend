@@ -78,7 +78,7 @@
       }
     },
     "favourite-service": {
-      "inputSpec": "http://localhost:8099/favourite/v3/api-docs",
+      "inputSpec": "http://localhost:8091/favourite/v3/api-docs",
       "generatorName": "typescript-axios",
       "output": "src/api/favourite-service",
       "additionalProperties": {

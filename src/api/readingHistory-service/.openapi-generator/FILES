@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/history-record-controller-api.ts
 apis/internal-history-record-controller-api.ts

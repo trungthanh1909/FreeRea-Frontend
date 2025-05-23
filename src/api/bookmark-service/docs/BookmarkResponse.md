@@ -6,8 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [optional] [default to undefined]
-**userId** | **number** |  | [optional] [default to undefined]
-**bookId** | **number** |  | [optional] [default to undefined]
+**userId** | **string** |  | [optional] [default to undefined]
+**bookId** | **string** |  | [optional] [default to undefined]
 **chapterNumber** | **number** |  | [optional] [default to undefined]
 **createdAt** | **string** |  | [optional] [default to undefined]
 

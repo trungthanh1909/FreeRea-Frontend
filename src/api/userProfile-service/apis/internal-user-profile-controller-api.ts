@@ -474,3 +474,4 @@ export class InternalUserProfileControllerApi extends BaseAPI {
         return InternalUserProfileControllerApiFp(this.configuration).updateUserProfile(requestParameters.userProfileUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

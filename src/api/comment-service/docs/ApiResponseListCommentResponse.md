@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**Array&lt;CommentResponse&gt;**](CommentResponse.md) |  | [optional] [default to undefined]
+**result** | [**Array&lt;CommentResponse&gt;**](CommentResponse.md) |  | [optional] [default to undefined]
 **message** | **string** |  | [optional] [default to undefined]
-**status** | **number** |  | [optional] [default to undefined]
+**code** | **number** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -15,9 +15,9 @@ Name | Type | Description | Notes
 import { ApiResponseListCommentResponse } from './api';
 
 const instance: ApiResponseListCommentResponse = {
-    data,
+    result,
     message,
-    status,
+    code,
 };
 ```
 

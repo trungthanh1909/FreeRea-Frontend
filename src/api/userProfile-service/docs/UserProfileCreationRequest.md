@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **userId** | **string** |  | [optional] [default to undefined]
 **name** | **string** |  | [optional] [default to undefined]
 **avatarUrl** | **string** |  | [optional] [default to undefined]
+**createdAt** | **string** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -20,6 +21,7 @@ const instance: UserProfileCreationRequest = {
     userId,
     name,
     avatarUrl,
+    createdAt,
 };
 ```
 

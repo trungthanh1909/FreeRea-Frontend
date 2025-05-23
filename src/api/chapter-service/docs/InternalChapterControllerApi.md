@@ -4,9 +4,9 @@ All URIs are relative to *http://localhost:8087/chapter*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**createChapter**](#createchapter) | **POST** /internal/add | |
-|[**deleteChapter**](#deletechapter) | **DELETE** /internal/{id} | |
-|[**deleteChaptersByBookId**](#deletechaptersbybookid) | **DELETE** /internal/book/{bookId} | |
+|[**createChapter**](#createchapter) | **POST** /internal/{bookId}/add | |
+|[**deleteChapter**](#deletechapter) | **DELETE** /internal/delete/{id} | |
+|[**deleteChaptersByBookId**](#deletechaptersbybookid) | **DELETE** /internal/delete/book/{bookId} | |
 |[**updateChapter**](#updatechapter) | **PUT** /internal/update/{id} | |
 
 # **createChapter**
@@ -25,9 +25,11 @@ import {
 const configuration = new Configuration();
 const apiInstance = new InternalChapterControllerApi(configuration);
 
+let bookId: string; // (default to undefined)
 let chapterRequest: ChapterRequest; //
 
 const { status, data } = await apiInstance.createChapter(
+    bookId,
     chapterRequest
 );
 ```
@@ -37,6 +39,7 @@ const { status, data } = await apiInstance.createChapter(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **chapterRequest** | **ChapterRequest**|  | |
+| **bookId** | [**string**] |  | defaults to undefined|
 
 
 ### Return type

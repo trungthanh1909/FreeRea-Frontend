@@ -31,7 +31,7 @@ export interface Chapter {
      * @type {string}
      * @memberof Chapter
      */
-    'chapter'?: string;
+    'chapterNumber'?: string;
     /**
      * 
      * @type {string}

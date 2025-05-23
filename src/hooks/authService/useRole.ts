@@ -30,8 +30,7 @@ export const useCreateRole = () => {
     const queryClient = useQueryClient();
 
     return useMutation<ApiResponseRoleResponse, Error, RoleRequest>({
-        mutationFn: (data) =>
-            roleApi.create({ roleRequest: data }).then((res) => res.data),
+        mutationFn: (data) => roleApi.create({ roleRequest: data }).then((res) => res.data),
         onSuccess: async () => {
             showToast("Tạo vai trò thành công", "success");
             await queryClient.invalidateQueries({ queryKey: ["roles"] });
@@ -46,8 +45,7 @@ export const useDeleteRole = () => {
     const queryClient = useQueryClient();
 
     return useMutation<ApiResponseVoid, Error, string>({
-        mutationFn: (role) =>
-            roleApi._delete({ role }).then((res) => res.data),
+        mutationFn: (role) => roleApi._delete({ role }).then((res) => res.data),
         onSuccess: async () => {
             showToast("Xoá vai trò thành công", "success");
             await queryClient.invalidateQueries({ queryKey: ["roles"] });
