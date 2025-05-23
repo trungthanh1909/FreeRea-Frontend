@@ -1,5 +1,6 @@
 import "../../styles/UserProfilePage/UserScrollListProfile.scss";
 import React from 'react';
+import { Link } from "react-router-dom";
 
 interface MangaItem {
     title: string;
@@ -19,9 +20,11 @@ const UserScrollList: React.FC<Props> = ({ title, items, index, onScroll }) => {
     const renderMangaList = () => {
         return items.slice(index, index + visibleCount).map((item, idx) => (
             <div className="scroll-item" key={idx}>
+                <Link to="/book/review">
                 <div className="img-box">
                     <img src={item.thumbnail} alt={item.title} />
                 </div>
+                </Link>
                 <p>{item.title}</p>
             </div>
         ));

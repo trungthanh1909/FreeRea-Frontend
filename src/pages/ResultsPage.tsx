@@ -3,6 +3,7 @@ import { useLocation,  } from "react-router-dom";
 import "../styles/GenresPage/ResultsPage.scss"
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const comicsData = [
     {
@@ -27,7 +28,7 @@ const comicsData = [
         category: "Fantasy"
     },
     {
-        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg",
+        img: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg",
         name: "Truyện cua usio",
         author: "Tác giả A",
         views: 1234,
@@ -180,7 +181,9 @@ const ResultsPage = () => {
                     {filteredComics.length > 0 ? (
                         filteredComics.map((comic, index) => (
                             <div className="comic3" key={index}>
+                                <Link to="/book/review">
                                 <img src={comic.img} alt={comic.name} />
+                                </Link>
                                 <p className="name3">{comic.name}</p>
                                 <p className="sales3">
                                     {comic.author}<span>{comic.views}</span>

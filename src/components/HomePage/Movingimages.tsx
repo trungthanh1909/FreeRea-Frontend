@@ -155,7 +155,7 @@ const Movingimages = () => {
                     <div className="gap">
                         {currentData.Images.map((img, i) => (
                             <div className="image-container-baby" key={i}>
-                                <Link to="/detailbook">
+                                <Link to="/book/review">
                                     <img src={img} alt={`Thumb ${i + 1}`} />
                                 </Link>
                             </div>
@@ -163,7 +163,7 @@ const Movingimages = () => {
                     </div>
 
                     <div className="image-container">
-                        <Link to="/book">
+                        <Link to="/book/review">
                             <img
                                 src={currentData.previewImages[0]}
                                 alt="Background"

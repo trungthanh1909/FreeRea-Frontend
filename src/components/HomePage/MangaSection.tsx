@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import "../../styles/HomePage/MangaSection.scss";
+import { Link } from "react-router-dom";
 
 interface Comic {
     img: string;
@@ -40,11 +41,17 @@ const ComicList: React.FC<ComicListProps> = ({ comics, title }) => {
                     <div className="arrow1" onClick={handlePrev}><AiOutlineLeft/></div>
                 )}
                 {currentComics.map((comic, i) => (
+
                     <div className="comic2" key={i}>
+                        <Link to="/book/review">
                         <img src={comic.img} alt={comic.title} />
+                        </Link>
                         <p className="name2">{comic.title}</p>
                         <p className="sales2">{comic.author} <span>{comic.views}</span></p>
+
+
                     </div>
+
                 ))}
                 {currentIndex + itemsPerPage < comics.length && (
                     <div className="arrow1" onClick={handleNext}><AiOutlineRight/></div>

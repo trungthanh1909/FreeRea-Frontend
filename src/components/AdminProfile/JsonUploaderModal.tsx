@@ -61,7 +61,7 @@ const JsonUploaderModal: React.FC<Props> = ({ onClose }) => {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content-uploader" onClick={(e) => e.stopPropagation()}>
                 <h3>📁 Upload JSON File</h3>
                 <label htmlFor="jsonFileInput" className="upload-circle">
                     <span className="plus">+</span>

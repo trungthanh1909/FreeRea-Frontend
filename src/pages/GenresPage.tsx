@@ -5,6 +5,7 @@ import "../styles/GenresPage/GenresPage.scss";
 import Navbar from "../components/Navbar";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const categories = [
     'All', 'Action', 'Adventure', 'Anime', 'Comedy', 'Comic', 'Cooking', 'Historical', 'Doujinshi', 'Drama', 'Fantasy', 'Isekai', 'Josei', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'One Shot', 'Psychological', 'Romance', 'Samurai', 'School Life', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Vampire', 'Webtoon', 'Reincarnation', 'Manhua', 'Manhwa',
@@ -252,11 +253,14 @@ const GenresPage = () => {
                     <div className="manga-list-genres">
                         {filteredComics.map((comic, index) => (
                             <div className="comic2" key={index}>
+                                <Link to="/book/review">
                                 <img src={comic.img} alt={comic.name}/>
+                                </Link>
                                 <p className="name2">{comic.name}</p>
                                 <p className="sales2">
                                     {comic.author}<span>{comic.views}</span>
                                 </p>
+
                             </div>
                         ))}
                     </div>
