@@ -9,11 +9,15 @@ interface UserData {
     username: string;
     email: string;
     description: string;
+    avatarUrl?: string;
 }
 
 const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
     const [showSettings, setShowSettings] = useState(false);
-    const [userData, setUserData] = useState(user);
+    const [userData, setUserData] = useState({
+        ...user,
+        avatarUrl: user.avatarUrl || "/avatar.png",
+    });
     const IconCog = FaCog as React.FC;
 
     const handleSave = (updatedUser: any) => {
@@ -30,7 +34,8 @@ const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
                     className="banner-img"
                 />
                 <div className="avatar-info">
-                    <img src="/avatar.png" alt="Avatar" className="profile-avatar" />
+                    <img src={userData.avatarUrl || "/avatar.png"} alt="Avatar" className="profile-avatar"/>
+
                     <div className="profile-text">
                         <p>{userData.username}</p>
                     </div>

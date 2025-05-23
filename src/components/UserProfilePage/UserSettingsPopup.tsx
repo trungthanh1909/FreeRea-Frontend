@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
 import'../../styles/UserProfilePage/UserSettingsPopup.scss';
+
+
+
 interface Props {
     user: {
         username: string;
         email: string;
         description: string;
+        avatarUrl?: string;
     };
     onClose: () => void;
     onSave: (updatedUser: any) => void;
@@ -16,14 +20,28 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
         username: user.username,
         email: user.email,
         description: user.description,
-        password: '',
         avatar: null as File | null,
-        avatarPreview: '',
+        avatarPreview: user.avatarUrl || '',
     });
+
+    const [showPasswordFields, setShowPasswordFields] = useState(false);
+    const [passwords, setPasswords] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+    });
+
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        if (name in passwords) {
+            setPasswords((prev) => ({ ...prev, [name]: value }));
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,13 +53,31 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
     };
 
     const handleSubmit = () => {
+        let valid = true;
+        setEmailError('');
+        setPasswordError('');
+        if (!formData.email.includes('@')) {
+            setEmailError("Email must contain '@'.");
+            valid = false;
+        }
+        if (showPasswordFields && passwords.newPassword !== passwords.confirmPassword) {
+            setPasswordError("New password and confirmation do not match.");
+            valid = false;
+        }
+        if (!valid) return;
+
         const updated = {
             ...user,
             username: formData.username,
             email: formData.email,
             description: formData.description,
-            // avatar would be uploaded separately
+            avatarUrl: formData.avatarPreview || user.avatarUrl,
+            ...(showPasswordFields ? {
+                currentPassword: passwords.currentPassword,
+                newPassword: passwords.newPassword
+            } : {})
         };
+
         onSave(updated);
         onClose();
     };
@@ -50,6 +86,24 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
         <div className="popup-overlay">
             <div className="popup-box">
                 <h3>Edit Profile</h3>
+
+                <div className="avatar-wrapper">
+                    <label htmlFor="avatar-upload">
+                        <img
+                            src={formData.avatarPreview || '/default-avatar.png'}
+                            alt="Avatar"
+                            className="avatar-image"
+                        />
+                    </label>
+                    <input
+                        type="file"
+                        id="avatar-upload"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        style={{ display: 'none' }}
+                    />
+                </div>
+
                 <input
                     type="text"
                     name="username"
@@ -63,14 +117,10 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+
                 />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="New Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
+
+                {emailError && <p className="error-message">{emailError}</p>}
                 <textarea
                     name="description"
                     placeholder="Description"
@@ -78,9 +128,35 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                     onChange={handleChange}
                 />
 
-                <input type="file" accept="image/*" onChange={handleAvatarChange} />
-                {formData.avatarPreview && (
-                    <img src={formData.avatarPreview} alt="Preview" style={{ width: '100px', borderRadius: '8px' }} />
+                {!showPasswordFields ? (
+                    <button type="button" onClick={() => setShowPasswordFields(true)} className="change-password-btn">
+                        Change Password
+                    </button>
+                ) : (
+                    <>
+                        <input
+                            type="password"
+                            name="currentPassword"
+                            placeholder="Current Password"
+                            value={passwords.currentPassword}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="password"
+                            name="newPassword"
+                            placeholder="New Password"
+                            value={passwords.newPassword}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm New Password"
+                            value={passwords.confirmPassword}
+                            onChange={handleChange}
+                        />
+                        {passwordError && <p className="error-message">{passwordError}</p>}
+                    </>
                 )}
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
