@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 //import { getUserData } from '../services/userService';
 import ChangePassword from"../components/AdminProfile/ChangePassword";
-import DashboardCrawler from '../components/AdminProfile/DashboardCrawler';
+import JsonUploaderModal from '../components/AdminProfile/JsonUploaderModal';
 import { Link } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 
@@ -16,8 +16,7 @@ interface UserData {
 const AdminProfile: React.FC = () => {
     const [user, setUser] = useState<UserData | null>(null);
     const [showChangePassword, setShowChangePassword] = useState(false);
-
-    const [showCrawler, setShowCrawler] = useState(false);
+    const [showUploader, setShowUploader] = useState(false);
 
     useEffect(() => {
         const dummyUser: UserData = {
@@ -57,14 +56,14 @@ const AdminProfile: React.FC = () => {
                     <div className="left-actions">
                         <button>Admin</button>
 
-                        <button onClick={() => setShowCrawler(true)}>🔗 Link to Dashboard</button>
+                        <button onClick={() => setShowUploader(true)}>📁 Upload JSON</button>
 
 
                         <Link to="/admin/create">
                             <button>📚 Admin Create Book</button>
                         </Link>
                     </div>
-                    {showCrawler && <DashboardCrawler onClose={() => setShowCrawler(false)}/>}
+                    {showUploader && <JsonUploaderModal onClose={() => setShowUploader(false)} />}
 
                     <div className="right-info">
                         <h3 className="info-title">Information</h3>
