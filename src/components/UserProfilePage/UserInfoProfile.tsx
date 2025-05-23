@@ -1,16 +1,26 @@
-import React from 'react';
+
+import { FaCog } from 'react-icons/fa';
+import React, { useState } from 'react';
 import "../../styles/UserProfilePage/UserInfoProfile.scss";
+import UserSettingsPopup from './UserSettingsPopup';
+
+
 interface UserData {
     username: string;
     email: string;
     description: string;
 }
 
-interface Props {
-    user: UserData;
-}
+const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
+    const [showSettings, setShowSettings] = useState(false);
+    const [userData, setUserData] = useState(user);
+    const IconCog = FaCog as React.FC;
 
-const UserInfo: React.FC<Props> = ({ user }) => {
+    const handleSave = (updatedUser: any) => {
+        setUserData(updatedUser);
+        // Gọi API ở đây nếu cần
+    };
+
     return (
         <>
             <div className="banner">
@@ -22,8 +32,11 @@ const UserInfo: React.FC<Props> = ({ user }) => {
                 <div className="avatar-info">
                     <img src="/avatar.png" alt="Avatar" className="profile-avatar" />
                     <div className="profile-text">
-                        <p>{user.username}</p>
+                        <p>{userData.username}</p>
                     </div>
+                    <button className="settings-btn" onClick={() => setShowSettings(true)}>
+                        <IconCog/>
+                    </button>
                 </div>
             </div>
 
@@ -39,14 +52,22 @@ const UserInfo: React.FC<Props> = ({ user }) => {
                     <h3 className="info-title">Information</h3>
                     <div className="info-box">
                         <p><strong>User name:</strong></p>
-                        <p>{user.username}</p>
+                        <p>{userData.username}</p>
                         <p><strong>Email:</strong></p>
-                        <p>{user.email}</p>
+                        <p>{userData.email}</p>
                         <p><strong>Description:</strong></p>
-                        <p>{user.description}</p>
+                        <p>{userData.description}</p>
                     </div>
                 </div>
             </div>
+
+            {showSettings && (
+                <UserSettingsPopup
+                    user={userData}
+                    onClose={() => setShowSettings(false)}
+                    onSave={handleSave}
+                />
+            )}
         </>
     );
 };

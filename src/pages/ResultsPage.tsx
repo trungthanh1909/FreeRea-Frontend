@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation,  } from "react-router-dom";
 import "../styles/GenresPage/ResultsPage.scss"
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const comicsData = [
     {
@@ -26,28 +27,28 @@ const comicsData = [
         category: "Fantasy"
     },
     {
-        img: "/img/1ee4a1d4d8b569e167381aa48f689b979c2544ab.png@438w.avif",
+        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg",
         name: "Truyện cua usio",
         author: "Tác giả A",
         views: 1234,
         category: ["Action","Fantasy"]
     },
     {
-        img: "/img/8b843504867408d80c3a75fa2bb7132212379320.jpg@438w.avif",
+        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg",
         name: "Truyện 2",
         author: "Tác giả B",
         views: 4567,
         category: "Action",
     },
     {
-        img: "/img/0c2dfce5a4c1cea42a6021e66a03f3146ed297e9.jpg@484w.avif",
+        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg",
         name: "Truyện 3",
         author: "Tác giả C",
         views: 7890,
         category: "Action"
     },
     {
-        img: "/img/1ee4a1d4d8b569e167381aa48f689b979c2544ab.png@438w.avif",
+        img: "src/assets/pngtree-books-logo-png-image_4135439.jpg",
         name: "Truyện 1",
         author: "Tác giả A",
         views: 1234,
@@ -191,6 +192,7 @@ const ResultsPage = () => {
                     )}
                 </div>
             </div>
+            <Footer/>
         </div>
     );
 };

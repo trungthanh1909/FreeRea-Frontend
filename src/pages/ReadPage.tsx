@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import CommentSection from"../components/ReadPage/CommentSection";
 import "../styles/ReadPage/ReadingPage.scss";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 interface Chapter {
     title: string;
@@ -62,10 +63,9 @@ const ReadingForm = () => {
 
                 <CommentSection chapterId={chapterIndex} />
 
-                <footer className="footer">
-                    &copy; 2025 Web Đọc Truyện. All rights reserved.
-                </footer>
+
             </div>
+            <Footer />
         </div>
     );
 };

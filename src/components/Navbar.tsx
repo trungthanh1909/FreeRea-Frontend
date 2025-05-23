@@ -87,9 +87,10 @@ const Navbar: React.FC = () => {
                                 </div>
                             </li>
                         </div>
-                        <li><Link to="/admin/create">Genreus</Link></li>
-                        <li><Link to="/user/profile">Genreus</Link></li>
-                        <li><Link to="/book/review">Genreus</Link></li>
+                        <li><Link to="/admin/create">create book</Link></li>
+                        <li><Link to="/user/profile">userprofile</Link></li>
+                        <li><Link to="/book/review">book detail</Link></li>
+                        <li><Link to="/admin/profile">admin profile</Link></li>
                     </ul>
 
                     <div className="search-container" style={{position: "relative"}}>

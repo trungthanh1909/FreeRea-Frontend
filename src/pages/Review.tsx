@@ -2,6 +2,7 @@ import { useLocation,useNavigate  } from 'react-router-dom';
 import '../styles/Review/ReviewPage.scss';
 import React, { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const ReviewPage: React.FC = () => {
     const location = useLocation();
@@ -29,7 +30,7 @@ const ReviewPage: React.FC = () => {
         if (confirmDelete) {
             setShowModal(false);
             alert('Book deleted!');
-            navigate('/admin');
+            navigate('/');
         }
     };
 
@@ -137,16 +138,6 @@ const ReviewPage: React.FC = () => {
                     </div>
                 </section>
 
-                <footer className="footer">
-                    <div className="footer-content">
-                        <div className="footer-links">
-                            <a href="#">About Us</a>
-                            <a href="#">Contact</a>
-                            <a href="#">Terms of Service</a>
-                        </div>
-                        <div className="footer-copy">&copy; 2025 LiteraryApp. All rights reserved.</div>
-                    </div>
-                </footer>
 
                 {showModal && (
                     <div className="modal-overlay">
@@ -176,8 +167,9 @@ const ReviewPage: React.FC = () => {
                     </div>
                 )}
             </div>
+            <Footer/>
         </div>
-            );
+    );
             };
 
             export default ReviewPage;

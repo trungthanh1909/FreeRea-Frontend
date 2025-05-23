@@ -6,6 +6,7 @@ import ChapterEditor from './ChapterEditor';
 import ChapterList from './ChapterList';
 import Navbar from "../Navbar";
 
+
 interface BookForm {
     title: string;
     author: string;
@@ -90,6 +91,7 @@ const BookDetails: React.FC = () => {
                 <div className="submit-container">
                     <button className="submit-btn" onClick={handleSubmit}>Submit</button>
                 </div>
+
             </div>
 
             {showConfirm && (

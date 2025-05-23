@@ -4,6 +4,7 @@ import Sidebar from "../components/GenresPage/Sidebar";
 import "../styles/GenresPage/GenresPage.scss";
 import Navbar from "../components/Navbar";
 import { FaSearch } from "react-icons/fa";
+import Footer from "../components/Footer";
 
 const categories = [
     'All', 'Action', 'Adventure', 'Anime', 'Comedy', 'Comic', 'Cooking', 'Historical', 'Doujinshi', 'Drama', 'Fantasy', 'Isekai', 'Josei', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'One Shot', 'Psychological', 'Romance', 'Samurai', 'School Life', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Vampire', 'Webtoon', 'Reincarnation', 'Manhua', 'Manhwa',
@@ -261,6 +262,7 @@ const GenresPage = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

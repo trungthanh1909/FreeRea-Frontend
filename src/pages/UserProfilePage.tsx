@@ -1,8 +1,11 @@
+
 import '../styles/UserProfilePage/UserProfile.scss';
 import React, { useEffect, useState } from 'react';
-
+//import { getUserData } from '../services/userService';
 import UserInfo from '../components/UserProfilePage/UserInfoProfile';
 import UserScrollList from '../components/UserProfilePage/UserScrollListProfile';
+import Navbar from "../components/Navbar";
+//import Footer from "../components/Footer";
 
 interface MangaItem {
     title: string;
@@ -18,33 +21,36 @@ interface UserData {
 }
 
 const UserProfile: React.FC = () => {
-    const [user] = useState<UserData>({
-        username: 'DemoUser',
-        email: 'demo@example.com',
-        description: 'Đây là tài khoản demo.',
-        favorites: [
-            { title: 'Truyện A', thumbnail: 'https://via.placeholder.com/150' },
-            { title: 'Truyện B', thumbnail: 'https://via.placeholder.com/150' },
-        ],
-        history: [
-            { title: 'Truyện X', thumbnail: 'https://via.placeholder.com/150' },
-            { title: 'Truyện Y', thumbnail: 'https://via.placeholder.com/150' },
-        ],
-    });
+    const [user, setUser] = useState<UserData | null>(null);
 
     const [favIndex, setFavIndex] = useState(0);
     const [hisIndex, setHisIndex] = useState(0);
     const visibleCount = 6;
 
     useEffect(() => {
-        // getUserData().then((data) => setUser(data));
-    }, []);
+
+    const dummyUser: UserData = {
+        username: "Usio",
+        email: "usio@example.com",
+        description: "Mình thích đọc truyện tranh.",
+        favorites: Array(10).fill({
+            title: "Truyện ưa thích",
+            thumbnail: "/img/sample1.jpg",
+        }),
+        history: Array(8).fill({
+            title: "Đã đọc gần đây",
+            thumbnail: "/img/sample2.jpg",
+        }),
+    };
+    setUser(dummyUser);
+}, []);
+
 
     const handleScroll = (
         type: 'fav' | 'his',
         direction: 'left' | 'right'
     ) => {
-        const list = type === 'fav' ? user.favorites : user.history;
+        const list = type === 'fav' ? user!.favorites : user!.history;
         const index = type === 'fav' ? favIndex : hisIndex;
         const max = Math.max(0, list.length - visibleCount);
 
@@ -60,8 +66,15 @@ const UserProfile: React.FC = () => {
         }
     };
 
+
+    if (!user) return <div>Loading...</div>;
+
+
     return (
+        <div className="user-profile-big">
+            <Navbar/>
         <div className="user-profile">
+
             <UserInfo user={user} />
 
             <UserScrollList
@@ -77,6 +90,9 @@ const UserProfile: React.FC = () => {
                 index={hisIndex}
                 onScroll={(dir) => handleScroll('his', dir)}
             />
+
+        </div>
+
         </div>
     );
 };

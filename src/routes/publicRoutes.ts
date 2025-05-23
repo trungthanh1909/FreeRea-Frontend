@@ -9,6 +9,7 @@ import ReadingForm from "../pages/ReadPage";
 import ResultsPage from "../pages/ResultsPage";
 import UserProfile from "../pages/UserProfilePage";
 import BookReview from "../pages/Bookreview";
+import AdminProfile from "../pages/AdminProfile";
 
 export const publicRoutes = [
     { path: "/", component: HomePage },
@@ -21,6 +22,7 @@ export const publicRoutes = [
     { path:"/admin/review/reading",component:ReadingForm},
     { path:"/results/category",component:ResultsPage},
     { path: "/user/profile",component:UserProfile},
-    { path:"/book/review",component:BookReview}
+    { path:"/book/review",component:BookReview},
+    { path:"/admin/profile",component:AdminProfile}
 
 ];

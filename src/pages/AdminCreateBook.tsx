@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import "../styles/AdminCreateBook/AdminCreateBook.scss";
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export interface BookForm {
     title: string;
@@ -177,6 +178,7 @@ const CreateBookForm: React.FC = () => {
 
                 <button className="submit-btn" onClick={handleSubmit}>Create book</button>
             </div>
+            <Footer />
         </div>
     );
 };

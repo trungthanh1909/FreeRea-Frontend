@@ -9,7 +9,7 @@ const BookDetailsPage: React.FC = () => {
 
     if (!book) return <div>No book data found.</div>;
 
-    return <BookDetails book={book} />;
+    return <BookDetails />;
 };
 
 export default BookDetailsPage;
