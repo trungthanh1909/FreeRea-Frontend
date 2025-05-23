@@ -13,6 +13,8 @@
 
     "gen:bookmark": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8084/bookmark/v3/api-docs -g typescript-axios -o src/api/bookmark-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
+    "gen:book": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8086/book/v3/api-docs -g typescript-axios -o src/api/book-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
     "gen:chapter": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8087/chapter/v3/api-docs -g typescript-axios -o src/api/chapter-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
     "gen:comment": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8083/comment/v3/api-docs -g typescript-axios -o src/api/comment-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
@@ -23,13 +25,13 @@
 
     "gen:crawl": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8082/crawl/v3/api-docs -g typescript-axios -o src/api/crawl-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
-    "gen:reading": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8086/book/v3/api-docs -g typescript-axios -o src/api/reading-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
-
     "gen:readingHistory": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8093/history/v3/api-docs -g typescript-axios -o src/api/readingHistory-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
     "gen:search": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8090/search/v3/api-docs -g typescript-axios -o src/api/search-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
 
-    "gen:all": "npm run gen:auth && npm run gen:userProfile && npm run gen:bookmark && npm run gen:chapter && npm run gen:comment && npm run gen:upload && npm run gen:crawl && npm run gen:reading && npm run gen:readingHistory && npm run gen:search"
+    "gen:favourite": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8099/favourite/v3/api-docs -g typescript-axios -o src/api/favourite-service --additional-properties=supportsES6=true,useSingleRequestParameter=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+
+    "gen:all": "npm run gen:favourite && npm run gen:book && run gen:auth && npm run gen:userProfile && npm run gen:bookmark && npm run gen:chapter && npm run gen:comment && npm run gen:upload && npm run gen:crawl && npm run gen:readingHistory && npm run gen:search"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",

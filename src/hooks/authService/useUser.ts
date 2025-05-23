@@ -32,20 +32,13 @@ export const useRegister = () => {
 };
 
 export const useUserInfo = () => {
-    const dispatch = useDispatch();
-
     return useQuery<ApiResponseUserResponse>({
         queryKey: ["user", "info"],
         queryFn: async () => {
             try {
                 const res = await userApi.getInfo();
-                const data = res.data;
-                if (data.result) {
-                    dispatch(setProfile(data.result as UserResponse));
-                }
-                return data;
+                return res.data;
             } catch (err) {
-                dispatch(clearProfile());
                 showToast("Không lấy được thông tin người dùng", "error");
                 throw err;
             }

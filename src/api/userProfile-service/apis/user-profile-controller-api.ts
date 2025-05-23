@@ -196,4 +196,3 @@ export class UserProfileControllerApi extends BaseAPI {
         return UserProfileControllerApiFp(this.configuration).test(options).then((request) => request(this.axios, this.basePath));
     }
 }
-

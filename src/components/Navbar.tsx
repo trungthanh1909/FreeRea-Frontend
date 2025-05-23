@@ -8,9 +8,10 @@ import AuthModal from "./HomePage/AuthModal";
 import CategoryList from "./CategoryList";
 
 import "../styles/Navbar.scss";
-
 import logo from "../assets/logo-black.png";
-import { useAuthHooks } from "../hooks/authService/useAuth";
+
+import { useAuthHooks } from "../hooks/authService/useAuthHooks";
+import { useUserProfile } from "../hooks/userProfileService/useUserProfileHooks"
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Navbar: React.FC = () => {
     const [showModal, setShowModal] = useState<"login" | "register" | null>(null);
     const [error, setError] = useState("");
     const [hovering, setHovering] = useState(false);
+
     const books = [
         { id: 1, title: "Truyện Kiếm Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
         { id: 2, title: "Truyện Tiên Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
@@ -61,7 +63,7 @@ const Navbar: React.FC = () => {
     };
 
     const handleLogout = async () => {
-        await logout();
+        await logout({});
         navigate("/");
     };
 
@@ -70,7 +72,7 @@ const Navbar: React.FC = () => {
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container">
                     <Link to="/">
-                        <img src={logo} alt="FREEREA" className="logo"/>
+                        <img src={logo} alt="FREEREA" className="logo" />
                     </Link>
 
                     <ul className="navbar_menu">
@@ -83,7 +85,7 @@ const Navbar: React.FC = () => {
                             <li>
                                 <Link to="/genres" className="menu-item">Genres</Link>
                                 <div className={`category_menu ${showDropdown ? "show" : ""}`}>
-                                    <CategoryList scrolled={scrolled}/>
+                                    <CategoryList scrolled={scrolled} />
                                 </div>
                             </li>
                         </div>
@@ -93,14 +95,14 @@ const Navbar: React.FC = () => {
                         <li><Link to="/admin/profile">admin profile</Link></li>
                     </ul>
 
-                    <div className="search-container" style={{position: "relative"}}>
+                    <div className="search-container" style={{ position: "relative" }}>
                         <input
                             type="text"
                             placeholder="Search....."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon"/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
                         <SearchDropdown
                             books={books.filter((b) =>
                                 b.title.toLowerCase().includes(search.toLowerCase())
@@ -142,7 +144,6 @@ const Navbar: React.FC = () => {
                                 </button>
                             </div>
                         )}
-
                     </div>
                 </div>
             </nav>

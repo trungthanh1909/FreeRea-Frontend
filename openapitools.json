@@ -17,6 +17,18 @@
         "modelPackage": "models"
       }
     },
+    "book-service": {
+      "inputSpec": "http://localhost:8086/book/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/book-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
     "bookmark-service": {
       "inputSpec": "http://localhost:8084/bookmark/v3/api-docs",
       "generatorName": "typescript-axios",
@@ -53,6 +65,30 @@
         "modelPackage": "models"
       }
     },
+    "crawl-service": {
+      "inputSpec": "http://localhost:8082/crawl/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/crawl-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
+    "favourite-service": {
+      "inputSpec": "http://localhost:8099/favourite/v3/api-docs",
+      "generatorName": "typescript-axios",
+      "output": "src/api/favourite-service",
+      "additionalProperties": {
+        "supportsES6": true,
+        "useSingleRequestParameter": true,
+        "withSeparateModelsAndApi": true,
+        "apiPackage": "apis",
+        "modelPackage": "models"
+      }
+    },
     "userProfile-service": {
       "inputSpec": "http://localhost:8099/profile/v3/api-docs",
       "generatorName": "typescript-axios",
@@ -69,30 +105,6 @@
       "inputSpec": "http://localhost:8085/upload/v3/api-docs",
       "generatorName": "typescript-axios",
       "output": "src/api/upload-service",
-      "additionalProperties": {
-        "supportsES6": true,
-        "useSingleRequestParameter": true,
-        "withSeparateModelsAndApi": true,
-        "apiPackage": "apis",
-        "modelPackage": "models"
-      }
-    },
-    "crawl-service": {
-      "inputSpec": "http://localhost:8082/crawl/v3/api-docs",
-      "generatorName": "typescript-axios",
-      "output": "src/api/crawl-service",
-      "additionalProperties": {
-        "supportsES6": true,
-        "useSingleRequestParameter": true,
-        "withSeparateModelsAndApi": true,
-        "apiPackage": "apis",
-        "modelPackage": "models"
-      }
-    },
-    "reading-service": {
-      "inputSpec": "http://localhost:8086/book/v3/api-docs",
-      "generatorName": "typescript-axios",
-      "output": "src/api/reading-service",
       "additionalProperties": {
         "supportsES6": true,
         "useSingleRequestParameter": true,
