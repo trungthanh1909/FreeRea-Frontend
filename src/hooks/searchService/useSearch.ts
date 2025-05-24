@@ -44,6 +44,7 @@ export const useSearchByCategories = (categories: string[]) => {
     });
 };
 
+// Không dùng ở UI
 export const useGetAllSearchResults = () => {
     return useQuery<ApiResponseListBookSearchingResult, Error>({
         queryKey: ["search-all"],
@@ -51,6 +52,7 @@ export const useGetAllSearchResults = () => {
     });
 };
 
+// Không dùng ở UI
 export const useUpdateBookIndex = () => {
     const queryClient = useQueryClient();
 

@@ -45,7 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ switchToRegister, onSubmit, error
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <input
-                            type="usernamme"
+                            type="text"
                             id="username"
                             placeholder=" "
                             value={username}

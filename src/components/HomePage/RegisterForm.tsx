@@ -4,25 +4,23 @@ import "../../styles/HomePage/Login_RegisterForm.scss";
 
 type RegisterFormProps = {
     switchToLogin: () => void;
-    onSubmit: (username: string, name: string, email: string, password: string, createdAt: string) => Promise<void>;
+    onSubmit: (data: { username: string; email: string; password: string; name?: string }) => Promise<void>
     error?: string;
     loading: boolean;
 };
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, error, loading }) => {
     const [username, setUsername] = useState("");
-    const createdAt = new Date().toISOString();
-    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !email || !password) {
+        if (!username || !email || !password) {
             return;
         }
         try {
-            await onSubmit(username, name, email, password, createdAt);
+            await onSubmit({ username, email, password });
         } catch (err) {
             console.error("Đăng ký thất bại:", err);
         }
@@ -43,13 +41,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, er
                     <div className="input-group">
                         <input
                             type="text"
-                            id="Nickname"
+                            id="Username"
                             placeholder=" "
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
-                        <label htmlFor="Nickname">Nickname</label>
+                        <label htmlFor="Username">Username</label>
+
                     </div>
                     <div className="input-group">
                         <input

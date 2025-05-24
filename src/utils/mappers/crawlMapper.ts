@@ -1,4 +1,4 @@
-import type { Metadata } from "../api/crawl-service";
+import type { Metadata } from "../../api/crawl-service";
 
 export interface FormCrawlInput {
     title: string;

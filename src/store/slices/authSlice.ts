@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { UserResponse } from "../../api/auth-service";
+import type { UserResponse, UserProfile } from "../../api/auth-service";
+import { mapUserResponseToProfile } from "../../utils/mappers";
 
 interface AuthState {
-    user: UserResponse | null;
+    user: UserProfile | null;
     token: string | null;
     refreshToken: string | null;
     isAuthenticated: boolean;
@@ -13,7 +14,7 @@ const savedRefreshToken = localStorage.getItem("refreshToken");
 const savedUser = localStorage.getItem("user");
 
 const initialState: AuthState = {
-    user: savedUser ? (JSON.parse(savedUser) as UserResponse) : null,
+    user: savedUser ? (JSON.parse(savedUser) as UserProfile) : null,
     token: savedToken,
     refreshToken: savedRefreshToken,
     isAuthenticated: !!savedToken,
@@ -32,14 +33,16 @@ const authSlice = createSlice({
             }>
         ) => {
             const { user, token, refreshToken } = action.payload;
-            state.user = user;
+            const mappedUser = mapUserResponseToProfile(user);
+
+            state.user = mappedUser;
             state.token = token;
             state.refreshToken = refreshToken;
             state.isAuthenticated = true;
 
             localStorage.setItem("token", token);
             localStorage.setItem("refreshToken", refreshToken);
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(mappedUser));
         },
 
         updateAccessToken: (state, action: PayloadAction<string>) => {

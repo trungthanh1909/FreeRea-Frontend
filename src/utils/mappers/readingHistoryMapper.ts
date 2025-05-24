@@ -1,4 +1,4 @@
-import { PageRecordResponse, RecordResponse } from "../api/readingHistory-service";
+import { PageRecordResponse, RecordResponse } from "../../api/readingHistory-service";
 
 /** Chuẩn hóa từng record đọc của user */
 export interface ReadingHistoryItem {

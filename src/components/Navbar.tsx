@@ -3,33 +3,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SearchDropdown from "../components/TitleSearchWithImage";
-
+import { useDebounce } from "use-debounce";
 import AuthModal from "./HomePage/AuthModal";
 import CategoryList from "./CategoryList";
 
 import "../styles/Navbar.scss";
 
 import logo from "../assets/logo-black.png";
-import { useAuthHooks } from "../hooks/authService/useAuth";
+import { useAuthHooks, useSearchByKeyword, useNavbarAuth } from "../hooks";
+import { mapSearchResultToBookItem } from "../utils/mappers";
+import defaultAvatar from "../assets/default-avatar.png";
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated, login, logout } = useAuthHooks();
 
-    const [search, setSearch] = useState("");
+
+
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [showModal, setShowModal] = useState<"login" | "register" | null>(null);
-    const [error, setError] = useState("");
     const [hovering, setHovering] = useState(false);
-    const books = [
-        { id: 1, title: "Truyện Kiếm Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
-        { id: 2, title: "Truyện Tiên Hiệp", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
-        { id: 3, title: "Truyện Ngôn Tình", image: "src/assets/pngtree-books-logo-png-image_4135439.jpg" },
-        { id: 4, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
-        { id: 5, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
-        { id: 6, title: "Truyện Tiên Hiệp", image: "src/assets/c8dfb2f0-fa7d-4d74-b21f-65d1732dd967.jpg" },
-    ];
+
+    const [search, setSearch] = useState("");
+    const [debouncedSearch] = useDebounce(search, 300);
+    const { data: mergedResult } = useSearchByKeyword(debouncedSearch);
+    const books = (mergedResult || []).map(mapSearchResultToBookItem);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -48,29 +45,24 @@ const Navbar: React.FC = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+    const {
+        user,
+        isAuthenticated,
+        showModal,
+        setShowModal,
+        handleLogin,
+        handleLogout,
+        error,
+        loading,
+    } = useNavbarAuth();
 
-    const handleLogin = async (email: string, password: string) => {
-        try {
-            await login({ username: email, password });
-            setShowModal(null);
-            setError("");
-            navigate("/");
-        } catch {
-            setError("Sai email hoặc mật khẩu!");
-        }
-    };
-
-    const handleLogout = async () => {
-        await logout();
-        navigate("/");
-    };
 
     return (
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container">
                     <Link to="/">
-                        <img src={logo} alt="FREEREA" className="logo"/>
+                        <img src={logo} alt="FREEREA" className="logo" />
                     </Link>
 
                     <ul className="navbar_menu">
@@ -83,7 +75,7 @@ const Navbar: React.FC = () => {
                             <li>
                                 <Link to="/genres" className="menu-item">Genres</Link>
                                 <div className={`category_menu ${showDropdown ? "show" : ""}`}>
-                                    <CategoryList scrolled={scrolled}/>
+                                    <CategoryList scrolled={scrolled} />
                                 </div>
                             </li>
                         </div>
@@ -93,18 +85,16 @@ const Navbar: React.FC = () => {
                         <li><Link to="/admin/profile">admin profile</Link></li>
                     </ul>
 
-                    <div className="search-container" style={{position: "relative"}}>
+                    <div className="search-container" style={{ position: "relative" }}>
                         <input
                             type="text"
                             placeholder="Search....."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon"/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
                         <SearchDropdown
-                            books={books.filter((b) =>
-                                b.title.toLowerCase().includes(search.toLowerCase())
-                            )}
+                            books={books}
                             search={search}
                             onSelect={() => setSearch("")}
                         />
@@ -118,7 +108,7 @@ const Navbar: React.FC = () => {
                                 onMouseLeave={() => setTimeout(() => setHovering(false), 200)}
                             >
                                 <img
-                                    src={user.avatarUrl || "https://i.pravatar.cc/40"}
+                                    src={user.avatarUrl || defaultAvatar }
                                     alt={user.name || user.username}
                                     className="avatar"
                                 />
@@ -142,7 +132,6 @@ const Navbar: React.FC = () => {
                                 </button>
                             </div>
                         )}
-
                     </div>
                 </div>
             </nav>
@@ -152,6 +141,7 @@ const Navbar: React.FC = () => {
                 setShowModal={setShowModal}
                 handleLogin={handleLogin}
                 error={error}
+                loading={loading}
             />
         </>
     );

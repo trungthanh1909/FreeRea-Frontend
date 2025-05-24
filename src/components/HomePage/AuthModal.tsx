@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoCloseCircle } from "react-icons/io5";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import { authService } from "../../services/authService";
+import { useRegister } from "../../hooks";
+import { UserCreateRequest } from "../../api/auth-service";
 import "../../styles/HomePage/AuthModal.scss";
 
 type Props = {
@@ -11,11 +12,13 @@ type Props = {
     setShowModal: (type: "login" | "register" | null) => void;
     handleLogin: (email: string, password: string) => Promise<void>;
     error: string;
+    loading: boolean;
 };
 
 const AuthModal: React.FC<Props> = ({ showModal, setShowModal, handleLogin }) => {
     const [loading, setLoading] = useState(false);
     const [authError, setAuthError] = useState("");
+    const { mutateAsync: register } = useRegister();
 
     const switchToLogin = () => {
         setAuthError("");
@@ -27,17 +30,25 @@ const AuthModal: React.FC<Props> = ({ showModal, setShowModal, handleLogin }) =>
         setShowModal("register");
     };
 
-    const handleRegister = async (username: string, name: string, email: string, password: string) => {
+    const handleRegister = async ({
+                                      username,
+                                      name,
+                                      email,
+                                      password
+                                  }: { username: string; name?: string; email: string; password: string }) => {
         setLoading(true);
         setAuthError("");
+
+        const payload: UserCreateRequest = { username, name, email, password, createdAt: new Date().toISOString()};
+
         try {
-            const createdAt = new Date().toISOString();
-            await authService.register({ username, name, email, password, createdAt });
-            setLoading(false);
+            await register(payload);
+            await handleLogin(username, password);
             setShowModal(null);
-        } catch (error) {
-            setLoading(false);
+        } catch (err) {
             setAuthError("Đăng ký không thành công. Vui lòng thử lại.");
+        } finally {
+            setLoading(false);
         }
     };
 

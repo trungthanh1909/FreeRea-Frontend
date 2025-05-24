@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../store/hooks";
 import { RootState } from "../../store";
 import { useLogin, useLogout, useRefreshToken, useIntrospectToken } from "./useAuth";
-import { UserResponse } from "../../api/auth-service";
+import { UserProfile } from "../../api/auth-service";
 
 export const useAuthHooks = () => {
     const { mutateAsync: login } = useLogin();
@@ -10,7 +10,7 @@ export const useAuthHooks = () => {
     const introspect = useIntrospectToken();
 
     const token = useAppSelector((state: RootState) => state.auth.token);
-    const user = useAppSelector((state: RootState) => state.auth.user) as UserResponse | null;
+    const user = useAppSelector((state: RootState) => state.auth.user) as UserProfile | null; // ✅ Sửa kiểu
     const isAuthenticated = !!token;
 
     return {

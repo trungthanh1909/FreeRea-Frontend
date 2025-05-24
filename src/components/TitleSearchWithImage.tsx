@@ -1,15 +1,10 @@
-
 import "../styles/TitleSearchWithImage.scss";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-interface Book {
-    id: number;
-    title: string;
-    image: string;
-}
+import { SearchBookItem } from "../utils/mappers";
 
 interface Props {
-    books: Book[];
+    books: SearchBookItem[] ;
     search: string;
     onSelect: () => void;
 }

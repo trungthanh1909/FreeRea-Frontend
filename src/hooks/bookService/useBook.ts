@@ -15,40 +15,45 @@ import { AxiosResponse } from "axios";
 const externalApi = new ExternalBookAPIsApi(createServiceConfig());
 const internalApi = new InternalBookControllerApi(createServiceConfig());
 
-// Lấy tất cả sách
+// ========== EXTERNAL ========== //
+
 export const useGetAllBooks = () => {
     return useQuery<ApiResponseListBookResponse, Error>({
         queryKey: ["books"],
         queryFn: async (): Promise<ApiResponseListBookResponse> => {
-            try {
-                const res = await externalApi.getAllBooks() as unknown as AxiosResponse<ApiResponseListBookResponse>;
-                return res.data;
-            } catch (err: any) {
-                showToast(err.message || "Lỗi lấy danh sách sách", "error");
-                throw err;
-            }
+            const res = await externalApi.getAllBooks() as unknown as AxiosResponse<ApiResponseListBookResponse>;
+            return res.data;
         },
     });
 };
 
-// Lấy thông tin sách theo ID
 export const useGetBookById = (id: string) => {
     return useQuery<ApiResponseBookResponse, Error>({
         queryKey: ["book", id],
         queryFn: async () => {
-            try {
-                const res = await externalApi.getBookById({ id });
-                return res.data;
-            } catch (err: any) {
-                showToast(err.message || "Lỗi lấy thông tin sách", "error");
-                throw err;
-            }
+            const res = await externalApi.getBookById({ id });
+            return res.data;
         },
         enabled: !!id,
     });
 };
 
-// Tạo sách mới
+export const useBooksByCreatedDate = () => {
+    return useQuery({
+        queryKey: ["books", "by-created-date"],
+        queryFn: () => externalApi.getBooksOrderByCreatedDateDesc().then(res => res.data.data),
+    });
+};
+
+export const useBooksByViewCount = () => {
+    return useQuery({
+        queryKey: ["books", "by-view-count"],
+        queryFn: () => externalApi.getBooksOrderByViewCountDesc().then(res => res.data.data),
+    });
+};
+
+// ========== INTERNAL ========== //
+
 export const useCreateBook = () => {
     const queryClient = useQueryClient();
     return useMutation<void, Error, BookCreationRequest>({
@@ -63,8 +68,6 @@ export const useCreateBook = () => {
     });
 };
 
-
-// Cập nhật sách
 export const useUpdateBook = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation<ApiResponseBookResponse, Error, BookRequest>({
@@ -78,7 +81,6 @@ export const useUpdateBook = (id: string) => {
     });
 };
 
-// Xóa sách
 export const useDeleteBook = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation<ApiResponseVoid, Error>({
@@ -92,7 +94,6 @@ export const useDeleteBook = (id: string) => {
     });
 };
 
-// Kiểm tra sách tồn tại
 export const useCheckBookExists = (bookId: string) => {
     return useQuery<boolean, Error>({
         queryKey: ["book-exists", bookId],
