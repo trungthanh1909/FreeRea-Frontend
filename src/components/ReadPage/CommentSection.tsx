@@ -1,53 +1,38 @@
 import React, { useState } from 'react';
 import '../../styles/ReadPage/CommentSection.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/index';
+import avatarImg from '../../assets/default_avatar.jpg';
 
-interface Reply {
-    id: number;
-    text: string;
-}
 
-interface Comment {
-    id: number;
-    text: string;
-    replies: Reply[];
-}
+//import {useCommentsByChapterId, useCreateComment,} from '../../hooks/commentService/useComment'; // your hook file path
+//import {useCreateReplyComment,useRepliesByCommentId,} from '../../hooks/commentService/useCommentReply'; // your hook file path
+import {useCommentsByChapterId, useCreateComment,} from '../../mocks/useComment';
+import {useCreateReplyComment, useRepliesByCommentId,} from '../../mocks/useCommentReply';
+
+
+
 interface CommentSectionProps {
     chapterId: number;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) =>{
-
+const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
     const [newComment, setNewComment] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [commentsMap, setCommentsMap] = useState<{ [key: number]: Comment[] }>({});
-    const comments = commentsMap[chapterId] || [];
+    const username = useSelector((state: RootState) => state.user.profile?.name || 'Anonymous');
+
+    const { data, isLoading } = useCommentsByChapterId(chapterId);
+    const comments = data?.result || [];
+
+    const createCommentMutation = useCreateComment(['comments', 'chapter', chapterId]);
+
     const handleAddComment = () => {
         if (!newComment.trim()) return;
-        const newId = Date.now();
-        const comment: Comment = {
-            id: newId,
-            text: newComment,
-            replies: [],
-        };
-        setCommentsMap((prev) => ({
-            ...prev,
-            [chapterId]: [comment, ...(prev[chapterId] || [])],
-        }));
+        createCommentMutation.mutate({
+            chapterId,
+            content: newComment,
+        });
         setNewComment('');
-    };
-
-    const handleAddReply = (commentId: number, replyText: string) => {
-        setCommentsMap((prev) => ({
-            ...prev,
-            [chapterId]: prev[chapterId].map((comment) =>
-                comment.id === commentId
-                    ? {
-                        ...comment,
-                        replies: [...comment.replies, { id: Date.now(), text: replyText }],
-                    }
-                    : comment
-            ),
-        }));
     };
 
     const visibleComments = expanded ? comments : comments.slice(0, 3);
@@ -56,65 +41,87 @@ const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) =>{
         <div className="comments">
             <h3>Comments</h3>
             <div className="comment-box">
-        <textarea
-            placeholder="Write a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-        />
-                <button onClick={handleAddComment}>Post</button>
+                <textarea
+                    placeholder="Write a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button onClick={handleAddComment} disabled={createCommentMutation.isPending}>
+                    {createCommentMutation.isPending ? 'Loading...' : 'Post'}
+                </button>
             </div>
 
             <div className="comment-list">
-                {visibleComments.map((comment) => (
-                    <CommentItem
-                        key={comment.id}
-                        comment={comment}
-                        onReply={handleAddReply}
-                    />
-                ))}
+                {isLoading ? (
+                    <p>Đang tải bình luận...</p>
+                ) : (
+                    visibleComments.map((comment: any) => (
+                        <CommentItem
+                            key={comment.id}
+                            comment={comment}
+                            chapterId={chapterId}
+                            username={username}
+                        />
+                    ))
+                )}
             </div>
 
-
             {comments.length > 3 && (
-                <div className="expand-toggle  ">
+                <div className="expand-toggle">
                     <button onClick={() => setExpanded(!expanded)}>
                         {expanded ? 'Hide...' : 'Show more...'}
                     </button>
                 </div>
             )}
-
         </div>
     );
 };
 
 const CommentItem: React.FC<{
-    comment: Comment;
-    onReply: (id: number, reply: string) => void;
-}> = ({ comment, onReply }) => {
+    comment: { id: number; content: string };
+    chapterId: number;
+    username: string;
+}> = ({ comment, chapterId, username }) => {
     const [replyInput, setReplyInput] = useState('');
     const [expandedReply, setExpandedReply] = useState(false);
 
-    const visibleReplies = expandedReply ? comment.replies : comment.replies.slice(0, 1);
+    const { data: repliesData } = useRepliesByCommentId(String(comment.id));
+    const replies = repliesData?.result || [];
+
+    const createReplyMutation = useCreateReplyComment(['comments', 'chapter', chapterId]);
+
+    const handleReply = () => {
+        if (!replyInput.trim()) return;
+        createReplyMutation.mutate({
+            parentId: comment.id.toString(),
+            content: replyInput,
+            username,
+        });
+        setReplyInput('');
+    };
+
+    const visibleReplies = expandedReply ? replies : replies.slice(0, 1);
 
     return (
         <div className="comment-item">
             <div className="main-comment">
-                <div className="avatar" />
-                <div className="comment-text">{comment.text}</div>
+                <img src={avatarImg} alt="Avatar" className="avatar"/>
+
+                <div className="comment-text">{comment.content}</div>
             </div>
 
             <div className="reply-list">
-                {visibleReplies.map((reply) => (
+                {visibleReplies.map((reply: any) => (
                     <div key={reply.id} className="reply-item">
-                        <div className="avatar small" />
-                        <div className="reply-text">{reply.text}</div>
+                        <img src={avatarImg} alt="Avatar"  className="avatar small" />
+                        <div className="reply-text">{reply.content}</div>
                     </div>
                 ))}
 
-                {comment.replies.length > 1 && (
+                {replies.length > 1 && (
                     <div className="expand-toggle reply-toggle">
                         <button onClick={() => setExpandedReply(!expandedReply)}>
-                            {expandedReply ? 'Hide....' : 'Show more....'}
+                            {expandedReply ? 'Hide reply..' : 'Show more reply..'}
                         </button>
                     </div>
                 )}
@@ -127,20 +134,12 @@ const CommentItem: React.FC<{
                     value={replyInput}
                     onChange={(e) => setReplyInput(e.target.value)}
                 />
-                <button
-                    onClick={() => {
-                        if (replyInput.trim()) {
-                            onReply(comment.id, replyInput);
-                            setReplyInput('');
-                        }
-                    }}
-                >
-                    Reply
+                <button onClick={handleReply} disabled={createReplyMutation.isPending}>
+                    {createReplyMutation.isPending ? 'Đang gửi...' : 'Reply'}
                 </button>
             </div>
         </div>
     );
 };
-
 
 export default CommentSection;
