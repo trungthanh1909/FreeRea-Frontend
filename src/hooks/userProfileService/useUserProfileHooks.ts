@@ -23,7 +23,7 @@ const internalApi = new InternalUserProfileControllerApi(config);
 const publicApi = new UserProfileControllerApi(config);
 
 // GET public profile by userId
-export const useGetUserProfileById = (userId: string) => {
+export const useGetUserProfileById = (userId: string, enabled = true) => {
     const dispatch = useDispatch();
 
     return useQuery({
@@ -34,7 +34,7 @@ export const useGetUserProfileById = (userId: string) => {
                 if (data) dispatch(setProfile(data));
                 return data;
             }),
-        enabled: !!userId,
+        enabled: enabled && !!userId,
     });
 };
 

@@ -11,7 +11,6 @@ import {useCommentsByChapterId, useCreateComment,} from '../../mocks/useComment'
 import {useCreateReplyComment, useRepliesByCommentId,} from '../../mocks/useCommentReply';
 
 
-
 interface CommentSectionProps {
     chapterId: number;
 }

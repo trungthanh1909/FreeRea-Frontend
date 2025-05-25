@@ -1,8 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { AuthenticationAPIApi } from "../../api/auth-service";
 import {
-    AuthenticationAPIApi,
     AuthenticateRequest,
     RefreshRequest,
     LogoutRequest,
@@ -93,4 +95,21 @@ export const useIntrospectToken = () => {
         },
         onError: () => showToast("Xác thực token thất bại", "error"),
     });
+};
+export const useAuth = () => {
+    const loginMutation = useLogin();
+    const logoutMutation = useLogout();
+    const refreshMutation = useRefreshToken();
+    const introspectMutation = useIntrospectToken();
+    const user = useSelector((state: RootState) => state.auth.user);
+    const isAuthenticated = !!user;
+
+    return {
+        user,
+        isAuthenticated,
+        login: loginMutation.mutateAsync,
+        logout: logoutMutation.mutateAsync,
+        refresh: refreshMutation.mutateAsync,
+        introspect: introspectMutation.mutateAsync,
+    };
 };

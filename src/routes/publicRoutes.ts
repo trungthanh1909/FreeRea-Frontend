@@ -8,6 +8,6 @@ export const publicRoutes = [
     { path: "/", component: HomePage },
     { path: "/genres", component: GenrePage },
     { path: "/results/category", component: ResultsPage },
-    { path: "/book/review", component: BookReview },
+    { path: "/book/review/:bookId", component: BookReview },
     { path: "/unauthorized", component: Unauthorized },
 ];
