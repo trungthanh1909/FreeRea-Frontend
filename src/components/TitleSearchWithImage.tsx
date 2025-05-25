@@ -26,6 +26,7 @@ const SearchDropdown: React.FC<Props> = ({ books, search, onSelect }) => {
         <div className={`search-results-dropdown ${isScrolled ? "scrolled" : ""}`}>
             {books.map((book) => (
                 <Link
+
                     to={`/book/${book.id}`}
                     className="search-result-item"
                     key={book.id}

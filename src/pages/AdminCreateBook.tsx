@@ -2,54 +2,74 @@ import { useNavigate } from 'react-router-dom';
 import "../styles/AdminCreateBook/AdminCreateBook.scss";
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
+import { useCreateBook } from "../hooks/bookService/useBook";
 
 export interface BookForm {
     title: string;
     author: string;
     description: string;
     categories: string[];
-    image: File | null;
+    coverUlr: File | null;
 }
 
 const suggestedCategories = [
-    'Action', 'Adventure', 'Anime', 'Comedy', 'Comic', 'Cooking', 'Historical', 'Doujinshi', 'Drama', 'Fantasy', 'Isekai', 'Josei', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'One Shot', 'Psychological', 'Romance', 'Samurai', 'School Life', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Vampire', 'Webtoon', 'Reincarnation', 'Manhua', 'Manhwa',
-    'Girls Love', 'Detective', 'Game', 'Humor', 'Thriller', 'Horror', 'Urban', 'Magic Realism', 'Superpower', 'Fantasy Romance', 'Time Travel', 'Post-Apocalyptic'
+    'Action', 'Adventure', 'Anime', 'Comedy', 'Comic', 'Cooking', 'Historical', 'Doujinshi', 'Drama', 'Fantasy',
+    'Isekai', 'Josei', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'One Shot', 'Psychological',
+    'Romance', 'Samurai', 'School Life', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai',
+    'Slice of Life', 'Smut', 'Sports', 'Supernatural', 'Tragedy', 'Vampire', 'Webtoon', 'Reincarnation', 'Manhua',
+    'Manhwa', 'Girls Love', 'Detective', 'Game', 'Humor', 'Thriller', 'Horror', 'Urban', 'Magic Realism',
+    'Superpower', 'Fantasy Romance', 'Time Travel', 'Post-Apocalyptic'
 ];
 
 const CreateBookForm: React.FC = () => {
-
     const [form, setForm] = useState<BookForm>({
         title: '',
         author: '',
         description: '',
         categories: [],
-        image: null,
+        coverUlr: null,
     });
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [newCategory, setNewCategory] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const navigate = useNavigate();
+    const { mutate: createBook } = useCreateBook();
 
     const validate = () => {
         const newErrors: { [key: string]: string } = {};
         if (!form.title) newErrors.title = 'Not null!';
         if (!form.author) newErrors.author = 'Not null!';
-        if (!form.image) newErrors.image = 'Not null!';
+        if (!form.coverUlr) newErrors.image = 'Not null!';
         if (form.categories.length === 0) newErrors.categories = 'At least 1';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const navigate = useNavigate();
-
     const handleSubmit = () => {
-        if (validate()) {
+        if (!validate()) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64Image = reader.result as string;
             const newBook = {
-                ...form,
-                imageUrl: URL.createObjectURL(form.image as File),
+                title: form.title,
+                author: form.author,
+                description: form.description,
+                categories: form.categories,
+                imageBase64: base64Image,
             };
-            navigate('/admin/create/createchapter', { state: { book: newBook } });
+
+            createBook(newBook, {
+                onSuccess: () => {
+                    navigate('/admin/create/createchapter', { state: { book: newBook } });
+                }
+            });
+        };
+
+        if (form.coverUlr) {
+            reader.readAsDataURL(form.coverUlr);
         }
     };
 
@@ -67,84 +87,83 @@ const CreateBookForm: React.FC = () => {
     };
 
     return (
-        <div className={"container-create-book"}>
-            <Navbar/>
+        <div className="container-create-book">
+            <Navbar />
             <h1 className="create-book-title">Create Book</h1>
             <div className="create-book-form">
 
-                <div className=" image-upload">
+                {/* Image upload */}
+                <div className="image-upload">
                     <label className="avatar-book">
                         <strong>Avatar book</strong>
-
                         <div className="custom-upload-admin">
                             <input
                                 type="file"
                                 accept="image/*"
-                                onChange={(e) =>
-                                    setForm({...form, image: e.target.files?.[0] || null})
-                                }
+                                onChange={(e) => setForm({ ...form, coverUlr: e.target.files?.[0] || null })}
                             />
-                            {!form.image && '+'}
+                            {!form.coverUlr && '+'}
                         </div>
-
-                        {form.image && (
+                        {form.coverUlr && (
                             <div className="image-preview-wrapper">
                                 <img
-                                    src={URL.createObjectURL(form.image)}
+                                    src={URL.createObjectURL(form.coverUlr)}
                                     alt="Preview"
                                     className="preview-image"
                                 />
                                 <button
                                     type="button"
                                     className="remove-image"
-                                    onClick={() => setForm({...form, image: null})}
+                                    onClick={() => setForm({ ...form, coverUlr: null })}
                                 >
                                     ×
                                 </button>
                             </div>
                         )}
                     </label>
-
                     {errors.image && <span className="error">! {errors.image}</span>}
                 </div>
 
-
+                {/* Title */}
                 <div className="form-group">
                     <input
                         type="text"
                         placeholder="Title"
                         value={form.title}
-                        onChange={(e) => setForm({...form, title: e.target.value})}
+                        onChange={(e) => setForm({ ...form, title: e.target.value })}
                     />
                     {errors.title && <span className="error">! {errors.title}</span>}
                 </div>
 
+                {/* Author */}
                 <div className="form-group">
                     <input
                         type="text"
                         placeholder="Author"
                         value={form.author}
-                        onChange={(e) => setForm({...form, author: e.target.value})}
+                        onChange={(e) => setForm({ ...form, author: e.target.value })}
                     />
                     {errors.author && <span className="error">! {errors.author}</span>}
                 </div>
 
+                {/* Description */}
                 <div className="form-group">
-        <textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) => setForm({...form, description: e.target.value})}
-        ></textarea>
+                    <textarea
+                        placeholder="Description"
+                        value={form.description}
+                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    ></textarea>
                 </div>
 
+                {/* Categories */}
                 <div className="form-group category-field">
                     <label>Categories:</label>
                     <div className="category-list">
                         {form.categories.map((cat, index) => (
                             <span key={index} className="tag">
-              {cat}
+                                {cat}
                                 <button type="button" onClick={() => handleCategoryRemove(cat)}>&times;</button>
-            </span>
+                            </span>
                         ))}
                     </div>
                     <div className="category-input-wrapper">
@@ -165,7 +184,9 @@ const CreateBookForm: React.FC = () => {
                                     key={index}
                                     className="suggestion"
                                     onClick={() => {
-                                        setForm({...form, categories: [...form.categories, cat]});
+                                        if (!form.categories.includes(cat)) {
+                                            setForm({ ...form, categories: [...form.categories, cat] });
+                                        }
                                         setShowSuggestions(false);
                                     }}
                                 >
@@ -179,9 +200,9 @@ const CreateBookForm: React.FC = () => {
 
                 <button className="submit-btn" onClick={handleSubmit}>Create book</button>
             </div>
-            <Footer />
         </div>
     );
 };
 
 export default CreateBookForm;
+

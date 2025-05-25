@@ -7,12 +7,21 @@ import ChapterList from './ChapterList';
 import Navbar from "../Navbar";
 
 
+
+
+import { useUpdateBook } from "../../hooks/bookService/useBook";
+import {
+    useCreateChapter,
+    useUpdateChapter,
+    useDeleteChapter
+} from "../../hooks/chapterService/useAdminChapter";
+
 interface BookForm {
     title: string;
     author: string;
     description: string;
     categories: string[];
-    imageUrl: string;
+    coverUrl: string;
 }
 
 interface Chapter {
@@ -34,15 +43,20 @@ const BookDetails: React.FC = () => {
         author: locationState.book.author ?? '',
         description: locationState.book.description ?? '',
         categories: locationState.book.categories ?? [],
-        imageUrl: locationState.book.imageUrl ?? ''
+        coverUrl: locationState.book.coverUrl ?? ''
     });
 
     const [editedBook, setEditedBook] = useState<BookForm>({ ...currentBook });
     const [isEditing, setIsEditing] = useState(false);
     const [newImage, setNewImage] = useState<string | null>(null);
-
     const [chapters, setChapters] = useState<Chapter[]>(locationState.chapters || []);
     const [showConfirm, setShowConfirm] = useState(false);
+
+
+    const { mutate: updateBook } = useUpdateBook("bookId");
+    const { mutate: createChapter } = useCreateChapter("bookId");
+    const { mutate: updateChapter } = useUpdateChapter("bookId");
+    const { mutate: deleteChapter } = useDeleteChapter("bookId");
 
     const handleSubmit = () => setShowConfirm(true);
 
@@ -56,7 +70,7 @@ const BookDetails: React.FC = () => {
 
         const finalBook = {
             ...editedBook,
-            imageUrl: newImage || editedBook.imageUrl || currentBook.imageUrl
+            coverUrl: newImage || editedBook.coverUrl || currentBook.coverUrl
         };
 
         navigate('/admin/review', {
@@ -91,7 +105,6 @@ const BookDetails: React.FC = () => {
                 <div className="submit-container">
                     <button className="submit-btn" onClick={handleSubmit}>Submit</button>
                 </div>
-
             </div>
 
             {showConfirm && (

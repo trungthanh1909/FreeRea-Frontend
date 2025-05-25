@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import'../../styles/UserProfilePage/UserSettingsPopup.scss';
 
-
+import { useChangeAvatar } from '../../hooks/userProfileService/useUserProfileHooks';
+import { useDispatch } from 'react-redux';
+import { updateProfileName } from '../../store/slices/userSlice';
 
 interface Props {
     user: {
@@ -16,6 +18,9 @@ interface Props {
 }
 
 const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
+    const dispatch = useDispatch();
+    const { mutate: changeAvatar } = useChangeAvatar();
+
     const [formData, setFormData] = useState({
         username: user.username,
         email: user.email,
@@ -33,7 +38,6 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
 
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -56,6 +60,7 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
         let valid = true;
         setEmailError('');
         setPasswordError('');
+
         if (!formData.email.includes('@')) {
             setEmailError("Email must contain '@'.");
             valid = false;
@@ -66,19 +71,28 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
         }
         if (!valid) return;
 
+        // Gửi request đổi avatar nếu có file mới
+        if (formData.avatar) {
+            const payload = new FormData();
+            payload.append('file', formData.avatar);
+            changeAvatar(payload as any); // Tùy định nghĩa API có cần FormData không
+        }
+
+        // Gửi các thông tin khác như tên, email, mô tả
+        dispatch(updateProfileName(formData.username)); // ví dụ
+
         const updated = {
             ...user,
             username: formData.username,
             email: formData.email,
             description: formData.description,
-            avatarUrl: formData.avatarPreview || user.avatarUrl,
             ...(showPasswordFields ? {
                 currentPassword: passwords.currentPassword,
                 newPassword: passwords.newPassword
             } : {})
         };
 
-        onSave(updated);
+        onSave(updated); // Nếu cần xử lý lưu tiếp tục
         onClose();
     };
 
@@ -117,10 +131,9 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
-
                 />
-
                 {emailError && <p className="error-message">{emailError}</p>}
+
                 <textarea
                     name="description"
                     placeholder="Description"
@@ -159,7 +172,7 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                     </>
                 )}
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className="button-row">
                     <button onClick={handleSubmit} className="confirm-btn">Confirm</button>
                     <button onClick={onClose} className="cancel-btn">Cancel</button>
                 </div>

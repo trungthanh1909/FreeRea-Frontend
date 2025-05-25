@@ -6,7 +6,7 @@ interface BookForm {
     author: string;
     description: string;
     categories: string[];
-    imageUrl: string;
+    coverUrl: string;
 }
 
 interface Props {
@@ -32,7 +32,7 @@ const BookInfoSection: React.FC<Props> = ({
                                           }) => {
     const handleSaveUpdate = () => {
         const updatedBook = { ...editedBook };
-        if (newImage) updatedBook.imageUrl = newImage;
+        if (newImage) updatedBook.coverUrl = newImage;
         setCurrentBook(updatedBook);
         setIsEditing(false);
         setNewImage(null);
@@ -54,7 +54,7 @@ const BookInfoSection: React.FC<Props> = ({
         <div className="top-section">
             <div className="image-edit-wrapper">
                 <img
-                    src={newImage || currentBook.imageUrl}
+                    src={newImage || currentBook.coverUrl}
                     alt="Book cover"
                     className="preview-image"
                 />

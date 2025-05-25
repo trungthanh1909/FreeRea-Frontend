@@ -2,35 +2,45 @@ import { useLocation,useNavigate  } from 'react-router-dom';
 import '../styles/Review/ReviewPage.scss';
 import React, { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
+
+import { useDeleteBook } from "../hooks/bookService/useBook";
+import { useDeleteChaptersByBookId } from "../hooks/chapterService/useAdminChapter";
 
 const ReviewPage: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { book, chapters } = location.state || {};
 
-    useEffect(() => {
-        if (!book) navigate('/admin/create');
-    }, [book, navigate]);
-
     const [currentBook, setCurrentBook] = useState({ ...book });
     const [editedBook, setEditedBook] = useState({ ...book });
     const [isEditing, setIsEditing] = useState(false);
     const [newImage, setNewImage] = useState<string | null>(null);
-
     const [showModal, setShowModal] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
+
+    const deleteBookMutation = useDeleteBook(book?.id);
+    const deleteChaptersMutation = useDeleteChaptersByBookId(book?.id);
+
+    useEffect(() => {
+        if (!book) navigate('/admin/create');
+    }, [book, navigate]);
 
     const handleDeleteClick = () => {
         setConfirmDelete(false);
         setShowModal(true);
     };
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         if (confirmDelete) {
-            setShowModal(false);
-            alert('Book deleted!');
-            navigate('/');
+            try {
+                await deleteChaptersMutation.mutateAsync(); // Xoá tất cả chương
+                await deleteBookMutation.mutateAsync();     // Sau đó xoá sách
+                setShowModal(false);
+                navigate('/');
+            } catch (error) {
+                console.error("Xoá thất bại:", error);
+            }
         }
     };
 
@@ -51,18 +61,17 @@ const ReviewPage: React.FC = () => {
 
     return (
         <div className="reviewpage-container-big">
-            <Navbar/>
+            <Navbar />
             <div className="reviewpage-container">
-
                 <div className="story-detail-bg"></div>
 
                 <div className="story-detail-card">
                     <div className="story-img-wrap">
-                        <img className="story-img" src={newImage || currentBook.imageUrl} alt={currentBook.title}/>
+                        <img className="story-img" src={newImage || currentBook.imageUrl} alt={currentBook.title} />
                         {isEditing && (
                             <label className="image-upload-label">
                                 <span className="upload-icon">+</span>
-                                <input type="file" accept="image/*" onChange={handleImageUpload} hidden/>
+                                <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
                             </label>
                         )}
                     </div>
@@ -72,8 +81,7 @@ const ReviewPage: React.FC = () => {
                             {!isEditing ? (
                                 <>
                                     <button onClick={handleUpdate} className="action-btn">Update</button>
-                                    <button onClick={handleDeleteClick} className="action-btn delete-btn">Delete
-                                    </button>
+                                    <button onClick={handleDeleteClick} className="action-btn delete-btn">Delete</button>
                                 </>
                             ) : (
                                 <button onClick={() => setIsEditing(false)} className="action-btn">Cancel</button>
@@ -81,41 +89,37 @@ const ReviewPage: React.FC = () => {
                         </div>
 
                         {isEditing ? (
-                            <input
-                                value={editedBook.title}
-                                onChange={(e) => setEditedBook({...editedBook, title: e.target.value})}
-                                className="edit-input"
-                            />
+                            <>
+                                <input
+                                    value={editedBook.title}
+                                    onChange={(e) => setEditedBook({ ...editedBook, title: e.target.value })}
+                                    className="edit-input"
+                                />
+                                <input
+                                    value={editedBook.author}
+                                    onChange={(e) => setEditedBook({ ...editedBook, author: e.target.value })}
+                                    className="edit-input"
+                                />
+                                <textarea
+                                    value={editedBook.description}
+                                    onChange={(e) => setEditedBook({ ...editedBook, description: e.target.value })}
+                                    className="edit-textarea"
+                                />
+                            </>
                         ) : (
-                            <div className="story-title">{currentBook.title}</div>
-                        )}
-
-                        {isEditing ? (
-                            <input
-                                value={editedBook.author}
-                                onChange={(e) => setEditedBook({...editedBook, author: e.target.value})}
-                                className="edit-input"
-                            />
-                        ) : (
-                            <div className="story-author">Author: {currentBook.author}</div>
+                            <>
+                                <div className="story-title">{currentBook.title}</div>
+                                <div className="story-author">Author: {currentBook.author}</div>
+                                <div className="story-summary-label">Descriptions</div>
+                                <div className="story-summary">{currentBook.description}</div>
+                            </>
                         )}
 
                         <div className="story-tags">
-                            {currentBook.categories.map((cat: string, idx: number) => (
+                            {currentBook.categories?.map((cat: string, idx: number) => (
                                 <div className="story-tag" key={idx}>{cat}</div>
                             ))}
                         </div>
-
-                        <div className="story-summary-label">Descriptions</div>
-                        {isEditing ? (
-                            <textarea
-                                value={editedBook.description}
-                                onChange={(e) => setEditedBook({...editedBook, description: e.target.value})}
-                                className="edit-textarea"
-                            />
-                        ) : (
-                            <div className="story-summary">{currentBook.description}</div>
-                        )}
                     </div>
                 </div>
 
@@ -127,17 +131,16 @@ const ReviewPage: React.FC = () => {
                                 <button
                                     key={index}
                                     className="chapter-card"
-                                    onClick={() => navigate('/admin/review/reading', {state: {chapters}})}
+                                    onClick={() => navigate('/admin/review/reading', { state: { chapters, index } })}
                                 >
                                     {chapter.title}
                                 </button>
                             ))
                         ) : (
-                            <p style={{marginLeft: '20px'}}>There are no chapters yet.</p>
+                            <p style={{ marginLeft: '20px' }}>There are no chapters yet.</p>
                         )}
                     </div>
                 </section>
-
 
                 {showModal && (
                     <div className="modal-overlay">
@@ -158,7 +161,7 @@ const ReviewPage: React.FC = () => {
                                 <button
                                     className="delete-btn"
                                     onClick={handleConfirmDelete}
-                                    disabled={!confirmDelete}
+                                    disabled={!confirmDelete || deleteBookMutation.isPending}
                                 >
                                     Delete
                                 </button>
@@ -167,9 +170,8 @@ const ReviewPage: React.FC = () => {
                     </div>
                 )}
             </div>
-            <Footer/>
         </div>
     );
-            };
+};
 
-            export default ReviewPage;
+export default ReviewPage;

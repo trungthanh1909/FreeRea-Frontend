@@ -38,6 +38,9 @@ export const useCreateComment = (queryKeyToInvalidate: unknown[]) => {
             showToast("Bình luận đã được gửi");
             queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
         },
+        onError: (error) => {
+            showToast(`Gửi bình luận thất bại: ${error.message}`, "error");
+        }
     });
 };
 

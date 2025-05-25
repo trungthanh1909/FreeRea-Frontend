@@ -19,7 +19,6 @@ export const useAutocompleteTitle = (prefix: string) => {
         enabled: !!prefix,
     });
 };
-
 export const useSearchByTitle = (title: string) => {
     return useQuery<ApiResponseListBookSearchingResult, Error>({
         queryKey: ["search-title", title],
