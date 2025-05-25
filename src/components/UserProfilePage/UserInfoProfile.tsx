@@ -1,14 +1,13 @@
-
 import { FaCog } from 'react-icons/fa';
 import React, { useState } from 'react';
 import "../../styles/UserProfilePage/UserInfoProfile.scss";
 import UserSettingsPopup from './UserSettingsPopup';
-
+import { useUpdateUserProfile, useChangeAvatar } from "../../hooks";
+import defaultAvatar from "../assets/default_avatar.jpg";
 
 interface UserData {
+    id: string;
     username: string;
-    email: string;
-    description: string;
     avatarUrl?: string;
 }
 
@@ -16,13 +15,31 @@ const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
     const [showSettings, setShowSettings] = useState(false);
     const [userData, setUserData] = useState({
         ...user,
-        avatarUrl: user.avatarUrl || "/avatar.png",
+        avatarUrl: user.avatarUrl || defaultAvatar,
     });
+
     const IconCog = FaCog as React.FC;
 
-    const handleSave = (updatedUser: any) => {
-        setUserData(updatedUser);
-        // Gọi API ở đây nếu cần
+    const { mutate: updateProfile } = useUpdateUserProfile();
+    const { mutate: changeAvatar } = useChangeAvatar();
+
+    const handleSave = (updatedUser: { name: string; avatarUrl: string }) => {
+        // Cập nhật tên nếu thay đổi
+        if (updatedUser.name !== userData.username) {
+            updateProfile({ newName: updatedUser.name });
+        }
+
+        // Cập nhật avatar nếu thay đổi
+        if (updatedUser.avatarUrl && updatedUser.avatarUrl !== userData.avatarUrl) {
+            changeAvatar({ newAvatarUrl: updatedUser.avatarUrl });
+        }
+
+        // Cập nhật lại local UI
+        setUserData((prev) => ({
+            ...prev,
+            username: updatedUser.name,
+            avatarUrl: updatedUser.avatarUrl,
+        }));
     };
 
     return (
@@ -34,13 +51,13 @@ const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
                     className="banner-img"
                 />
                 <div className="avatar-info">
-                    <img src={userData.avatarUrl || "/avatar.png"} alt="Avatar" className="profile-avatar"/>
+                    <img src={userData.avatarUrl || defaultAvatar} alt="Avatar" className="profile-avatar" />
 
                     <div className="profile-text">
                         <p>{userData.username}</p>
                     </div>
                     <button className="settings-btn" onClick={() => setShowSettings(true)}>
-                        <IconCog/>
+                        <IconCog />
                     </button>
                 </div>
             </div>
@@ -58,17 +75,17 @@ const UserInfo: React.FC<{ user: UserData }> = ({ user }) => {
                     <div className="info-box">
                         <p><strong>User name:</strong></p>
                         <p>{userData.username}</p>
-                        <p><strong>Email:</strong></p>
-                        <p>{userData.email}</p>
-                        <p><strong>Description:</strong></p>
-                        <p>{userData.description}</p>
                     </div>
                 </div>
             </div>
 
             {showSettings && (
                 <UserSettingsPopup
-                    user={userData}
+                    user={{
+                        name: userData.username,
+                        avatarUrl: userData.avatarUrl,
+                    }}
+                    userId={userData.id}
                     onClose={() => setShowSettings(false)}
                     onSave={handleSave}
                 />

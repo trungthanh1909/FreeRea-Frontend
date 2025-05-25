@@ -1,46 +1,44 @@
+import React, { useState } from "react";
+import "../../styles/UserProfilePage/UserSettingsPopup.scss";
+import { useUploadAvatar } from "../../hooks";
+import { useChangePassword } from "../../hooks";
 
-import React, { useState } from 'react';
-import'../../styles/UserProfilePage/UserSettingsPopup.scss';
-
-import { useChangeAvatar } from '../../hooks/userProfileService/useUserProfileHooks';
-import { useDispatch } from 'react-redux';
-import { updateProfileName } from '../../store/slices/userSlice';
+import { showToast } from "../../utils/toast";
 
 interface Props {
+    userId: string;
     user: {
-        username: string;
-        email: string;
-        description: string;
-        avatarUrl?: string;
+        name: string;
+        avatarUrl: string;
     };
     onClose: () => void;
-    onSave: (updatedUser: any) => void;
+    onSave: (updatedUser: { name: string; avatarUrl: string }) => void;
 }
 
-const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
-    const dispatch = useDispatch();
-    const { mutate: changeAvatar } = useChangeAvatar();
-
+const UserSettingsPopup: React.FC<Props> = ({ user, userId, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        username: user.username,
-        email: user.email,
-        description: user.description,
-        avatar: null as File | null,
-        avatarPreview: user.avatarUrl || '',
+        name: user.name,
+        avatarPreview: user.avatarUrl || "",
     });
 
     const [showPasswordFields, setShowPasswordFields] = useState(false);
     const [passwords, setPasswords] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
     });
 
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [passwordError, setPasswordError] = useState("");
+    const changePasswordMutation = useChangePassword(userId);
+    const handleChangePasswordSuccess = () => {
+        showToast("Đổi mật khẩu thành công", "success");
+        setPasswords({ currentPassword: "", newPassword: "", confirmPassword: "" });
+        setShowPasswordFields(false);
+    };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         if (name in passwords) {
             setPasswords((prev) => ({ ...prev, [name]: value }));
         } else {
@@ -48,53 +46,74 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
         }
     };
 
-    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { mutateAsync: uploadAvatar } = useUploadAvatar();
+    const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            const preview = URL.createObjectURL(file);
-            setFormData((prev) => ({ ...prev, avatar: file, avatarPreview: preview }));
+        if (!file || !userId) return;
+
+        try {
+            const res = await uploadAvatar({ userId, file });
+            const uploadedUrl = res.data?.url;
+
+            if (uploadedUrl) {
+                setFormData((prev) => ({
+                    ...prev,
+                    avatarUrl: uploadedUrl,
+                }));
+                showToast("Tải ảnh thành công!", "success");
+            }
+        } catch {
+            showToast("Tải ảnh thất bại", "error");
         }
     };
 
     const handleSubmit = () => {
-        let valid = true;
-        setEmailError('');
-        setPasswordError('');
-
-        if (!formData.email.includes('@')) {
-            setEmailError("Email must contain '@'.");
-            valid = false;
-        }
-        if (showPasswordFields && passwords.newPassword !== passwords.confirmPassword) {
-            setPasswordError("New password and confirmation do not match.");
-            valid = false;
-        }
-        if (!valid) return;
-
-        // Gửi request đổi avatar nếu có file mới
-        if (formData.avatar) {
-            const payload = new FormData();
-            payload.append('file', formData.avatar);
-            changeAvatar(payload as any); // Tùy định nghĩa API có cần FormData không
+        if (!formData.name.trim()) {
+            showToast("Tên hiển thị không được để trống", "error");
+            return;
         }
 
-        // Gửi các thông tin khác như tên, email, mô tả
-        dispatch(updateProfileName(formData.username)); // ví dụ
+        if (showPasswordFields) {
+            if (passwords.newPassword.length < 8) {
+                setPasswordError("Mật khẩu mới phải có ít nhất 8 ký tự.");
+                return;
+            }
 
-        const updated = {
-            ...user,
-            username: formData.username,
-            email: formData.email,
-            description: formData.description,
-            ...(showPasswordFields ? {
-                currentPassword: passwords.currentPassword,
-                newPassword: passwords.newPassword
-            } : {})
+            if (passwords.newPassword !== passwords.confirmPassword) {
+                setPasswordError("Mật khẩu xác nhận không khớp.");
+                return;
+            }
+        }
+
+        const saveProfile = () => {
+            onSave({
+                name: formData.name,
+                avatarUrl: formData.avatarPreview,
+            });
+            onClose();
         };
 
-        onSave(updated); // Nếu cần xử lý lưu tiếp tục
-        onClose();
+        if (showPasswordFields) {
+            changePasswordMutation.mutate(
+                {
+                    currentPassword: passwords.currentPassword,
+                    newPassword: passwords.newPassword,
+                },
+                {
+                    onSuccess: () => {
+                        handleChangePasswordSuccess();
+                        saveProfile();
+                    },
+                    onError: () => showToast("Đổi mật khẩu thất bại", "error"),
+                }
+            );
+        } else {
+            saveProfile();
+        }
     };
+
+
+
 
     return (
         <div className="popup-overlay">
@@ -104,7 +123,7 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                 <div className="avatar-wrapper">
                     <label htmlFor="avatar-upload">
                         <img
-                            src={formData.avatarPreview || '/default-avatar.png'}
+                            src={formData.avatarPreview || "/default-avatar.png"}
                             alt="Avatar"
                             className="avatar-image"
                         />
@@ -114,35 +133,24 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                         id="avatar-upload"
                         accept="image/*"
                         onChange={handleAvatarChange}
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                     />
                 </div>
 
                 <input
                     type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-                {emailError && <p className="error-message">{emailError}</p>}
-
-                <textarea
-                    name="description"
-                    placeholder="Description"
-                    value={formData.description}
+                    name="name"
+                    placeholder="Display Name"
+                    value={formData.name}
                     onChange={handleChange}
                 />
 
                 {!showPasswordFields ? (
-                    <button type="button" onClick={() => setShowPasswordFields(true)} className="change-password-btn">
+                    <button
+                        type="button"
+                        onClick={() => setShowPasswordFields(true)}
+                        className="change-password-btn"
+                    >
                         Change Password
                     </button>
                 ) : (
@@ -168,13 +176,19 @@ const UserSettingsPopup: React.FC<Props> = ({ user, onClose, onSave }) => {
                             value={passwords.confirmPassword}
                             onChange={handleChange}
                         />
-                        {passwordError && <p className="error-message">{passwordError}</p>}
+                        {passwordError && (
+                            <p className="error-message">{passwordError}</p>
+                        )}
                     </>
                 )}
 
-                <div className="button-row">
-                    <button onClick={handleSubmit} className="confirm-btn">Confirm</button>
-                    <button onClick={onClose} className="cancel-btn">Cancel</button>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <button onClick={handleSubmit} className="confirm-btn">
+                        Confirm
+                    </button>
+                    <button onClick={onClose} className="cancel-btn">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>

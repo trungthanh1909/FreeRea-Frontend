@@ -3,6 +3,7 @@ import authReducer from "./slices/authSlice";
 import favouriteReducer from "./slices/favouriteSlice";
 import userReducer from "./slices/userSlice";
 import uiReducer from "./slices/uiSlice";
+import paginationReducer from "./slices/paginationSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         favourite: favouriteReducer,
         user: userReducer,
         ui: uiReducer,
+        pagination: paginationReducer,
     },
 });
 
