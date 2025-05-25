@@ -18,6 +18,7 @@ const suggestedCategories = [
 ];
 
 const CreateBookForm: React.FC = () => {
+
     const [form, setForm] = useState<BookForm>({
         title: '',
         author: '',

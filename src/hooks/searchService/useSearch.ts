@@ -9,8 +9,8 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const searchingApi = new BookSearchingControllerApi(createServiceConfig());
-const indexingApi = new BookIndexControllerApi(createServiceConfig());
+const searchingApi = new BookSearchingControllerApi(createServiceConfig("search"));
+const indexingApi = new BookIndexControllerApi(createServiceConfig("search"));
 
 export const useAutocompleteTitle = (prefix: string) => {
     return useQuery<ApiResponseListBookSearchingResult, Error>({

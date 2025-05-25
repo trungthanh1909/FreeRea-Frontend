@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { HistoryRecordControllerApi } from "../../api/readingHistory-service";
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
-import { mapPageRecordResponse, ReadingHistoryPage } from "../../mappers/readingHistoryMapper";
+import { mapPageRecordResponse, ReadingHistoryPage } from "../../utils/mappers";
 
-const api = new HistoryRecordControllerApi(createServiceConfig());
+const api = new HistoryRecordControllerApi(createServiceConfig("history"));
 
 export const useGetReadingHistory = (
     userId: string,

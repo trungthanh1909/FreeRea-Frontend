@@ -18,7 +18,7 @@ import {
     updateProfileName,
 } from "../../store/slices/userSlice";
 
-const config = createServiceConfig();
+const config = createServiceConfig("profile");
 const internalApi = new InternalUserProfileControllerApi(config);
 const publicApi = new UserProfileControllerApi(config);
 

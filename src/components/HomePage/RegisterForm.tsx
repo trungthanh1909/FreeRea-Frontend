@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import "../../styles/HomePage/Login_RegisterForm.scss";
+import { showToast } from "../../utils/toast";
 
 type RegisterFormProps = {
     switchToLogin: () => void;
@@ -16,13 +17,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ switchToLogin, onSubmit, er
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         if (!username || !email || !password) {
+            showToast("Vui lòng nhập đầy đủ thông tin", "error");
             return;
         }
+
+        if (username.trim().toLowerCase() === "admin") {
+            showToast("Không thể đăng ký với username 'admin'", "error");
+            return;
+        }
+
         try {
             await onSubmit({ username, email, password });
         } catch (err) {
             console.error("Đăng ký thất bại:", err);
+            showToast("Đăng ký thất bại. Vui lòng thử lại.", "error");
         }
     };
 

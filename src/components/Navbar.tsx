@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SearchDropdown from "../components/TitleSearchWithImage";
@@ -10,15 +10,11 @@ import CategoryList from "./CategoryList";
 import "../styles/Navbar.scss";
 
 import logo from "../assets/logo-black.png";
-import { useAuthHooks, useSearchByKeyword, useNavbarAuth } from "../hooks";
+import { useSearchByKeyword, useNavbarAuth } from "../hooks";
 import { mapSearchResultToBookItem } from "../utils/mappers";
-import defaultAvatar from "../assets/default-avatar.png";
+import defaultAvatar from "../assets/default_avatar.jpg";
 
 const Navbar: React.FC = () => {
-    const navigate = useNavigate();
-
-
-
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [hovering, setHovering] = useState(false);

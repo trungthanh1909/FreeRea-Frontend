@@ -4,7 +4,7 @@ import { RecordRequest, ApiResponseRecordResponse } from "../../api/readingHisto
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const internalApi = new InternalHistoryRecordControllerApi(createServiceConfig());
+const internalApi = new InternalHistoryRecordControllerApi(createServiceConfig("history"));
 
 export const useSaveReadingHistory = () => {
     const queryClient = useQueryClient();

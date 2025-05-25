@@ -3,7 +3,7 @@ import { InternalChapterControllerApi, ChapterRequest } from "../../api/chapter-
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const api = new InternalChapterControllerApi(createServiceConfig());
+const api = new InternalChapterControllerApi(createServiceConfig("chapter"));
 
 export const useCreateChapter = (bookId: string) => {
     const queryClient = useQueryClient();

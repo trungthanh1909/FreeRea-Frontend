@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useIsAdmin } from "../hooks";
 
 interface AuthorizedRouteProps {
     roles?: string[];
@@ -8,17 +9,17 @@ interface AuthorizedRouteProps {
 }
 
 const AuthorizedRoute = ({ roles = [], permissions = [] }: AuthorizedRouteProps) => {
-    const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const isAdmin = useIsAdmin();
 
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
 
-    const hasRequiredRole = roles.length === 0 || roles.some(role => user?.roles?.includes(role));
-    const hasRequiredPermission =
-        permissions.length === 0 || permissions.some(p => user?.permissions?.includes(p));
+    const hasRequiredRole =
+        roles.length === 0 || (roles.includes("admin") && isAdmin);
 
-    if (!hasRequiredRole || !hasRequiredPermission) {
+    if (!hasRequiredRole) {
         return <Navigate to="/unauthorized" replace />;
     }
 

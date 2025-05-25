@@ -12,7 +12,7 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const userApi = new UserAPIApi(createServiceConfig());
+const userApi = new UserAPIApi(createServiceConfig("auth"));
 
 export const useRegister = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export const useRegister = () => {
             userApi.createUser({ userCreateRequest: data }).then((res) => res.data),
         onSuccess: () => {
             showToast("Đăng ký thành công", "success");
-            navigate("/login");
+            navigate("/");
         },
         onError: (err) => {
             showToast(err.message || "Đăng ký thất bại", "error");

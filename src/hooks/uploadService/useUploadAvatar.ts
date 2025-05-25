@@ -4,7 +4,7 @@ import { ApiResponseAvatarUploadResponse } from "../../api/upload-service";
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const api = new UploadControllerApi(createServiceConfig());
+const api = new UploadControllerApi(createServiceConfig("upload"));
 
 export const useUploadAvatar = () => {
     return useMutation<ApiResponseAvatarUploadResponse, Error, { userId: string; file: File }>({

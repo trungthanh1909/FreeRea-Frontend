@@ -4,7 +4,7 @@ import { ApiResponseBookmarkResponse, ApiResponseBoolean, ApiResponseListBookmar
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const bookmarkApi = new BookmarkControllerApi(createServiceConfig());
+const bookmarkApi = new BookmarkControllerApi(createServiceConfig("bookmark"));
 
 const QUERY_KEYS = {
     bookmarks: (userId: number) => ["bookmarks", userId],

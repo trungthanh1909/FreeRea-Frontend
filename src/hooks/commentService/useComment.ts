@@ -8,7 +8,7 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const commentApi = CommentControllerApiFactory(createServiceConfig());
+const commentApi = CommentControllerApiFactory(createServiceConfig("comment"));
 
 // Lấy comment theo Book ID
 export const useCommentsByBookId = (bookId: number) => {

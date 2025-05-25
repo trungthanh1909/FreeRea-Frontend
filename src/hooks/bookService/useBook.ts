@@ -12,8 +12,8 @@ import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 import { AxiosResponse } from "axios";
 
-const externalApi = new ExternalBookAPIsApi(createServiceConfig());
-const internalApi = new InternalBookControllerApi(createServiceConfig());
+const externalApi = new ExternalBookAPIsApi(createServiceConfig("book"));
+const internalApi = new InternalBookControllerApi(createServiceConfig("book"));
 
 // ========== EXTERNAL ========== //
 

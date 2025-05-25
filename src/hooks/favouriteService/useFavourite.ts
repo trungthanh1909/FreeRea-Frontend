@@ -17,8 +17,8 @@ import {
     clearFavourite,
 } from "../../store/slices/favouriteSlice";
 
-const externalApi = new ExternalAPIForFavouriteServiceApi(createServiceConfig());
-const internalApi = new InternalAPIForFavouriteServiceApi(createServiceConfig());
+const externalApi = new ExternalAPIForFavouriteServiceApi(createServiceConfig("favourite"));
+const internalApi = new InternalAPIForFavouriteServiceApi(createServiceConfig("favourite"));
 const FAVOURITE_KEY = "favourite";
 
 // External: Get count of favourites for a book

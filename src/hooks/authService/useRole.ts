@@ -9,7 +9,7 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const roleApi = new RoleAPIApi(createServiceConfig());
+const roleApi = new RoleAPIApi(createServiceConfig("auth"));
 
 export const useRoles = () => {
     return useQuery<ApiResponseListRoleResponse>({

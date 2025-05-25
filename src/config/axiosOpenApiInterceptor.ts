@@ -33,7 +33,7 @@ export const attachOpenApiInterceptors = () => {
                 } catch (refreshError) {
                     showToast("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.", "error");
                     store.dispatch(logout());
-                    setTimeout(() => (window.location.href = "/login"), 1000);
+                    setTimeout(() => (window.location.href = "/"), 1000);
                     return Promise.reject(refreshError);
                 }
             }

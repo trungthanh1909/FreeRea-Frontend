@@ -4,7 +4,7 @@ import { createServiceConfig } from "../../config/configuration";
 import { CrawlControllerApi } from "../../api/crawl-service";
 import type { Metadata, CrawlResponse } from "../../api/crawl-service";
 
-const crawlApi = new CrawlControllerApi(createServiceConfig());
+const crawlApi = new CrawlControllerApi(createServiceConfig("crawl"));
 
 export const useCrawl = () => {
     return useMutation<CrawlResponse, Error, Metadata>({

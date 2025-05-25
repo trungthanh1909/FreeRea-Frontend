@@ -9,7 +9,7 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const externalApi = ExternalCommentControllerApiFactory(createServiceConfig());
+const externalApi = ExternalCommentControllerApiFactory(createServiceConfig("comment"));
 
 // Tạo bình luận gốc (root comment)
 export const useCreateRootComment = (queryKeyToInvalidate: unknown[]) => {

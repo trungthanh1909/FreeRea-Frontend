@@ -4,7 +4,7 @@ import { ApiResponseFromUrlUploadResponse, FromUrlUploadRequest } from "../../ap
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const api = new UploadControllerApi(createServiceConfig());
+const api = new UploadControllerApi(createServiceConfig("upload"));
 
 export const useUploadFromUrl = () => {
     return useMutation<ApiResponseFromUrlUploadResponse, Error, FromUrlUploadRequest>({

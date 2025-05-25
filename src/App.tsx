@@ -1,6 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 import { publicRoutes, privateRoutes } from "./routes";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -8,7 +8,7 @@ import AuthorizedRoute from "./routes/AuthorizedRoute";
 
 const App: React.FC = () => {
     return (
-        <>r
+        <>
             <Routes>
                 {/* Public Routes */}
                 {publicRoutes.map(({ path, component: Component }, index) => (
@@ -17,21 +17,22 @@ const App: React.FC = () => {
 
                 {/* Private Routes */}
                 <Route element={<ProtectedRoute />}>
-                    {privateRoutes.map(({ path, component: Component, roles, permissions }, index) => {
-                        if (roles || permissions) {
-                            return (
-                                <Route
-                                    key={index}
-                                    element={<AuthorizedRoute roles={roles} permissions={permissions} />}
-                                >
-                                    <Route path={path} element={<Component />} />
-                                </Route>
-                            );
-                        }
-
-                        return <Route key={index} path={path} element={<Component />} />;
-                    })}
+                    {privateRoutes.map(({ path, component: Component, roles }, index) =>
+                        roles ? (
+                            <Route
+                                key={index}
+                                element={<AuthorizedRoute roles={roles} />}
+                            >
+                                <Route path={path} element={<Component />} />
+                            </Route>
+                        ) : (
+                            <Route key={index} path={path} element={<Component />} />
+                        )
+                    )}
                 </Route>
+
+                {/* Fallback Route */}
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 
             <ToastContainer

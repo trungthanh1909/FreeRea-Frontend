@@ -16,7 +16,7 @@ import { createServiceConfig } from "../../config/configuration";
 import { loginSuccess, logout, updateAccessToken } from "../../store/slices/authSlice";
 import { showToast } from "../../utils/toast";
 
-const authApi = new AuthenticationAPIApi(createServiceConfig());
+const authApi = new AuthenticationAPIApi(createServiceConfig("auth"));
 
 export const useLogin = () => {
     const dispatch = useDispatch();

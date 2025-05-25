@@ -9,7 +9,7 @@ import {
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const permissionApi = new PermissionAPIApi(createServiceConfig());
+const permissionApi = new PermissionAPIApi(createServiceConfig("auth"));
 
 export const usePermissions = () => {
     return useQuery<ApiResponseListPermissionResponse>({

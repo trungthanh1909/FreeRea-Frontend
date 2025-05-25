@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
 
     // Nếu chưa đăng nhập → chuyển hướng về trang login
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
 
     // Nếu đã đăng nhập → render các route con

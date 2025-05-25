@@ -4,7 +4,7 @@ import { ApiResponseCoverUploadResponse } from "../../api/upload-service";
 import { createServiceConfig } from "../../config/configuration";
 import { showToast } from "../../utils/toast";
 
-const api = new UploadControllerApi(createServiceConfig());
+const api = new UploadControllerApi(createServiceConfig("upload"));
 
 export const useUploadCover = () => {
     return useMutation<ApiResponseCoverUploadResponse, Error, { bookId: string; file: File }>({
