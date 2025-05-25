@@ -1,1 +1,2 @@
-export * from "./useUserProfileHooks"
+export * from "./useUserProfileHooks";
+export * from "./useReadingHistoryBooks";
