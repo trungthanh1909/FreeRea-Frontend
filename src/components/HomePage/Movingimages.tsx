@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/HomePage/Movingimages.scss";
 import { Link } from "react-router-dom";
 
-import { useGetAllBooks } from "../../hooks/bookService/useBook";
+import { useGetAllBooks } from "../../hooks";
 
 
 
@@ -37,6 +37,8 @@ const MovingImages = () => {
     }, [mappedBooks.length]);
 
     const currentData = mappedBooks[currentIndex];
+
+    if (!currentData) return null;
 
     return (
         <div id="content-container">

@@ -1,4 +1,3 @@
-
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import "../../styles/HomePage/MangaSection.scss";
 import { Link } from "react-router-dom";
@@ -9,7 +8,7 @@ import React, { useMemo } from "react";
 import {
     useBooksByCreatedDate,
     useBooksByViewCount,
-} from "../../hooks/bookService/useBook";
+} from "../../hooks";
 
 // Interface cho comic đã render
 interface Comic {

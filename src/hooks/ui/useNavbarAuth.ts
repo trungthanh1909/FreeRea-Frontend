@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthHooks } from "../authService";
+
 import { AuthenticateRequest } from "../../api/auth-service";
 
 type AuthModalType = "login" | "register" | null;
