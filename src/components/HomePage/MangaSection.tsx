@@ -3,25 +3,28 @@ import "../../styles/HomePage/MangaSection.scss";
 import { Link } from "react-router-dom";
 import { FaEye } from 'react-icons/fa';
 
-import React, { useMemo } from "react";
+
 
 import {
     useBooksByCreatedDate,
     useBooksByViewCount,
 } from "../../hooks";
 
-// Interface cho comic đã render
+import React, { useMemo, useState } from "react";
+
+
+
+
 interface Comic {
-    img: string;
+    coverUrl: string;
     title: string;
     author: string;
     views: number | string;
     id: string;
 }
 
-// Component hiển thị danh sách comics với pagination
 const ComicList: React.FC<{ comics: Comic[]; title: string }> = ({ comics, title }) => {
-    const [currentIndex, setCurrentIndex] = React.useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const itemsPerPage = 6;
 
     const handleNext = () => {
@@ -48,15 +51,20 @@ const ComicList: React.FC<{ comics: Comic[]; title: string }> = ({ comics, title
 
                 {currentComics.map((comic, i) => (
                     <div className="comic2" key={i}>
-                        <Link to={`/book/review/${comic.id}`}>
-                            <img src={comic.img} alt={comic.title} />
+                        <Link to={`/book/review/:bookId${comic.id}`}>
+                            {comic.coverUrl ? (
+                                <img src={comic.coverUrl} alt={comic.title} />
+                            ) : (
+                                <div className="placeholder-image">No Image</div>
+                            )}
                         </Link>
+
                         <p className="name2">{comic.title}</p>
                         <p className="sales2">
                             {comic.author}
                             <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-                <FaEye style={{ color: "#666" }} /> {comic.views}
-              </span>
+                                <FaEye style={{ color: "#666" }} /> {comic.views}
+                            </span>
                         </p>
                     </div>
                 ))}
@@ -69,25 +77,61 @@ const ComicList: React.FC<{ comics: Comic[]; title: string }> = ({ comics, title
     );
 };
 
-// Component chính dùng 2 query hook
+// Component chính
 const MangaComponent = () => {
-    const { data: createdBooks, isLoading: loadingCreated } = useBooksByCreatedDate();
-    const { data: viewedBooks, isLoading: loadingViewed } = useBooksByViewCount();
+    const {
+        data: createdBooks,
+        isLoading: loadingCreated,
+        isError: errorCreated,
+        error: createdError
+    } = useBooksByCreatedDate();
 
-    // Chuyển đổi dữ liệu từ API sang định dạng Comic
+    const {
+        data: viewedBooks,
+        isLoading: loadingViewed,
+        isError: errorViewed,
+        error: viewedError
+    } = useBooksByViewCount();
+
+    // Chuyển đổi dữ liệu từ API sang dạng Comic
     const mapBooksToComics = (books: any[] = []): Comic[] =>
         books.map((book) => ({
             id: book.id,
             title: book.title,
             author: book.author ?? "Unknown",
             views: book.viewCount ?? 0,
-            img: book.coverImageUrl ?? "",
+            coverUrl: book.coverUrl && book.coverUrl.trim() !== "" ? book.coverUrl : null,
         }));
 
-    const createdComics = useMemo(() => mapBooksToComics(createdBooks), [createdBooks]);
-    const viewedComics = useMemo(() => mapBooksToComics(viewedBooks), [viewedBooks]);
+    // ✅ Bảo vệ chống lỗi undefined
+    const createdComics = useMemo(() => {
+        if (!Array.isArray(createdBooks)) return [];
+        return mapBooksToComics(createdBooks);
+    }, [createdBooks]);
 
+    const viewedComics = useMemo(() => {
+        if (!Array.isArray(viewedBooks)) return [];
+        return mapBooksToComics(viewedBooks);
+    }, [viewedBooks]);
+
+    // Loading UI
     if (loadingCreated || loadingViewed) return <div>Loading...</div>;
+
+    // Error UI
+    if (errorCreated || errorViewed) {
+        return (
+            <div style={{ color: "red", padding: "1rem" }}>
+                <p>❌ Đã xảy ra lỗi khi tải dữ liệu.</p>
+                {createdError && <p>Created: {(createdError as Error).message}</p>}
+                {viewedError && <p>Viewed: {(viewedError as Error).message}</p>}
+            </div>
+        );
+    }
+
+    // ✅ Dự phòng nếu data bị undefined
+    if (!Array.isArray(createdBooks) || !Array.isArray(viewedBooks)) {
+        return <div>Dữ liệu không hợp lệ.</div>;
+    }
 
     return (
         <div className="manga-section">
@@ -98,3 +142,4 @@ const MangaComponent = () => {
 };
 
 export default MangaComponent;
+

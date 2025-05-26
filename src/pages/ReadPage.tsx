@@ -5,7 +5,7 @@ import "../styles/ReadPage/ReadingPage.scss";
 import Navbar from "../components/Navbar";
 
 
-import { useGetChaptersByBookId } from "../hooks/chapterService/usePublicChapter";
+import { useGetChaptersByBookId } from "../hooks";
 
 
 interface Chapter {
