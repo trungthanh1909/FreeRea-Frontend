@@ -4,6 +4,7 @@ import { useAuthHooks } from "../authService";
 
 import { AuthenticateRequest } from "../../api/auth-service";
 
+
 type AuthModalType = "login" | "register" | null;
 
 export const useNavbarAuth = () => {
@@ -31,6 +32,7 @@ export const useNavbarAuth = () => {
             setLoading(false);
         }
     };
+
 
     const handleLogout = async () => {
         await logout({});
