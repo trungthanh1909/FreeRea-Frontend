@@ -5,14 +5,13 @@ import { RootState } from '../../store/index';
 import avatarImg from '../../assets/default_avatar.jpg';
 
 
-//import {useCommentsByChapterId, useCreateComment,} from '../../hooks/commentService/useComment'; // your hook file path
-//import {useCreateReplyComment,useRepliesByCommentId,} from '../../hooks/commentService/useCommentReply'; // your hook file path
-import {useCommentsByChapterId, useCreateComment,} from '../../mocks/useComment';
-import {useCreateReplyComment, useRepliesByCommentId,} from '../../mocks/useCommentReply';
+import {useCommentsByChapterId,} from '../../hooks/commentService/useComment'; // your hook file path
+import {useCreateReplyComment,useRepliesByCommentId,useCreateRootComment,} from '../../hooks/commentService/useCommentReply'; // your hook file path
+
 
 
 interface CommentSectionProps {
-    chapterId: number;
+    chapterId: string;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
@@ -20,17 +19,28 @@ const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
     const [expanded, setExpanded] = useState(false);
     const username = useSelector((state: RootState) => state.user.profile?.name || 'Anonymous');
 
-    const { data, isLoading } = useCommentsByChapterId(chapterId);
+    const chapterIdNumber = Number(chapterId);
+    const { data, isLoading, refetch } = useCommentsByChapterId(chapterIdNumber);
     const comments = data?.result || [];
 
-    const createCommentMutation = useCreateComment(['comments', 'chapter', chapterId]);
+    const createCommentMutation = useCreateRootComment(['comments', 'chapter', chapterId]);
 
     const handleAddComment = () => {
         if (!newComment.trim()) return;
-        createCommentMutation.mutate({
-            chapterId,
-            content: newComment,
-        });
+
+        createCommentMutation.mutate(
+            {
+                chapterId: chapterId,
+                content: newComment,
+                username: username,
+            },
+            {
+                onSuccess: () => {
+                    refetch();
+                },
+            }
+        );
+
         setNewComment('');
     };
 
@@ -40,11 +50,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
         <div className="comments">
             <h3>Comments</h3>
             <div className="comment-box">
-                <textarea
-                    placeholder="Write a comment..."
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                />
+        <textarea
+            placeholder="Write a comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+        />
                 <button onClick={handleAddComment} disabled={createCommentMutation.isPending}>
                     {createCommentMutation.isPending ? 'Loading...' : 'Post'}
                 </button>
@@ -60,6 +70,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
                             comment={comment}
                             chapterId={chapterId}
                             username={username}
+                            onReplySuccess={refetch} // 🔁 Truyền xuống để refetch sau khi reply
                         />
                     ))
                 )}
@@ -76,27 +87,44 @@ const CommentSection: React.FC<CommentSectionProps> = ({ chapterId }) => {
     );
 };
 
-const CommentItem: React.FC<{
+interface CommentItemProps {
     comment: { id: number; content: string };
-    chapterId: number;
+    chapterId: string;
     username: string;
-}> = ({ comment, chapterId, username }) => {
+    onReplySuccess: () => void;
+}
+
+const CommentItem: React.FC<CommentItemProps> = ({
+                                                     comment,
+                                                     chapterId,
+                                                     username,
+                                                     onReplySuccess,
+                                                 }) => {
     const [replyInput, setReplyInput] = useState('');
     const [expandedReply, setExpandedReply] = useState(false);
 
-    const { data: repliesData } = useRepliesByCommentId(String(comment.id));
+    const { data: repliesData, refetch: refetchReplies } = useRepliesByCommentId(String(comment.id));
     const replies = repliesData?.result || [];
 
     const createReplyMutation = useCreateReplyComment(['comments', 'chapter', chapterId]);
 
     const handleReply = () => {
         if (!replyInput.trim()) return;
-        createReplyMutation.mutate({
-            parentId: comment.id.toString(),
-            content: replyInput,
-            username,
-        });
-        setReplyInput('');
+
+        createReplyMutation.mutate(
+            {
+                parentId: String(comment.id),
+                content: replyInput,
+                username,
+            },
+            {
+                onSuccess: () => {
+                    setReplyInput('');
+                    refetchReplies();
+                    onReplySuccess(); // 🔁 gọi lại refetch cha luôn nếu cần
+                },
+            }
+        );
     };
 
     const visibleReplies = expandedReply ? replies : replies.slice(0, 1);
@@ -104,15 +132,14 @@ const CommentItem: React.FC<{
     return (
         <div className="comment-item">
             <div className="main-comment">
-                <img src={avatarImg} alt="Avatar" className="avatar"/>
-
+                <img src={avatarImg} alt="Avatar" className="avatar" />
                 <div className="comment-text">{comment.content}</div>
             </div>
 
             <div className="reply-list">
                 {visibleReplies.map((reply: any) => (
                     <div key={reply.id} className="reply-item">
-                        <img src={avatarImg} alt="Avatar"  className="avatar small" />
+                        <img src={avatarImg} alt="Avatar" className="avatar small" />
                         <div className="reply-text">{reply.content}</div>
                     </div>
                 ))}
@@ -120,7 +147,7 @@ const CommentItem: React.FC<{
                 {replies.length > 1 && (
                     <div className="expand-toggle reply-toggle">
                         <button onClick={() => setExpandedReply(!expandedReply)}>
-                            {expandedReply ? 'Hide reply..' : 'Show more reply..'}
+                            {expandedReply ? 'Hide replies' : 'Show more replies'}
                         </button>
                     </div>
                 )}
@@ -134,7 +161,7 @@ const CommentItem: React.FC<{
                     onChange={(e) => setReplyInput(e.target.value)}
                 />
                 <button onClick={handleReply} disabled={createReplyMutation.isPending}>
-                    {createReplyMutation.isPending ? 'Đang gửi...' : 'Reply'}
+                    {createReplyMutation.isPending ? 'Loading...' : 'Reply'}
                 </button>
             </div>
         </div>
